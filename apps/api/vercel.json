@@ -3,14 +3,14 @@
   "name": "grove-opportunities-api",
   "builds": [
     {
-      "src": "dist/apps/api/index.js",
+      "src": "dist/apps/api/main.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/apps/api/index.js"
+      "dest": "dist/apps/api/main.js"
     }
   ],
   "env": {
