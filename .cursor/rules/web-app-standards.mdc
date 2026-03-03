@@ -1,0 +1,62 @@
+---
+description: Padrões de código para o app web (Next.js, React, TypeScript) — estilo, erros, Server Actions, RSC
+globs: apps/web/**/*
+alwaysApply: false
+---
+
+# Padrões do app web (Grove Opportunities)
+
+Aplicar ao trabalhar em `apps/web`. Stack: Next.js 14 App Router, React, TypeScript, Shadcn UI, Radix, Tailwind Aria.
+
+## Princípios
+
+- Respostas técnicas e objetivas; exemplos em TypeScript corretos.
+- Programação funcional e declarativa; evitar classes.
+- Iteração e modularização em vez de duplicação.
+- Nomes descritivos com verbos auxiliares (ex.: `isLoading`).
+- Diretórios em minúsculas com hífens (ex.: `components/auth-wizard`).
+- Preferir named exports para componentes.
+- Padrão RORO (Receive an Object, Return an Object).
+
+## JavaScript/TypeScript
+
+- Funções puras com `function`; omitir ponto e vírgula.
+- TypeScript em todo o código; preferir `interface` a `type`; evitar `enum`, usar maps.
+- Estrutura do arquivo: componente exportado, subcomponentes, helpers, conteúdo estático, tipos.
+- Evitar chaves desnecessárias em condicionais; condicionais de uma linha sem chaves.
+- Sintaxe curta para condicionais simples: `if (condition) doSomething()`.
+
+## Erros e validação
+
+- Tratar erros e edge cases no início das funções; early returns; happy path por último.
+- Evitar `else` desnecessários; usar if-return e guard clauses.
+- Logging adequado e mensagens de erro amigáveis ao usuário.
+- Erros esperados como valores de retorno em Server Actions; usar `useActionState`.
+- Erros inesperados: error boundaries (`error.tsx`, `global-error.tsx`).
+- Código em `services/`: lançar erros amigáveis para o TanStack Query capturar e exibir.
+
+## React/Next.js
+
+- Componentes funcionais e interfaces em TypeScript; JSX declarativo.
+- Usar `function` para componentes, não `const`.
+- Shadcn UI, Radix e Tailwind Aria para componentes e estilos; design responsivo mobile-first com Tailwind.
+- Conteúdo estático e interfaces no final do arquivo; variáveis para conteúdo estático fora do render.
+- Minimizar `use client`, `useEffect` e `setState`; priorizar React Server Components (RSC).
+- Validação de formulários com Zod; client components em `Suspense` com fallback; dynamic loading para componentes não críticos.
+- Imagens: WebP, dimensões, lazy loading.
+- `useActionState` com react-hook-form para formulários.
+
+## Server Actions (next-safe-action)
+
+- Usar next-safe-action em todas as Server Actions.
+- Actions tipadas com validação; usar a função `action` do next-safe-action.
+- Schemas de entrada com Zod; erros tratados e respostas adequadas.
+- `import type { ActionResponse } from '@/types/actions'`; todas as actions retornam `ActionResponse`.
+
+## Convenções
+
+1. Mudanças de estado via Next.js App Router.
+2. Priorizar Web Vitals (LCP, CLS, FID).
+3. Minimizar `use client`: preferir RSC e SSR; `use client` só para Web APIs em componentes pequenos; não usar para data fetching ou estado global.
+
+Consultar a documentação do Next.js para Data Fetching, Rendering e Routing.
