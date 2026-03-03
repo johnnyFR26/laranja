@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "name": "grove-opportunities-api",
+  "builds": [
+    {
+      "src": "dist/apps/api/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/apps/api/index.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
