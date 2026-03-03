@@ -6,7 +6,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
-  const { apiReference } = await import('@scalar/nestjs-api-reference');
   app.setGlobalPrefix(globalPrefix);
 
   app.enableCors({
@@ -34,12 +33,15 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
-  app.use(
-    '/reference',
-    apiReference({
-      content: documentFactory(),
-    }),
-  )
+  if (process.env.NODE_ENV !== 'production') {
+    const { apiReference } = await import('@scalar/nestjs-api-reference');
+    app.use(
+      '/reference',
+      apiReference({
+        content: documentFactory(),
+      }),
+    );
+  }
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
