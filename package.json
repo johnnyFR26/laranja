@@ -2,7 +2,12 @@
   "name": "@org/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "prisma:migrate": "npx dotenv -e .env -- prisma migrate dev --schema apps/api/prisma/schema.prisma",
+    "prisma:studio": "npx dotenv -e .env -- prisma studio --schema apps/api/prisma/schema.prisma",
+    "prisma:generate": "npx dotenv -e .env -- prisma generate --schema apps/api/prisma/schema.prisma",
+    "postinstall": "npx dotenv -e .env -- prisma generate --schema apps/api/prisma/schema.prisma"
+  },
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
