@@ -1,0 +1,59 @@
+---
+description: Paleta de cores, sombras e tokens de design do app web — usar sempre estes tokens em apps/web.
+globs: apps/web/**/*
+alwaysApply: false
+---
+
+# Design tokens – Grove Opportunities (apps/web)
+
+Sempre usar os tokens definidos no `tailwind.config.js` do app web. Não inventar cores hex, sombras ou border-radius fora desta paleta.
+
+## Cores
+
+| Uso | Classe Tailwind | Valor |
+|-----|-----------------|--------|
+| **Primária** (botões, links, item ativo, destaque) | `bg-primary`, `text-primary`, `border-primary` | `#ff6933` |
+| **Primária suave** (bordas, rings, fundos sutis) | `border-primary-light`, `ring-primary-light` | `rgb(255 105 51 / 0.2)` |
+| **Secundária** (cabeçalhos escuros, contraste) | `bg-secondary`, `text-secondary` | `#0a1f24` |
+| **Fundo claro** | `bg-background-light` | `#f8f9fa` |
+| **Fundo escuro (dark)** | `bg-background-dark` | `#051012` |
+
+**Regras:**
+- Botões primários: `bg-primary text-white`; hover pode usar `hover:opacity-90` ou `hover:scale-105`.
+- Links de ação: `text-primary hover:underline` ou `hover:text-primary`.
+- Item ativo na nav: `bg-primary text-white`.
+- Bordas de destaque em cards: `border-primary-light` (evitar `border-primary` forte em blocos grandes).
+
+## Sombras
+
+| Uso | Classe | Quando usar |
+|-----|--------|-------------|
+| **Glow primário** | `shadow-primary-glow` | Botão "Add Credits", item ativo da sidebar, CTAs principais |
+| **Padrão** | `shadow-sm`, `shadow-lg` | Cards, dropdowns; combinar com `shadow-primary-glow` só em elementos primários |
+
+Não criar sombras custom com hex no componente; adicionar novas sombras nomeadas no `tailwind.config.js` se precisar.
+
+## Border radius
+
+- Padrão (cards, inputs, botões retos): `rounded` ou `rounded-lg` (12px / 16px no tema).
+- Botões pill / círculos: `rounded-full`.
+- Evitar valores arbitrários tipo `rounded-[11px]`; usar `rounded`, `rounded-lg`, `rounded-xl`, `rounded-full`.
+
+## Tipografia
+
+- Fonte de interface: `font-display` (Inter), já aplicada no `body` do layout.
+- Não definir `font-family` custom em componentes; usar pesos `font-medium`, `font-bold`, `font-semibold` e tamanhos `text-sm`, `text-lg`, `text-2xl`, etc.
+
+## Dark mode
+
+- Suportar dark onde fizer sentido: `dark:bg-slate-900`, `dark:text-slate-100`, `dark:border-slate-800`.
+- Cores de marca no dark: `dark:text-primary`, `dark:bg-secondary` conforme o layout atual.
+- Balance/valor em destaque no header: `text-secondary dark:text-primary`.
+
+## Resumo rápido
+
+- **Primária:** `primary`, `primary-light` — ações e destaque.
+- **Fundo:** `background-light`, `background-dark` — página.
+- **Sombra de destaque:** `shadow-primary-glow` em CTAs e nav ativa.
+- **Radius:** `rounded` / `rounded-lg` / `rounded-full`; não valores arbitrários.
+- Novos tokens: definir em `apps/web/tailwind.config.js` e referenciar por nome nas regras.
