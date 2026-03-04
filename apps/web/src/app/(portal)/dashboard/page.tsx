@@ -1,14 +1,7 @@
-import { Sidebar } from '@/components/sidebar'
 import { DashboardHeader } from '@/components/dashboard-header'
 import { StoreSpecialtyCard } from '@/components/cards/store-specialty-card'
 import { ConfirmedFreelancersCard } from '@/components/cards/confirmed-freelancers-card'
 import { RequestHistoryCard } from '@/components/cards/request-history-card'
-
-const MOCK_USER = {
-  name: 'Marco',
-  establishmentName: 'La Trattoria Milano',
-  avatarUrl: null,
-}
 
 const MOCK_SPECIALTIES = [
   {
@@ -95,35 +88,32 @@ const MOCK_REQUEST_HISTORY = [
 
 export default function DashboardPage() {
   return (
-    <div className="flex min-h-screen bg-background-light dark:bg-background-dark">
-      <Sidebar user={MOCK_USER} currentPath="/dashboard" />
+    <div className="grid grid-cols-12 gap-6">
+      <header className="col-span-12">
+        <DashboardHeader
+          userName="Marco"
+          balance="$1,250.00"
+          addCreditsHref="/payments/add"
+        />
+      </header>
 
-      <main className="flex-1 overflow-auto p-4 pl-14 pt-14 md:ml-64 md:p-8">
-        <div className="grid grid-cols-12 gap-6">
-          <header className="col-span-12">
-            <DashboardHeader
-              userName={MOCK_USER.name}
-              balance="$1,250.00"
-              addCreditsHref="/payments/add"
-            />
-          </header>
+      <section className="col-span-12 lg:col-span-5">
+        <StoreSpecialtyCard
+          tags={MOCK_SPECIALTIES}
+          actionHref="/settings/specialties"
+        />
+      </section>
 
-          <section className="col-span-12 lg:col-span-5">
-            <StoreSpecialtyCard
-              tags={MOCK_SPECIALTIES}
-              actionHref="/settings/specialties"
-            />
-          </section>
+      <section className="col-span-12 lg:col-span-7">
+        <ConfirmedFreelancersCard freelancers={MOCK_FREELANCERS} />
+      </section>
 
-          <section className="col-span-12 lg:col-span-7">
-            <ConfirmedFreelancersCard freelancers={MOCK_FREELANCERS} />
-          </section>
-
-          <section className="col-span-12">
-            <RequestHistoryCard rows={MOCK_REQUEST_HISTORY} actionHref="/reports" />
-          </section>
-        </div>
-      </main>
+      <section className="col-span-12">
+        <RequestHistoryCard
+          rows={MOCK_REQUEST_HISTORY}
+          actionHref="/reports"
+        />
+      </section>
     </div>
   )
 }

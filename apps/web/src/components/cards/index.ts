@@ -12,3 +12,15 @@ export type {
   RequestHistoryRow,
   RequestStatus,
 } from './request-history-card'
+export { UrgentShiftCard } from './urgent-shift-card'
+export type { UrgentShiftCardProps, UrgentShiftCardData } from './urgent-shift-card'
+export { AvailableOpportunityCard } from './available-opportunity-card'
+export type {
+  AvailableOpportunityCardProps,
+  AvailableOpportunityCardData,
+} from './available-opportunity-card'
+export { FreelancerTalentCard } from './freelancer-talent-card'
+export type {
+  FreelancerTalentCardProps,
+  FreelancerTalentCardData,
+} from './freelancer-talent-card'
