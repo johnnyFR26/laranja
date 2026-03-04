@@ -28,6 +28,7 @@ async function bootstrap() {
     .setTitle('Grove Opportunities API')
     .setDescription('API principal de gerenciamento de produtos, pedidos e usuários')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('api')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

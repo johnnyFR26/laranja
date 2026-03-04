@@ -99,6 +99,7 @@ export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeo
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  password: 'password',
   name: 'name',
   phone: 'phone',
   avatarUrl: 'avatarUrl',
