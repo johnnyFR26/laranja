@@ -2,6 +2,7 @@
   "name": "@org/source",
   "version": "0.0.0",
   "license": "MIT",
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "prisma:migrate": "prisma migrate dev --config apps/api/prisma.config.ts --schema apps/api/prisma/schema.prisma",
     "prisma:studio": "prisma studio --config apps/api/prisma.config.ts --schema apps/api/prisma/schema.prisma",
