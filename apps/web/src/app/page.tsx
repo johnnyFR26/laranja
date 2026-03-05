@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Index() {
   /*
    * Replace the elements below with your own.
@@ -8,11 +10,17 @@ export default function Index() {
     <div>
       <div className="wrapper">
         <div className="container">
-          <div id="welcome">
+          <div id="welcome" className="flex flex-wrap items-center justify-between gap-4">
             <h1>
               <span> Hello there, </span>
               Welcome web 👋
             </h1>
+            <Link
+              href="/register/freelancer"
+              className="rounded-xl bg-[#ff6933] px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
+            >
+              Cadastre-se como freelancer
+            </Link>
           </div>
 
           <div id="hero" className="rounded">
