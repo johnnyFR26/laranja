@@ -2,12 +2,17 @@ import { z } from 'zod'
 
 const ROLE_SLUGS = ['waiter', 'kitchen-assistant', 'both'] as const
 
-/** Objeto de disponibilidade: para cada turno, um objeto dia -> boolean */
 const availabilitySchema = z.object({
-  morning: z.record(z.string(), z.boolean()).optional().default({}),
-  evening: z.record(z.string(), z.boolean()).optional().default({}),
+  morning: z.record(z.string(), z.boolean()),
+  evening: z.record(z.string(), z.boolean()),
 })
 
+/**
+ * Schema de validação do formulário de cadastro de freelancer.
+ * Sem transforms ou defaults — input e output são o mesmo tipo,
+ * o que mantém compatibilidade total com react-hook-form v7 + Zod v4.
+ * Conversões de payload (ex.: phone vazio → null) ocorrem no onSubmit antes de chamar a API.
+ */
 export const freelancerRegistrationSchema = z.object({
   name: z
     .string()
@@ -21,18 +26,12 @@ export const freelancerRegistrationSchema = z.object({
   phone: z
     .string()
     .max(20, 'Telefone deve ter no máximo 20 caracteres')
-    .optional()
-    .nullable()
-    .transform((v) => v === '' ? null : v ?? null),
-  roleSlug: z.enum(ROLE_SLUGS, {
-    required_error: 'Selecione uma função',
-    invalid_type_error: 'Selecione uma função',
-  }),
+    .optional(),
+  roleSlug: z.enum(ROLE_SLUGS, { error: 'Selecione uma função' }),
   skills: z
     .array(z.string())
-    .min(1, 'Selecione ao menos uma habilidade')
-    .default([]),
-  availability: availabilitySchema.optional().default({ morning: {}, evening: {} }),
+    .min(1, 'Selecione ao menos uma habilidade'),
+  availability: availabilitySchema,
 })
 
 export type FreelancerRegistrationFormValues = z.infer<typeof freelancerRegistrationSchema>

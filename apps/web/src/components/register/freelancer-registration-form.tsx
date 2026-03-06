@@ -50,7 +50,6 @@ export function FreelancerRegistrationForm() {
 
   const {
     register,
-    control,
     handleSubmit,
     watch,
     setValue,
@@ -61,7 +60,6 @@ export function FreelancerRegistrationForm() {
       name: '',
       email: '',
       phone: '',
-      roleSlug: undefined,
       skills: [],
       availability: { morning: {}, evening: {} },
     },
@@ -86,8 +84,12 @@ export function FreelancerRegistrationForm() {
   }
 
   const onSubmit = (data: FreelancerRegistrationFormValues) => {
-    // TODO: enviar para API (incluir avatarFile se houver)
-    console.log(data, avatarFile)
+    const payload = {
+      ...data,
+      phone: data.phone?.trim() || null,
+    }
+    // TODO: enviar payload para API (incluir avatarFile se houver)
+    console.log(payload, avatarFile)
   }
 
   const skills = watch('skills') ?? []
