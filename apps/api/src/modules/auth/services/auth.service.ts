@@ -31,11 +31,10 @@ export class AuthService {
       return null;
     }
 
-    // TODO: Add password field to User model and validate here
-    // const isPasswordValid = await argon2.verify(user.password, password);
-    // if (!isPasswordValid) {
-    //   return null;
-    // }
+    const isPasswordValid = await argon2.verify(user.password, password);
+    if (!isPasswordValid) {
+      return null;
+    }
 
     return user;
   }
@@ -78,15 +77,14 @@ export class AuthService {
       throw new ConflictException('Email já está em uso');
     }
 
-    // TODO: Add password field to User model
-    // const hashedPassword = await argon2.hash(registerDto.password);
+    const hashedPassword = await argon2.hash(registerDto.password);
 
     const user = await this.prisma.user.create({
       data: {
         email: registerDto.email,
         name: registerDto.name,
         phone: registerDto.phone,
-        // password: hashedPassword,
+        password: hashedPassword,
       },
     });
 
@@ -134,7 +132,7 @@ export class AuthService {
     }
   }
 
-  async getProfile(userId: string) {
+  async getProfile(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: {

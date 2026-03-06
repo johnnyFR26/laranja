@@ -20,12 +20,23 @@ export type AddressModel = runtime.Types.Result.DefaultSelection<Prisma.$Address
 
 export type AggregateAddress = {
   _count: AddressCountAggregateOutputType | null
+  _avg: AddressAvgAggregateOutputType | null
+  _sum: AddressSumAggregateOutputType | null
   _min: AddressMinAggregateOutputType | null
   _max: AddressMaxAggregateOutputType | null
 }
 
+export type AddressAvgAggregateOutputType = {
+  id: number | null
+}
+
+export type AddressSumAggregateOutputType = {
+  id: number | null
+}
+
 export type AddressMinAggregateOutputType = {
-  id: string | null
+  id: number | null
+  slug: string | null
   street: string | null
   number: string | null
   complement: string | null
@@ -36,10 +47,12 @@ export type AddressMinAggregateOutputType = {
   country: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type AddressMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
+  slug: string | null
   street: string | null
   number: string | null
   complement: string | null
@@ -50,10 +63,12 @@ export type AddressMaxAggregateOutputType = {
   country: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type AddressCountAggregateOutputType = {
   id: number
+  slug: number
   street: number
   number: number
   complement: number
@@ -62,14 +77,25 @@ export type AddressCountAggregateOutputType = {
   state: number
   zipCode: number
   country: number
+  controls: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
+export type AddressAvgAggregateInputType = {
+  id?: true
+}
+
+export type AddressSumAggregateInputType = {
+  id?: true
+}
+
 export type AddressMinAggregateInputType = {
   id?: true
+  slug?: true
   street?: true
   number?: true
   complement?: true
@@ -80,10 +106,12 @@ export type AddressMinAggregateInputType = {
   country?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type AddressMaxAggregateInputType = {
   id?: true
+  slug?: true
   street?: true
   number?: true
   complement?: true
@@ -94,10 +122,12 @@ export type AddressMaxAggregateInputType = {
   country?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type AddressCountAggregateInputType = {
   id?: true
+  slug?: true
   street?: true
   number?: true
   complement?: true
@@ -106,8 +136,10 @@ export type AddressCountAggregateInputType = {
   state?: true
   zipCode?: true
   country?: true
+  controls?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -149,6 +181,18 @@ export type AddressAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: AddressAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: AddressSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: AddressMinAggregateInputType
@@ -179,12 +223,15 @@ export type AddressGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: AddressCountAggregateInputType | true
+  _avg?: AddressAvgAggregateInputType
+  _sum?: AddressSumAggregateInputType
   _min?: AddressMinAggregateInputType
   _max?: AddressMaxAggregateInputType
 }
 
 export type AddressGroupByOutputType = {
-  id: string
+  id: number
+  slug: string
   street: string
   number: string | null
   complement: string | null
@@ -193,9 +240,13 @@ export type AddressGroupByOutputType = {
   state: string
   zipCode: string
   country: string
+  controls: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: AddressCountAggregateOutputType | null
+  _avg: AddressAvgAggregateOutputType | null
+  _sum: AddressSumAggregateOutputType | null
   _min: AddressMinAggregateOutputType | null
   _max: AddressMaxAggregateOutputType | null
 }
@@ -219,7 +270,8 @@ export type AddressWhereInput = {
   AND?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[]
   OR?: Prisma.AddressWhereInput[]
   NOT?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[]
-  id?: Prisma.UuidFilter<"Address"> | string
+  id?: Prisma.IntFilter<"Address"> | number
+  slug?: Prisma.UuidFilter<"Address"> | string
   street?: Prisma.StringFilter<"Address"> | string
   number?: Prisma.StringNullableFilter<"Address"> | string | null
   complement?: Prisma.StringNullableFilter<"Address"> | string | null
@@ -228,14 +280,17 @@ export type AddressWhereInput = {
   state?: Prisma.StringFilter<"Address"> | string
   zipCode?: Prisma.StringFilter<"Address"> | string
   country?: Prisma.StringFilter<"Address"> | string
+  controls?: Prisma.JsonNullableFilter<"Address">
   createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Address"> | Date | string | null
   users?: Prisma.UserListRelationFilter
   establishments?: Prisma.EstablishmentListRelationFilter
 }
 
 export type AddressOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrderInput | Prisma.SortOrder
   complement?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -244,14 +299,17 @@ export type AddressOrderByWithRelationInput = {
   state?: Prisma.SortOrder
   zipCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   users?: Prisma.UserOrderByRelationAggregateInput
   establishments?: Prisma.EstablishmentOrderByRelationAggregateInput
 }
 
 export type AddressWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
+  slug?: string
   AND?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[]
   OR?: Prisma.AddressWhereInput[]
   NOT?: Prisma.AddressWhereInput | Prisma.AddressWhereInput[]
@@ -263,14 +321,17 @@ export type AddressWhereUniqueInput = Prisma.AtLeast<{
   state?: Prisma.StringFilter<"Address"> | string
   zipCode?: Prisma.StringFilter<"Address"> | string
   country?: Prisma.StringFilter<"Address"> | string
+  controls?: Prisma.JsonNullableFilter<"Address">
   createdAt?: Prisma.DateTimeFilter<"Address"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Address"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Address"> | Date | string | null
   users?: Prisma.UserListRelationFilter
   establishments?: Prisma.EstablishmentListRelationFilter
-}, "id">
+}, "id" | "slug">
 
 export type AddressOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrderInput | Prisma.SortOrder
   complement?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -279,18 +340,23 @@ export type AddressOrderByWithAggregationInput = {
   state?: Prisma.SortOrder
   zipCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AddressCountOrderByAggregateInput
+  _avg?: Prisma.AddressAvgOrderByAggregateInput
   _max?: Prisma.AddressMaxOrderByAggregateInput
   _min?: Prisma.AddressMinOrderByAggregateInput
+  _sum?: Prisma.AddressSumOrderByAggregateInput
 }
 
 export type AddressScalarWhereWithAggregatesInput = {
   AND?: Prisma.AddressScalarWhereWithAggregatesInput | Prisma.AddressScalarWhereWithAggregatesInput[]
   OR?: Prisma.AddressScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AddressScalarWhereWithAggregatesInput | Prisma.AddressScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"Address"> | string
+  id?: Prisma.IntWithAggregatesFilter<"Address"> | number
+  slug?: Prisma.UuidWithAggregatesFilter<"Address"> | string
   street?: Prisma.StringWithAggregatesFilter<"Address"> | string
   number?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
   complement?: Prisma.StringNullableWithAggregatesFilter<"Address"> | string | null
@@ -299,12 +365,14 @@ export type AddressScalarWhereWithAggregatesInput = {
   state?: Prisma.StringWithAggregatesFilter<"Address"> | string
   zipCode?: Prisma.StringWithAggregatesFilter<"Address"> | string
   country?: Prisma.StringWithAggregatesFilter<"Address"> | string
+  controls?: Prisma.JsonNullableWithAggregatesFilter<"Address">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Address"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Address"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Address"> | Date | string | null
 }
 
 export type AddressCreateInput = {
-  id?: string
+  slug?: string
   street: string
   number?: string | null
   complement?: string | null
@@ -313,14 +381,17 @@ export type AddressCreateInput = {
   state: string
   zipCode: string
   country?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.UserCreateNestedManyWithoutAddressInput
   establishments?: Prisma.EstablishmentCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateInput = {
-  id?: string
+  id?: number
+  slug?: string
   street: string
   number?: string | null
   complement?: string | null
@@ -329,14 +400,16 @@ export type AddressUncheckedCreateInput = {
   state: string
   zipCode: string
   country?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.UserUncheckedCreateNestedManyWithoutAddressInput
   establishments?: Prisma.EstablishmentUncheckedCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -345,14 +418,17 @@ export type AddressUpdateInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.UserUpdateManyWithoutAddressNestedInput
   establishments?: Prisma.EstablishmentUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -361,14 +437,17 @@ export type AddressUncheckedUpdateInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.UserUncheckedUpdateManyWithoutAddressNestedInput
   establishments?: Prisma.EstablishmentUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressCreateManyInput = {
-  id?: string
+  id?: number
+  slug?: string
   street: string
   number?: string | null
   complement?: string | null
@@ -377,12 +456,14 @@ export type AddressCreateManyInput = {
   state: string
   zipCode: string
   country?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type AddressUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -391,12 +472,15 @@ export type AddressUpdateManyMutationInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type AddressUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -405,12 +489,15 @@ export type AddressUncheckedUpdateManyInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type AddressCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
   complement?: Prisma.SortOrder
@@ -419,12 +506,19 @@ export type AddressCountOrderByAggregateInput = {
   state?: Prisma.SortOrder
   zipCode?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  controls?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+}
+
+export type AddressAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
 }
 
 export type AddressMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
   complement?: Prisma.SortOrder
@@ -435,10 +529,12 @@ export type AddressMaxOrderByAggregateInput = {
   country?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type AddressMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   street?: Prisma.SortOrder
   number?: Prisma.SortOrder
   complement?: Prisma.SortOrder
@@ -449,6 +545,11 @@ export type AddressMinOrderByAggregateInput = {
   country?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+}
+
+export type AddressSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
 }
 
 export type AddressNullableScalarRelationFilter = {
@@ -466,6 +567,18 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type AddressCreateNestedOneWithoutUsersInput = {
@@ -501,7 +614,7 @@ export type AddressUpdateOneWithoutEstablishmentsNestedInput = {
 }
 
 export type AddressCreateWithoutUsersInput = {
-  id?: string
+  slug?: string
   street: string
   number?: string | null
   complement?: string | null
@@ -510,13 +623,16 @@ export type AddressCreateWithoutUsersInput = {
   state: string
   zipCode: string
   country?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   establishments?: Prisma.EstablishmentCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateWithoutUsersInput = {
-  id?: string
+  id?: number
+  slug?: string
   street: string
   number?: string | null
   complement?: string | null
@@ -525,8 +641,10 @@ export type AddressUncheckedCreateWithoutUsersInput = {
   state: string
   zipCode: string
   country?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   establishments?: Prisma.EstablishmentUncheckedCreateNestedManyWithoutAddressInput
 }
 
@@ -547,7 +665,7 @@ export type AddressUpdateToOneWithWhereWithoutUsersInput = {
 }
 
 export type AddressUpdateWithoutUsersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -556,13 +674,16 @@ export type AddressUpdateWithoutUsersInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   establishments?: Prisma.EstablishmentUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateWithoutUsersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -571,13 +692,15 @@ export type AddressUncheckedUpdateWithoutUsersInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   establishments?: Prisma.EstablishmentUncheckedUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressCreateWithoutEstablishmentsInput = {
-  id?: string
+  slug?: string
   street: string
   number?: string | null
   complement?: string | null
@@ -586,13 +709,16 @@ export type AddressCreateWithoutEstablishmentsInput = {
   state: string
   zipCode: string
   country?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.UserCreateNestedManyWithoutAddressInput
 }
 
 export type AddressUncheckedCreateWithoutEstablishmentsInput = {
-  id?: string
+  id?: number
+  slug?: string
   street: string
   number?: string | null
   complement?: string | null
@@ -601,8 +727,10 @@ export type AddressUncheckedCreateWithoutEstablishmentsInput = {
   state: string
   zipCode: string
   country?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   users?: Prisma.UserUncheckedCreateNestedManyWithoutAddressInput
 }
 
@@ -623,7 +751,7 @@ export type AddressUpdateToOneWithWhereWithoutEstablishmentsInput = {
 }
 
 export type AddressUpdateWithoutEstablishmentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -632,13 +760,16 @@ export type AddressUpdateWithoutEstablishmentsInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.UserUpdateManyWithoutAddressNestedInput
 }
 
 export type AddressUncheckedUpdateWithoutEstablishmentsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   street?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -647,8 +778,10 @@ export type AddressUncheckedUpdateWithoutEstablishmentsInput = {
   state?: Prisma.StringFieldUpdateOperationsInput | string
   zipCode?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   users?: Prisma.UserUncheckedUpdateManyWithoutAddressNestedInput
 }
 
@@ -694,6 +827,7 @@ export type AddressCountOutputTypeCountEstablishmentsArgs<ExtArgs extends runtim
 
 export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   street?: boolean
   number?: boolean
   complement?: boolean
@@ -702,8 +836,10 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   state?: boolean
   zipCode?: boolean
   country?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   users?: boolean | Prisma.Address$usersArgs<ExtArgs>
   establishments?: boolean | Prisma.Address$establishmentsArgs<ExtArgs>
   _count?: boolean | Prisma.AddressCountOutputTypeDefaultArgs<ExtArgs>
@@ -711,6 +847,7 @@ export type AddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   street?: boolean
   number?: boolean
   complement?: boolean
@@ -719,12 +856,15 @@ export type AddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   state?: boolean
   zipCode?: boolean
   country?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   street?: boolean
   number?: boolean
   complement?: boolean
@@ -733,12 +873,15 @@ export type AddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   state?: boolean
   zipCode?: boolean
   country?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["address"]>
 
 export type AddressSelectScalar = {
   id?: boolean
+  slug?: boolean
   street?: boolean
   number?: boolean
   complement?: boolean
@@ -747,11 +890,13 @@ export type AddressSelectScalar = {
   state?: boolean
   zipCode?: boolean
   country?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "street" | "number" | "complement" | "neighborhood" | "city" | "state" | "zipCode" | "country" | "createdAt" | "updatedAt", ExtArgs["result"]["address"]>
+export type AddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "street" | "number" | "complement" | "neighborhood" | "city" | "state" | "zipCode" | "country" | "controls" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["address"]>
 export type AddressInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Address$usersArgs<ExtArgs>
   establishments?: boolean | Prisma.Address$establishmentsArgs<ExtArgs>
@@ -767,7 +912,8 @@ export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     establishments: Prisma.$EstablishmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
+    slug: string
     street: string
     number: string | null
     complement: string | null
@@ -776,8 +922,10 @@ export type $AddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     state: string
     zipCode: string
     country: string
+    controls: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["address"]>
   composites: {}
 }
@@ -1203,7 +1351,8 @@ export interface Prisma__AddressClient<T, Null = never, ExtArgs extends runtime.
  * Fields of the Address model
  */
 export interface AddressFieldRefs {
-  readonly id: Prisma.FieldRef<"Address", 'String'>
+  readonly id: Prisma.FieldRef<"Address", 'Int'>
+  readonly slug: Prisma.FieldRef<"Address", 'String'>
   readonly street: Prisma.FieldRef<"Address", 'String'>
   readonly number: Prisma.FieldRef<"Address", 'String'>
   readonly complement: Prisma.FieldRef<"Address", 'String'>
@@ -1212,8 +1361,10 @@ export interface AddressFieldRefs {
   readonly state: Prisma.FieldRef<"Address", 'String'>
   readonly zipCode: Prisma.FieldRef<"Address", 'String'>
   readonly country: Prisma.FieldRef<"Address", 'String'>
+  readonly controls: Prisma.FieldRef<"Address", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Address", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Address", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Address", 'DateTime'>
 }
     
 

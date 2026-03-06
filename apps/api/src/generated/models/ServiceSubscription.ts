@@ -27,58 +27,78 @@ export type AggregateServiceSubscription = {
 }
 
 export type ServiceSubscriptionAvgAggregateOutputType = {
+  id: number | null
+  userId: number | null
+  serviceOfferId: number | null
   proposedBudget: runtime.Decimal | null
 }
 
 export type ServiceSubscriptionSumAggregateOutputType = {
+  id: number | null
+  userId: number | null
+  serviceOfferId: number | null
   proposedBudget: runtime.Decimal | null
 }
 
 export type ServiceSubscriptionMinAggregateOutputType = {
-  id: string | null
-  userId: string | null
-  serviceOfferId: string | null
+  id: number | null
+  slug: string | null
+  userId: number | null
+  serviceOfferId: number | null
   status: $Enums.SubscriptionStatus | null
   coverLetter: string | null
   proposedBudget: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ServiceSubscriptionMaxAggregateOutputType = {
-  id: string | null
-  userId: string | null
-  serviceOfferId: string | null
+  id: number | null
+  slug: string | null
+  userId: number | null
+  serviceOfferId: number | null
   status: $Enums.SubscriptionStatus | null
   coverLetter: string | null
   proposedBudget: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ServiceSubscriptionCountAggregateOutputType = {
   id: number
+  slug: number
   userId: number
   serviceOfferId: number
   status: number
   coverLetter: number
   proposedBudget: number
+  controls: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
 export type ServiceSubscriptionAvgAggregateInputType = {
+  id?: true
+  userId?: true
+  serviceOfferId?: true
   proposedBudget?: true
 }
 
 export type ServiceSubscriptionSumAggregateInputType = {
+  id?: true
+  userId?: true
+  serviceOfferId?: true
   proposedBudget?: true
 }
 
 export type ServiceSubscriptionMinAggregateInputType = {
   id?: true
+  slug?: true
   userId?: true
   serviceOfferId?: true
   status?: true
@@ -86,10 +106,12 @@ export type ServiceSubscriptionMinAggregateInputType = {
   proposedBudget?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type ServiceSubscriptionMaxAggregateInputType = {
   id?: true
+  slug?: true
   userId?: true
   serviceOfferId?: true
   status?: true
@@ -97,17 +119,21 @@ export type ServiceSubscriptionMaxAggregateInputType = {
   proposedBudget?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type ServiceSubscriptionCountAggregateInputType = {
   id?: true
+  slug?: true
   userId?: true
   serviceOfferId?: true
   status?: true
   coverLetter?: true
   proposedBudget?: true
+  controls?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -198,14 +224,17 @@ export type ServiceSubscriptionGroupByArgs<ExtArgs extends runtime.Types.Extensi
 }
 
 export type ServiceSubscriptionGroupByOutputType = {
-  id: string
-  userId: string
-  serviceOfferId: string
+  id: number
+  slug: string
+  userId: number
+  serviceOfferId: number
   status: $Enums.SubscriptionStatus
   coverLetter: string | null
   proposedBudget: runtime.Decimal | null
+  controls: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: ServiceSubscriptionCountAggregateOutputType | null
   _avg: ServiceSubscriptionAvgAggregateOutputType | null
   _sum: ServiceSubscriptionSumAggregateOutputType | null
@@ -232,57 +261,69 @@ export type ServiceSubscriptionWhereInput = {
   AND?: Prisma.ServiceSubscriptionWhereInput | Prisma.ServiceSubscriptionWhereInput[]
   OR?: Prisma.ServiceSubscriptionWhereInput[]
   NOT?: Prisma.ServiceSubscriptionWhereInput | Prisma.ServiceSubscriptionWhereInput[]
-  id?: Prisma.UuidFilter<"ServiceSubscription"> | string
-  userId?: Prisma.UuidFilter<"ServiceSubscription"> | string
-  serviceOfferId?: Prisma.UuidFilter<"ServiceSubscription"> | string
+  id?: Prisma.IntFilter<"ServiceSubscription"> | number
+  slug?: Prisma.UuidFilter<"ServiceSubscription"> | string
+  userId?: Prisma.IntFilter<"ServiceSubscription"> | number
+  serviceOfferId?: Prisma.IntFilter<"ServiceSubscription"> | number
   status?: Prisma.EnumSubscriptionStatusFilter<"ServiceSubscription"> | $Enums.SubscriptionStatus
   coverLetter?: Prisma.StringNullableFilter<"ServiceSubscription"> | string | null
   proposedBudget?: Prisma.DecimalNullableFilter<"ServiceSubscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.JsonNullableFilter<"ServiceSubscription">
   createdAt?: Prisma.DateTimeFilter<"ServiceSubscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ServiceSubscription"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceSubscription"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   serviceOffer?: Prisma.XOR<Prisma.ServiceOfferScalarRelationFilter, Prisma.ServiceOfferWhereInput>
 }
 
 export type ServiceSubscriptionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   coverLetter?: Prisma.SortOrderInput | Prisma.SortOrder
   proposedBudget?: Prisma.SortOrderInput | Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   serviceOffer?: Prisma.ServiceOfferOrderByWithRelationInput
 }
 
 export type ServiceSubscriptionWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
+  slug?: string
   userId_serviceOfferId?: Prisma.ServiceSubscriptionUserIdServiceOfferIdCompoundUniqueInput
   AND?: Prisma.ServiceSubscriptionWhereInput | Prisma.ServiceSubscriptionWhereInput[]
   OR?: Prisma.ServiceSubscriptionWhereInput[]
   NOT?: Prisma.ServiceSubscriptionWhereInput | Prisma.ServiceSubscriptionWhereInput[]
-  userId?: Prisma.UuidFilter<"ServiceSubscription"> | string
-  serviceOfferId?: Prisma.UuidFilter<"ServiceSubscription"> | string
+  userId?: Prisma.IntFilter<"ServiceSubscription"> | number
+  serviceOfferId?: Prisma.IntFilter<"ServiceSubscription"> | number
   status?: Prisma.EnumSubscriptionStatusFilter<"ServiceSubscription"> | $Enums.SubscriptionStatus
   coverLetter?: Prisma.StringNullableFilter<"ServiceSubscription"> | string | null
   proposedBudget?: Prisma.DecimalNullableFilter<"ServiceSubscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.JsonNullableFilter<"ServiceSubscription">
   createdAt?: Prisma.DateTimeFilter<"ServiceSubscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ServiceSubscription"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceSubscription"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   serviceOffer?: Prisma.XOR<Prisma.ServiceOfferScalarRelationFilter, Prisma.ServiceOfferWhereInput>
-}, "id" | "userId_serviceOfferId">
+}, "id" | "slug" | "userId_serviceOfferId">
 
 export type ServiceSubscriptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   coverLetter?: Prisma.SortOrderInput | Prisma.SortOrder
   proposedBudget?: Prisma.SortOrderInput | Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ServiceSubscriptionCountOrderByAggregateInput
   _avg?: Prisma.ServiceSubscriptionAvgOrderByAggregateInput
   _max?: Prisma.ServiceSubscriptionMaxOrderByAggregateInput
@@ -294,89 +335,110 @@ export type ServiceSubscriptionScalarWhereWithAggregatesInput = {
   AND?: Prisma.ServiceSubscriptionScalarWhereWithAggregatesInput | Prisma.ServiceSubscriptionScalarWhereWithAggregatesInput[]
   OR?: Prisma.ServiceSubscriptionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ServiceSubscriptionScalarWhereWithAggregatesInput | Prisma.ServiceSubscriptionScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"ServiceSubscription"> | string
-  userId?: Prisma.UuidWithAggregatesFilter<"ServiceSubscription"> | string
-  serviceOfferId?: Prisma.UuidWithAggregatesFilter<"ServiceSubscription"> | string
+  id?: Prisma.IntWithAggregatesFilter<"ServiceSubscription"> | number
+  slug?: Prisma.UuidWithAggregatesFilter<"ServiceSubscription"> | string
+  userId?: Prisma.IntWithAggregatesFilter<"ServiceSubscription"> | number
+  serviceOfferId?: Prisma.IntWithAggregatesFilter<"ServiceSubscription"> | number
   status?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"ServiceSubscription"> | $Enums.SubscriptionStatus
   coverLetter?: Prisma.StringNullableWithAggregatesFilter<"ServiceSubscription"> | string | null
   proposedBudget?: Prisma.DecimalNullableWithAggregatesFilter<"ServiceSubscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.JsonNullableWithAggregatesFilter<"ServiceSubscription">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ServiceSubscription"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ServiceSubscription"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ServiceSubscription"> | Date | string | null
 }
 
 export type ServiceSubscriptionCreateInput = {
-  id?: string
+  slug?: string
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
   serviceOffer: Prisma.ServiceOfferCreateNestedOneWithoutSubscriptionsInput
 }
 
 export type ServiceSubscriptionUncheckedCreateInput = {
-  id?: string
-  userId: string
-  serviceOfferId: string
+  id?: number
+  slug?: string
+  userId: number
+  serviceOfferId: number
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceSubscriptionUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
   serviceOffer?: Prisma.ServiceOfferUpdateOneRequiredWithoutSubscriptionsNestedInput
 }
 
 export type ServiceSubscriptionUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceSubscriptionCreateManyInput = {
-  id?: string
-  userId: string
-  serviceOfferId: string
+  id?: number
+  slug?: string
+  userId: number
+  serviceOfferId: number
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceSubscriptionUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceSubscriptionUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceSubscriptionListRelationFilter = {
@@ -390,27 +452,34 @@ export type ServiceSubscriptionOrderByRelationAggregateInput = {
 }
 
 export type ServiceSubscriptionUserIdServiceOfferIdCompoundUniqueInput = {
-  userId: string
-  serviceOfferId: string
+  userId: number
+  serviceOfferId: number
 }
 
 export type ServiceSubscriptionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   coverLetter?: Prisma.SortOrder
   proposedBudget?: Prisma.SortOrder
+  controls?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ServiceSubscriptionAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  serviceOfferId?: Prisma.SortOrder
   proposedBudget?: Prisma.SortOrder
 }
 
 export type ServiceSubscriptionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -418,10 +487,12 @@ export type ServiceSubscriptionMaxOrderByAggregateInput = {
   proposedBudget?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ServiceSubscriptionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -429,9 +500,13 @@ export type ServiceSubscriptionMinOrderByAggregateInput = {
   proposedBudget?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ServiceSubscriptionSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  serviceOfferId?: Prisma.SortOrder
   proposedBudget?: Prisma.SortOrder
 }
 
@@ -524,23 +599,28 @@ export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
 }
 
 export type ServiceSubscriptionCreateWithoutUserInput = {
-  id?: string
+  slug?: string
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   serviceOffer: Prisma.ServiceOfferCreateNestedOneWithoutSubscriptionsInput
 }
 
 export type ServiceSubscriptionUncheckedCreateWithoutUserInput = {
-  id?: string
-  serviceOfferId: string
+  id?: number
+  slug?: string
+  serviceOfferId: number
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceSubscriptionCreateOrConnectWithoutUserInput = {
@@ -573,34 +653,42 @@ export type ServiceSubscriptionScalarWhereInput = {
   AND?: Prisma.ServiceSubscriptionScalarWhereInput | Prisma.ServiceSubscriptionScalarWhereInput[]
   OR?: Prisma.ServiceSubscriptionScalarWhereInput[]
   NOT?: Prisma.ServiceSubscriptionScalarWhereInput | Prisma.ServiceSubscriptionScalarWhereInput[]
-  id?: Prisma.UuidFilter<"ServiceSubscription"> | string
-  userId?: Prisma.UuidFilter<"ServiceSubscription"> | string
-  serviceOfferId?: Prisma.UuidFilter<"ServiceSubscription"> | string
+  id?: Prisma.IntFilter<"ServiceSubscription"> | number
+  slug?: Prisma.UuidFilter<"ServiceSubscription"> | string
+  userId?: Prisma.IntFilter<"ServiceSubscription"> | number
+  serviceOfferId?: Prisma.IntFilter<"ServiceSubscription"> | number
   status?: Prisma.EnumSubscriptionStatusFilter<"ServiceSubscription"> | $Enums.SubscriptionStatus
   coverLetter?: Prisma.StringNullableFilter<"ServiceSubscription"> | string | null
   proposedBudget?: Prisma.DecimalNullableFilter<"ServiceSubscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.JsonNullableFilter<"ServiceSubscription">
   createdAt?: Prisma.DateTimeFilter<"ServiceSubscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ServiceSubscription"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceSubscription"> | Date | string | null
 }
 
 export type ServiceSubscriptionCreateWithoutServiceOfferInput = {
-  id?: string
+  slug?: string
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutSubscriptionsInput
 }
 
 export type ServiceSubscriptionUncheckedCreateWithoutServiceOfferInput = {
-  id?: string
-  userId: string
+  id?: number
+  slug?: string
+  userId: number
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceSubscriptionCreateOrConnectWithoutServiceOfferInput = {
@@ -630,138 +718,172 @@ export type ServiceSubscriptionUpdateManyWithWhereWithoutServiceOfferInput = {
 }
 
 export type ServiceSubscriptionCreateManyUserInput = {
-  id?: string
-  serviceOfferId: string
+  id?: number
+  slug?: string
+  serviceOfferId: number
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceSubscriptionUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   serviceOffer?: Prisma.ServiceOfferUpdateOneRequiredWithoutSubscriptionsNestedInput
 }
 
 export type ServiceSubscriptionUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceSubscriptionUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceSubscriptionCreateManyServiceOfferInput = {
-  id?: string
-  userId: string
+  id?: number
+  slug?: string
+  userId: number
   status?: $Enums.SubscriptionStatus
   coverLetter?: string | null
   proposedBudget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceSubscriptionUpdateWithoutServiceOfferInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionsNestedInput
 }
 
 export type ServiceSubscriptionUncheckedUpdateWithoutServiceOfferInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceSubscriptionUncheckedUpdateManyWithoutServiceOfferInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   coverLetter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   proposedBudget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
 
 export type ServiceSubscriptionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   userId?: boolean
   serviceOfferId?: boolean
   status?: boolean
   coverLetter?: boolean
   proposedBudget?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceSubscription"]>
 
 export type ServiceSubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   userId?: boolean
   serviceOfferId?: boolean
   status?: boolean
   coverLetter?: boolean
   proposedBudget?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceSubscription"]>
 
 export type ServiceSubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   userId?: boolean
   serviceOfferId?: boolean
   status?: boolean
   coverLetter?: boolean
   proposedBudget?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceSubscription"]>
 
 export type ServiceSubscriptionSelectScalar = {
   id?: boolean
+  slug?: boolean
   userId?: boolean
   serviceOfferId?: boolean
   status?: boolean
   coverLetter?: boolean
   proposedBudget?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type ServiceSubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "serviceOfferId" | "status" | "coverLetter" | "proposedBudget" | "createdAt" | "updatedAt", ExtArgs["result"]["serviceSubscription"]>
+export type ServiceSubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "userId" | "serviceOfferId" | "status" | "coverLetter" | "proposedBudget" | "controls" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["serviceSubscription"]>
 export type ServiceSubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
@@ -782,14 +904,17 @@ export type $ServiceSubscriptionPayload<ExtArgs extends runtime.Types.Extensions
     serviceOffer: Prisma.$ServiceOfferPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
-    userId: string
-    serviceOfferId: string
+    id: number
+    slug: string
+    userId: number
+    serviceOfferId: number
     status: $Enums.SubscriptionStatus
     coverLetter: string | null
     proposedBudget: runtime.Decimal | null
+    controls: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["serviceSubscription"]>
   composites: {}
 }
@@ -1215,14 +1340,17 @@ export interface Prisma__ServiceSubscriptionClient<T, Null = never, ExtArgs exte
  * Fields of the ServiceSubscription model
  */
 export interface ServiceSubscriptionFieldRefs {
-  readonly id: Prisma.FieldRef<"ServiceSubscription", 'String'>
-  readonly userId: Prisma.FieldRef<"ServiceSubscription", 'String'>
-  readonly serviceOfferId: Prisma.FieldRef<"ServiceSubscription", 'String'>
+  readonly id: Prisma.FieldRef<"ServiceSubscription", 'Int'>
+  readonly slug: Prisma.FieldRef<"ServiceSubscription", 'String'>
+  readonly userId: Prisma.FieldRef<"ServiceSubscription", 'Int'>
+  readonly serviceOfferId: Prisma.FieldRef<"ServiceSubscription", 'Int'>
   readonly status: Prisma.FieldRef<"ServiceSubscription", 'SubscriptionStatus'>
   readonly coverLetter: Prisma.FieldRef<"ServiceSubscription", 'String'>
   readonly proposedBudget: Prisma.FieldRef<"ServiceSubscription", 'Decimal'>
+  readonly controls: Prisma.FieldRef<"ServiceSubscription", 'Json'>
   readonly createdAt: Prisma.FieldRef<"ServiceSubscription", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ServiceSubscription", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"ServiceSubscription", 'DateTime'>
 }
     
 

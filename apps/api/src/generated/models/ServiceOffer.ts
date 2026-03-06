@@ -27,17 +27,24 @@ export type AggregateServiceOffer = {
 }
 
 export type ServiceOfferAvgAggregateOutputType = {
+  id: number | null
+  establishmentId: number | null
+  categoryId: number | null
   budget: runtime.Decimal | null
 }
 
 export type ServiceOfferSumAggregateOutputType = {
+  id: number | null
+  establishmentId: number | null
+  categoryId: number | null
   budget: runtime.Decimal | null
 }
 
 export type ServiceOfferMinAggregateOutputType = {
-  id: string | null
-  establishmentId: string | null
-  categoryId: string | null
+  id: number | null
+  slug: string | null
+  establishmentId: number | null
+  categoryId: number | null
   title: string | null
   description: string | null
   budget: runtime.Decimal | null
@@ -46,12 +53,14 @@ export type ServiceOfferMinAggregateOutputType = {
   deadline: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ServiceOfferMaxAggregateOutputType = {
-  id: string | null
-  establishmentId: string | null
-  categoryId: string | null
+  id: number | null
+  slug: string | null
+  establishmentId: number | null
+  categoryId: number | null
   title: string | null
   description: string | null
   budget: runtime.Decimal | null
@@ -60,10 +69,12 @@ export type ServiceOfferMaxAggregateOutputType = {
   deadline: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ServiceOfferCountAggregateOutputType = {
   id: number
+  slug: number
   establishmentId: number
   categoryId: number
   title: number
@@ -72,22 +83,31 @@ export type ServiceOfferCountAggregateOutputType = {
   budgetType: number
   status: number
   deadline: number
+  controls: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
 export type ServiceOfferAvgAggregateInputType = {
+  id?: true
+  establishmentId?: true
+  categoryId?: true
   budget?: true
 }
 
 export type ServiceOfferSumAggregateInputType = {
+  id?: true
+  establishmentId?: true
+  categoryId?: true
   budget?: true
 }
 
 export type ServiceOfferMinAggregateInputType = {
   id?: true
+  slug?: true
   establishmentId?: true
   categoryId?: true
   title?: true
@@ -98,10 +118,12 @@ export type ServiceOfferMinAggregateInputType = {
   deadline?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type ServiceOfferMaxAggregateInputType = {
   id?: true
+  slug?: true
   establishmentId?: true
   categoryId?: true
   title?: true
@@ -112,10 +134,12 @@ export type ServiceOfferMaxAggregateInputType = {
   deadline?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type ServiceOfferCountAggregateInputType = {
   id?: true
+  slug?: true
   establishmentId?: true
   categoryId?: true
   title?: true
@@ -124,8 +148,10 @@ export type ServiceOfferCountAggregateInputType = {
   budgetType?: true
   status?: true
   deadline?: true
+  controls?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -216,17 +242,20 @@ export type ServiceOfferGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 export type ServiceOfferGroupByOutputType = {
-  id: string
-  establishmentId: string
-  categoryId: string | null
+  id: number
+  slug: string
+  establishmentId: number
+  categoryId: number | null
   title: string
   description: string
   budget: runtime.Decimal | null
   budgetType: $Enums.BudgetType
   status: $Enums.ServiceOfferStatus
   deadline: Date | null
+  controls: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: ServiceOfferCountAggregateOutputType | null
   _avg: ServiceOfferAvgAggregateOutputType | null
   _sum: ServiceOfferSumAggregateOutputType | null
@@ -253,17 +282,20 @@ export type ServiceOfferWhereInput = {
   AND?: Prisma.ServiceOfferWhereInput | Prisma.ServiceOfferWhereInput[]
   OR?: Prisma.ServiceOfferWhereInput[]
   NOT?: Prisma.ServiceOfferWhereInput | Prisma.ServiceOfferWhereInput[]
-  id?: Prisma.UuidFilter<"ServiceOffer"> | string
-  establishmentId?: Prisma.UuidFilter<"ServiceOffer"> | string
-  categoryId?: Prisma.UuidNullableFilter<"ServiceOffer"> | string | null
+  id?: Prisma.IntFilter<"ServiceOffer"> | number
+  slug?: Prisma.UuidFilter<"ServiceOffer"> | string
+  establishmentId?: Prisma.IntFilter<"ServiceOffer"> | number
+  categoryId?: Prisma.IntNullableFilter<"ServiceOffer"> | number | null
   title?: Prisma.StringFilter<"ServiceOffer"> | string
   description?: Prisma.StringFilter<"ServiceOffer"> | string
   budget?: Prisma.DecimalNullableFilter<"ServiceOffer"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFilter<"ServiceOffer"> | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFilter<"ServiceOffer"> | $Enums.ServiceOfferStatus
   deadline?: Prisma.DateTimeNullableFilter<"ServiceOffer"> | Date | string | null
+  controls?: Prisma.JsonNullableFilter<"ServiceOffer">
   createdAt?: Prisma.DateTimeFilter<"ServiceOffer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ServiceOffer"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceOffer"> | Date | string | null
   establishment?: Prisma.XOR<Prisma.EstablishmentScalarRelationFilter, Prisma.EstablishmentWhereInput>
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   requiredRoles?: Prisma.ServiceOfferRoleListRelationFilter
@@ -273,6 +305,7 @@ export type ServiceOfferWhereInput = {
 
 export type ServiceOfferOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   establishmentId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -281,8 +314,10 @@ export type ServiceOfferOrderByWithRelationInput = {
   budgetType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   deadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   establishment?: Prisma.EstablishmentOrderByWithRelationInput
   category?: Prisma.CategoryOrderByWithRelationInput
   requiredRoles?: Prisma.ServiceOfferRoleOrderByRelationAggregateInput
@@ -291,29 +326,33 @@ export type ServiceOfferOrderByWithRelationInput = {
 }
 
 export type ServiceOfferWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
+  slug?: string
   AND?: Prisma.ServiceOfferWhereInput | Prisma.ServiceOfferWhereInput[]
   OR?: Prisma.ServiceOfferWhereInput[]
   NOT?: Prisma.ServiceOfferWhereInput | Prisma.ServiceOfferWhereInput[]
-  establishmentId?: Prisma.UuidFilter<"ServiceOffer"> | string
-  categoryId?: Prisma.UuidNullableFilter<"ServiceOffer"> | string | null
+  establishmentId?: Prisma.IntFilter<"ServiceOffer"> | number
+  categoryId?: Prisma.IntNullableFilter<"ServiceOffer"> | number | null
   title?: Prisma.StringFilter<"ServiceOffer"> | string
   description?: Prisma.StringFilter<"ServiceOffer"> | string
   budget?: Prisma.DecimalNullableFilter<"ServiceOffer"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFilter<"ServiceOffer"> | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFilter<"ServiceOffer"> | $Enums.ServiceOfferStatus
   deadline?: Prisma.DateTimeNullableFilter<"ServiceOffer"> | Date | string | null
+  controls?: Prisma.JsonNullableFilter<"ServiceOffer">
   createdAt?: Prisma.DateTimeFilter<"ServiceOffer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ServiceOffer"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceOffer"> | Date | string | null
   establishment?: Prisma.XOR<Prisma.EstablishmentScalarRelationFilter, Prisma.EstablishmentWhereInput>
   category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null
   requiredRoles?: Prisma.ServiceOfferRoleListRelationFilter
   subscriptions?: Prisma.ServiceSubscriptionListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
-}, "id">
+}, "id" | "slug">
 
 export type ServiceOfferOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   establishmentId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -322,8 +361,10 @@ export type ServiceOfferOrderByWithAggregationInput = {
   budgetType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   deadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ServiceOfferCountOrderByAggregateInput
   _avg?: Prisma.ServiceOfferAvgOrderByAggregateInput
   _max?: Prisma.ServiceOfferMaxOrderByAggregateInput
@@ -335,29 +376,34 @@ export type ServiceOfferScalarWhereWithAggregatesInput = {
   AND?: Prisma.ServiceOfferScalarWhereWithAggregatesInput | Prisma.ServiceOfferScalarWhereWithAggregatesInput[]
   OR?: Prisma.ServiceOfferScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ServiceOfferScalarWhereWithAggregatesInput | Prisma.ServiceOfferScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"ServiceOffer"> | string
-  establishmentId?: Prisma.UuidWithAggregatesFilter<"ServiceOffer"> | string
-  categoryId?: Prisma.UuidNullableWithAggregatesFilter<"ServiceOffer"> | string | null
+  id?: Prisma.IntWithAggregatesFilter<"ServiceOffer"> | number
+  slug?: Prisma.UuidWithAggregatesFilter<"ServiceOffer"> | string
+  establishmentId?: Prisma.IntWithAggregatesFilter<"ServiceOffer"> | number
+  categoryId?: Prisma.IntNullableWithAggregatesFilter<"ServiceOffer"> | number | null
   title?: Prisma.StringWithAggregatesFilter<"ServiceOffer"> | string
   description?: Prisma.StringWithAggregatesFilter<"ServiceOffer"> | string
   budget?: Prisma.DecimalNullableWithAggregatesFilter<"ServiceOffer"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeWithAggregatesFilter<"ServiceOffer"> | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusWithAggregatesFilter<"ServiceOffer"> | $Enums.ServiceOfferStatus
   deadline?: Prisma.DateTimeNullableWithAggregatesFilter<"ServiceOffer"> | Date | string | null
+  controls?: Prisma.JsonNullableWithAggregatesFilter<"ServiceOffer">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ServiceOffer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ServiceOffer"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ServiceOffer"> | Date | string | null
 }
 
 export type ServiceOfferCreateInput = {
-  id?: string
+  slug?: string
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   establishment: Prisma.EstablishmentCreateNestedOneWithoutServiceOffersInput
   category?: Prisma.CategoryCreateNestedOneWithoutServiceOffersInput
   requiredRoles?: Prisma.ServiceOfferRoleCreateNestedManyWithoutServiceOfferInput
@@ -366,32 +412,37 @@ export type ServiceOfferCreateInput = {
 }
 
 export type ServiceOfferUncheckedCreateInput = {
-  id?: string
-  establishmentId: string
-  categoryId?: string | null
+  id?: number
+  slug?: string
+  establishmentId: number
+  categoryId?: number | null
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedCreateNestedManyWithoutServiceOfferInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedCreateNestedManyWithoutServiceOfferInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutServiceOfferInput
 }
 
 export type ServiceOfferUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   establishment?: Prisma.EstablishmentUpdateOneRequiredWithoutServiceOffersNestedInput
   category?: Prisma.CategoryUpdateOneWithoutServiceOffersNestedInput
   requiredRoles?: Prisma.ServiceOfferRoleUpdateManyWithoutServiceOfferNestedInput
@@ -400,60 +451,71 @@ export type ServiceOfferUpdateInput = {
 }
 
 export type ServiceOfferUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  establishmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  establishmentId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedUpdateManyWithoutServiceOfferNestedInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedUpdateManyWithoutServiceOfferNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutServiceOfferNestedInput
 }
 
 export type ServiceOfferCreateManyInput = {
-  id?: string
-  establishmentId: string
-  categoryId?: string | null
+  id?: number
+  slug?: string
+  establishmentId: number
+  categoryId?: number | null
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  establishmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  establishmentId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferListRelationFilter = {
@@ -468,6 +530,7 @@ export type ServiceOfferOrderByRelationAggregateInput = {
 
 export type ServiceOfferCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   establishmentId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -476,16 +539,22 @@ export type ServiceOfferCountOrderByAggregateInput = {
   budgetType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   deadline?: Prisma.SortOrder
+  controls?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ServiceOfferAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  establishmentId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   budget?: Prisma.SortOrder
 }
 
 export type ServiceOfferMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   establishmentId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -496,10 +565,12 @@ export type ServiceOfferMaxOrderByAggregateInput = {
   deadline?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ServiceOfferMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   establishmentId?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -510,9 +581,13 @@ export type ServiceOfferMinOrderByAggregateInput = {
   deadline?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ServiceOfferSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  establishmentId?: Prisma.SortOrder
+  categoryId?: Prisma.SortOrder
   budget?: Prisma.SortOrder
 }
 
@@ -621,10 +696,6 @@ export type EnumServiceOfferStatusFieldUpdateOperationsInput = {
   set?: $Enums.ServiceOfferStatus
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type ServiceOfferCreateNestedOneWithoutRequiredRolesInput = {
   create?: Prisma.XOR<Prisma.ServiceOfferCreateWithoutRequiredRolesInput, Prisma.ServiceOfferUncheckedCreateWithoutRequiredRolesInput>
   connectOrCreate?: Prisma.ServiceOfferCreateOrConnectWithoutRequiredRolesInput
@@ -668,15 +739,17 @@ export type ServiceOfferUpdateOneRequiredWithoutReviewsNestedInput = {
 }
 
 export type ServiceOfferCreateWithoutEstablishmentInput = {
-  id?: string
+  slug?: string
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   category?: Prisma.CategoryCreateNestedOneWithoutServiceOffersInput
   requiredRoles?: Prisma.ServiceOfferRoleCreateNestedManyWithoutServiceOfferInput
   subscriptions?: Prisma.ServiceSubscriptionCreateNestedManyWithoutServiceOfferInput
@@ -684,16 +757,19 @@ export type ServiceOfferCreateWithoutEstablishmentInput = {
 }
 
 export type ServiceOfferUncheckedCreateWithoutEstablishmentInput = {
-  id?: string
-  categoryId?: string | null
+  id?: number
+  slug?: string
+  categoryId?: number | null
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedCreateNestedManyWithoutServiceOfferInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedCreateNestedManyWithoutServiceOfferInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutServiceOfferInput
@@ -729,29 +805,34 @@ export type ServiceOfferScalarWhereInput = {
   AND?: Prisma.ServiceOfferScalarWhereInput | Prisma.ServiceOfferScalarWhereInput[]
   OR?: Prisma.ServiceOfferScalarWhereInput[]
   NOT?: Prisma.ServiceOfferScalarWhereInput | Prisma.ServiceOfferScalarWhereInput[]
-  id?: Prisma.UuidFilter<"ServiceOffer"> | string
-  establishmentId?: Prisma.UuidFilter<"ServiceOffer"> | string
-  categoryId?: Prisma.UuidNullableFilter<"ServiceOffer"> | string | null
+  id?: Prisma.IntFilter<"ServiceOffer"> | number
+  slug?: Prisma.UuidFilter<"ServiceOffer"> | string
+  establishmentId?: Prisma.IntFilter<"ServiceOffer"> | number
+  categoryId?: Prisma.IntNullableFilter<"ServiceOffer"> | number | null
   title?: Prisma.StringFilter<"ServiceOffer"> | string
   description?: Prisma.StringFilter<"ServiceOffer"> | string
   budget?: Prisma.DecimalNullableFilter<"ServiceOffer"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFilter<"ServiceOffer"> | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFilter<"ServiceOffer"> | $Enums.ServiceOfferStatus
   deadline?: Prisma.DateTimeNullableFilter<"ServiceOffer"> | Date | string | null
+  controls?: Prisma.JsonNullableFilter<"ServiceOffer">
   createdAt?: Prisma.DateTimeFilter<"ServiceOffer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ServiceOffer"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceOffer"> | Date | string | null
 }
 
 export type ServiceOfferCreateWithoutCategoryInput = {
-  id?: string
+  slug?: string
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   establishment: Prisma.EstablishmentCreateNestedOneWithoutServiceOffersInput
   requiredRoles?: Prisma.ServiceOfferRoleCreateNestedManyWithoutServiceOfferInput
   subscriptions?: Prisma.ServiceSubscriptionCreateNestedManyWithoutServiceOfferInput
@@ -759,16 +840,19 @@ export type ServiceOfferCreateWithoutCategoryInput = {
 }
 
 export type ServiceOfferUncheckedCreateWithoutCategoryInput = {
-  id?: string
-  establishmentId: string
+  id?: number
+  slug?: string
+  establishmentId: number
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedCreateNestedManyWithoutServiceOfferInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedCreateNestedManyWithoutServiceOfferInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutServiceOfferInput
@@ -801,15 +885,17 @@ export type ServiceOfferUpdateManyWithWhereWithoutCategoryInput = {
 }
 
 export type ServiceOfferCreateWithoutRequiredRolesInput = {
-  id?: string
+  slug?: string
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   establishment: Prisma.EstablishmentCreateNestedOneWithoutServiceOffersInput
   category?: Prisma.CategoryCreateNestedOneWithoutServiceOffersInput
   subscriptions?: Prisma.ServiceSubscriptionCreateNestedManyWithoutServiceOfferInput
@@ -817,17 +903,20 @@ export type ServiceOfferCreateWithoutRequiredRolesInput = {
 }
 
 export type ServiceOfferUncheckedCreateWithoutRequiredRolesInput = {
-  id?: string
-  establishmentId: string
-  categoryId?: string | null
+  id?: number
+  slug?: string
+  establishmentId: number
+  categoryId?: number | null
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   subscriptions?: Prisma.ServiceSubscriptionUncheckedCreateNestedManyWithoutServiceOfferInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutServiceOfferInput
 }
@@ -849,15 +938,17 @@ export type ServiceOfferUpdateToOneWithWhereWithoutRequiredRolesInput = {
 }
 
 export type ServiceOfferUpdateWithoutRequiredRolesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   establishment?: Prisma.EstablishmentUpdateOneRequiredWithoutServiceOffersNestedInput
   category?: Prisma.CategoryUpdateOneWithoutServiceOffersNestedInput
   subscriptions?: Prisma.ServiceSubscriptionUpdateManyWithoutServiceOfferNestedInput
@@ -865,31 +956,36 @@ export type ServiceOfferUpdateWithoutRequiredRolesInput = {
 }
 
 export type ServiceOfferUncheckedUpdateWithoutRequiredRolesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  establishmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  establishmentId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subscriptions?: Prisma.ServiceSubscriptionUncheckedUpdateManyWithoutServiceOfferNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutServiceOfferNestedInput
 }
 
 export type ServiceOfferCreateWithoutSubscriptionsInput = {
-  id?: string
+  slug?: string
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   establishment: Prisma.EstablishmentCreateNestedOneWithoutServiceOffersInput
   category?: Prisma.CategoryCreateNestedOneWithoutServiceOffersInput
   requiredRoles?: Prisma.ServiceOfferRoleCreateNestedManyWithoutServiceOfferInput
@@ -897,17 +993,20 @@ export type ServiceOfferCreateWithoutSubscriptionsInput = {
 }
 
 export type ServiceOfferUncheckedCreateWithoutSubscriptionsInput = {
-  id?: string
-  establishmentId: string
-  categoryId?: string | null
+  id?: number
+  slug?: string
+  establishmentId: number
+  categoryId?: number | null
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedCreateNestedManyWithoutServiceOfferInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutServiceOfferInput
 }
@@ -929,15 +1028,17 @@ export type ServiceOfferUpdateToOneWithWhereWithoutSubscriptionsInput = {
 }
 
 export type ServiceOfferUpdateWithoutSubscriptionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   establishment?: Prisma.EstablishmentUpdateOneRequiredWithoutServiceOffersNestedInput
   category?: Prisma.CategoryUpdateOneWithoutServiceOffersNestedInput
   requiredRoles?: Prisma.ServiceOfferRoleUpdateManyWithoutServiceOfferNestedInput
@@ -945,31 +1046,36 @@ export type ServiceOfferUpdateWithoutSubscriptionsInput = {
 }
 
 export type ServiceOfferUncheckedUpdateWithoutSubscriptionsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  establishmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  establishmentId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedUpdateManyWithoutServiceOfferNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutServiceOfferNestedInput
 }
 
 export type ServiceOfferCreateWithoutReviewsInput = {
-  id?: string
+  slug?: string
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   establishment: Prisma.EstablishmentCreateNestedOneWithoutServiceOffersInput
   category?: Prisma.CategoryCreateNestedOneWithoutServiceOffersInput
   requiredRoles?: Prisma.ServiceOfferRoleCreateNestedManyWithoutServiceOfferInput
@@ -977,17 +1083,20 @@ export type ServiceOfferCreateWithoutReviewsInput = {
 }
 
 export type ServiceOfferUncheckedCreateWithoutReviewsInput = {
-  id?: string
-  establishmentId: string
-  categoryId?: string | null
+  id?: number
+  slug?: string
+  establishmentId: number
+  categoryId?: number | null
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedCreateNestedManyWithoutServiceOfferInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedCreateNestedManyWithoutServiceOfferInput
 }
@@ -1009,15 +1118,17 @@ export type ServiceOfferUpdateToOneWithWhereWithoutReviewsInput = {
 }
 
 export type ServiceOfferUpdateWithoutReviewsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   establishment?: Prisma.EstablishmentUpdateOneRequiredWithoutServiceOffersNestedInput
   category?: Prisma.CategoryUpdateOneWithoutServiceOffersNestedInput
   requiredRoles?: Prisma.ServiceOfferRoleUpdateManyWithoutServiceOfferNestedInput
@@ -1025,44 +1136,52 @@ export type ServiceOfferUpdateWithoutReviewsInput = {
 }
 
 export type ServiceOfferUncheckedUpdateWithoutReviewsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  establishmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  establishmentId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedUpdateManyWithoutServiceOfferNestedInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedUpdateManyWithoutServiceOfferNestedInput
 }
 
 export type ServiceOfferCreateManyEstablishmentInput = {
-  id?: string
-  categoryId?: string | null
+  id?: number
+  slug?: string
+  categoryId?: number | null
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferUpdateWithoutEstablishmentInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   category?: Prisma.CategoryUpdateOneWithoutServiceOffersNestedInput
   requiredRoles?: Prisma.ServiceOfferRoleUpdateManyWithoutServiceOfferNestedInput
   subscriptions?: Prisma.ServiceSubscriptionUpdateManyWithoutServiceOfferNestedInput
@@ -1070,57 +1189,68 @@ export type ServiceOfferUpdateWithoutEstablishmentInput = {
 }
 
 export type ServiceOfferUncheckedUpdateWithoutEstablishmentInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedUpdateManyWithoutServiceOfferNestedInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedUpdateManyWithoutServiceOfferNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutServiceOfferNestedInput
 }
 
 export type ServiceOfferUncheckedUpdateManyWithoutEstablishmentInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferCreateManyCategoryInput = {
-  id?: string
-  establishmentId: string
+  id?: number
+  slug?: string
+  establishmentId: number
   title: string
   description: string
   budget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: $Enums.BudgetType
   status?: $Enums.ServiceOfferStatus
   deadline?: Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   establishment?: Prisma.EstablishmentUpdateOneRequiredWithoutServiceOffersNestedInput
   requiredRoles?: Prisma.ServiceOfferRoleUpdateManyWithoutServiceOfferNestedInput
   subscriptions?: Prisma.ServiceSubscriptionUpdateManyWithoutServiceOfferNestedInput
@@ -1128,32 +1258,38 @@ export type ServiceOfferUpdateWithoutCategoryInput = {
 }
 
 export type ServiceOfferUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  establishmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  establishmentId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiredRoles?: Prisma.ServiceOfferRoleUncheckedUpdateManyWithoutServiceOfferNestedInput
   subscriptions?: Prisma.ServiceSubscriptionUncheckedUpdateManyWithoutServiceOfferNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutServiceOfferNestedInput
 }
 
 export type ServiceOfferUncheckedUpdateManyWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  establishmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  establishmentId?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   budget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   budgetType?: Prisma.EnumBudgetTypeFieldUpdateOperationsInput | $Enums.BudgetType
   status?: Prisma.EnumServiceOfferStatusFieldUpdateOperationsInput | $Enums.ServiceOfferStatus
   deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1207,6 +1343,7 @@ export type ServiceOfferCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.
 
 export type ServiceOfferSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   establishmentId?: boolean
   categoryId?: boolean
   title?: boolean
@@ -1215,8 +1352,10 @@ export type ServiceOfferSelect<ExtArgs extends runtime.Types.Extensions.Internal
   budgetType?: boolean
   status?: boolean
   deadline?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   establishment?: boolean | Prisma.EstablishmentDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ServiceOffer$categoryArgs<ExtArgs>
   requiredRoles?: boolean | Prisma.ServiceOffer$requiredRolesArgs<ExtArgs>
@@ -1227,6 +1366,7 @@ export type ServiceOfferSelect<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ServiceOfferSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   establishmentId?: boolean
   categoryId?: boolean
   title?: boolean
@@ -1235,14 +1375,17 @@ export type ServiceOfferSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   budgetType?: boolean
   status?: boolean
   deadline?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   establishment?: boolean | Prisma.EstablishmentDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ServiceOffer$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["serviceOffer"]>
 
 export type ServiceOfferSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   establishmentId?: boolean
   categoryId?: boolean
   title?: boolean
@@ -1251,14 +1394,17 @@ export type ServiceOfferSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   budgetType?: boolean
   status?: boolean
   deadline?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   establishment?: boolean | Prisma.EstablishmentDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ServiceOffer$categoryArgs<ExtArgs>
 }, ExtArgs["result"]["serviceOffer"]>
 
 export type ServiceOfferSelectScalar = {
   id?: boolean
+  slug?: boolean
   establishmentId?: boolean
   categoryId?: boolean
   title?: boolean
@@ -1267,11 +1413,13 @@ export type ServiceOfferSelectScalar = {
   budgetType?: boolean
   status?: boolean
   deadline?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type ServiceOfferOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "establishmentId" | "categoryId" | "title" | "description" | "budget" | "budgetType" | "status" | "deadline" | "createdAt" | "updatedAt", ExtArgs["result"]["serviceOffer"]>
+export type ServiceOfferOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "establishmentId" | "categoryId" | "title" | "description" | "budget" | "budgetType" | "status" | "deadline" | "controls" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["serviceOffer"]>
 export type ServiceOfferInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   establishment?: boolean | Prisma.EstablishmentDefaultArgs<ExtArgs>
   category?: boolean | Prisma.ServiceOffer$categoryArgs<ExtArgs>
@@ -1299,17 +1447,20 @@ export type $ServiceOfferPayload<ExtArgs extends runtime.Types.Extensions.Intern
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
-    establishmentId: string
-    categoryId: string | null
+    id: number
+    slug: string
+    establishmentId: number
+    categoryId: number | null
     title: string
     description: string
     budget: runtime.Decimal | null
     budgetType: $Enums.BudgetType
     status: $Enums.ServiceOfferStatus
     deadline: Date | null
+    controls: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["serviceOffer"]>
   composites: {}
 }
@@ -1738,17 +1889,20 @@ export interface Prisma__ServiceOfferClient<T, Null = never, ExtArgs extends run
  * Fields of the ServiceOffer model
  */
 export interface ServiceOfferFieldRefs {
-  readonly id: Prisma.FieldRef<"ServiceOffer", 'String'>
-  readonly establishmentId: Prisma.FieldRef<"ServiceOffer", 'String'>
-  readonly categoryId: Prisma.FieldRef<"ServiceOffer", 'String'>
+  readonly id: Prisma.FieldRef<"ServiceOffer", 'Int'>
+  readonly slug: Prisma.FieldRef<"ServiceOffer", 'String'>
+  readonly establishmentId: Prisma.FieldRef<"ServiceOffer", 'Int'>
+  readonly categoryId: Prisma.FieldRef<"ServiceOffer", 'Int'>
   readonly title: Prisma.FieldRef<"ServiceOffer", 'String'>
   readonly description: Prisma.FieldRef<"ServiceOffer", 'String'>
   readonly budget: Prisma.FieldRef<"ServiceOffer", 'Decimal'>
   readonly budgetType: Prisma.FieldRef<"ServiceOffer", 'BudgetType'>
   readonly status: Prisma.FieldRef<"ServiceOffer", 'ServiceOfferStatus'>
   readonly deadline: Prisma.FieldRef<"ServiceOffer", 'DateTime'>
+  readonly controls: Prisma.FieldRef<"ServiceOffer", 'Json'>
   readonly createdAt: Prisma.FieldRef<"ServiceOffer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ServiceOffer", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"ServiceOffer", 'DateTime'>
 }
     
 
