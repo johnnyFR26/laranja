@@ -1,11 +1,8 @@
+import type { AuthProfileResponseDto, AuthUserDto } from '@org/types'
 import { create } from 'zustand'
 
-export interface User {
-  id: string
-  email: string
-  name: string | null
-  image?: string | null
-}
+/** Usuário autenticado: dado exatamente como retornado pela API (login/register ou profile). */
+export type User = AuthUserDto | AuthProfileResponseDto
 
 export interface AuthState {
   user: User | null
@@ -30,14 +27,5 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({
       user: null,
       isAuthenticated: false,
-    }),
-    login: ()=> set({
-      user: {
-        id: '1',
-        email: 'test@test.com',
-        name: 'Test User',
-      },
-      isAuthenticated: true,
-      isLoading: false,
     }),
 }))

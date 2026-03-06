@@ -3,8 +3,10 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { SidebarNav } from './sidebar-nav'
 import { useAppStore } from '@/stores/app-store'
+import { useAuth } from '@/hooks/use-auth'
 
 const NAV_ITEMS = [
   {
@@ -143,7 +145,7 @@ const NAV_ITEMS = [
 
 export interface SidebarUser {
   name: string
-  establishmentName: string
+  establishmentName?: string
   avatarUrl?: string | null
 }
 
@@ -162,6 +164,25 @@ function LogoIcon() {
     >
       <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" />
     </svg>
+  )
+}
+
+function LogoutButton({ onClose }: { onClose?: () => void }) {
+  const router = useRouter()
+  const { logout } = useAuth()
+  const handleLogout = () => {
+    logout()
+    onClose?.()
+    router.push('/login')
+  }
+  return (
+    <button
+      type="button"
+      onClick={handleLogout}
+      className="mt-2 w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+    >
+      Sair
+    </button>
   )
 }
 
@@ -315,11 +336,14 @@ function SidebarPanel({
               <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
                 {user.name}
               </p>
-              <p className="truncate text-xs text-slate-500">
-                {user.establishmentName}
-              </p>
+              {user.establishmentName && (
+                <p className="truncate text-xs text-slate-500">
+                  {user.establishmentName}
+                </p>
+              )}
             </div>
           </div>
+          <LogoutButton onClose={onClose} />
         </div>
       )}
     </>

@@ -1,8 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import type { FreelancerRoleSlug } from '@org/types'
+import { useState, useRef, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import type { DayOfWeek, ShiftSlot } from '@org/types'
+import {
+  freelancerRegistrationSchema,
+  type FreelancerRegistrationFormValues,
+} from '@/validators'
 
 const SKILLS = [
   'Fine Dining Experience',
@@ -28,7 +33,7 @@ const SHIFTS: { slot: ShiftSlot; label: string }[] = [
   { slot: 'evening', label: 'Noite (16h–0h)' },
 ]
 
-const ROLE_OPTIONS: { value: FreelancerRoleSlug; label: string; icon: string }[] = [
+const ROLE_OPTIONS: { value: FreelancerRegistrationFormValues['roleSlug']; label: string; icon: string }[] = [
   { value: 'waiter', label: 'Garçom', icon: '🍽️' },
   { value: 'kitchen-assistant', label: 'Auxiliar de Cozinha', icon: '👨‍🍳' },
   { value: 'both', label: 'Ambos', icon: '👥' },
@@ -39,37 +44,57 @@ const TOTAL_STEPS = 5
 const PERCENT = 20
 
 export function FreelancerRegistrationForm() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [roleSlug, setRoleSlug] = useState<FreelancerRoleSlug | ''>('')
-  const [skills, setSkills] = useState<Set<string>>(new Set())
-  const [availability, setAvailability] = useState<Record<ShiftSlot, Partial<Record<DayOfWeek, boolean>>>>({
-    morning: {},
-    evening: {},
+  const avatarInputRef = useRef<HTMLInputElement>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<FreelancerRegistrationFormValues>({
+    resolver: zodResolver(freelancerRegistrationSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      roleSlug: undefined,
+      skills: [],
+      availability: { morning: {}, evening: {} },
+    },
   })
 
-  const toggleSkill = (skill: string) => {
-    setSkills((prev) => {
-      const next = new Set(prev)
-      if (next.has(skill)) next.delete(skill)
-      else next.add(skill)
-      return next
-    })
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview)
+    }
+  }, [avatarPreview])
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !file.type.startsWith('image/')) return
+    if (avatarPreview) URL.revokeObjectURL(avatarPreview)
+    setAvatarPreview(URL.createObjectURL(file))
+    setAvatarFile(file)
   }
 
-  const toggleAvailability = (slot: ShiftSlot, day: DayOfWeek) => {
-    setAvailability((prev) => ({
-      ...prev,
-      [slot]: {
-        ...prev[slot],
-        [day]: !prev[slot][day],
-      },
-    }))
+  const handleAvatarClick = () => {
+    avatarInputRef.current?.click()
   }
+
+  const onSubmit = (data: FreelancerRegistrationFormValues) => {
+    // TODO: enviar para API (incluir avatarFile se houver)
+    console.log(data, avatarFile)
+  }
+
+  const skills = watch('skills') ?? []
+  const availability = watch('availability') ?? { morning: {}, evening: {} }
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-8 lg:grid-cols-12">
       <div className="space-y-8 lg:col-span-8">
         {/* Progress */}
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -107,9 +132,29 @@ export function FreelancerRegistrationForm() {
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="flex items-center gap-6 pb-4 md:col-span-2">
-              <div className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-slate-300 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
-                <span className="text-3xl text-slate-400" aria-hidden>📷</span>
-              </div>
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                className="hidden"
+                aria-label="Selecionar foto de perfil"
+              />
+              <button
+                type="button"
+                onClick={handleAvatarClick}
+                className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-slate-300 bg-slate-100 transition-colors hover:border-primary/50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary/50"
+              >
+                {avatarPreview ? (
+                  <img
+                    src={avatarPreview}
+                    alt="Preview da foto de perfil"
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <span className="text-3xl text-slate-400" aria-hidden>📷</span>
+                )}
+              </button>
               <div>
                 <h4 className="text-sm font-semibold">Foto de perfil</h4>
                 <p className="mb-2 text-xs text-slate-500">
@@ -117,9 +162,10 @@ export function FreelancerRegistrationForm() {
                 </p>
                 <button
                   type="button"
+                  onClick={handleAvatarClick}
                   className="rounded-lg border border-primary px-3 py-1 text-xs font-bold text-primary hover:bg-primary/5"
                 >
-                  Enviar imagem
+                  {avatarPreview ? 'Trocar imagem' : 'Enviar imagem'}
                 </button>
               </div>
             </div>
@@ -128,30 +174,36 @@ export function FreelancerRegistrationForm() {
               <input
                 type="text"
                 placeholder="João Silva"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
                 className="rounded-lg border border-slate-200 bg-white px-3 py-2 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-800 dark:bg-slate-950"
+                {...register('name')}
               />
+              {errors.name && (
+                <p className="text-sm text-red-600 dark:text-red-400" role="alert">{errors.name.message}</p>
+              )}
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Telefone</label>
               <input
                 type="tel"
                 placeholder="+55 (11) 00000-0000"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
                 className="rounded-lg border border-slate-200 bg-white px-3 py-2 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-800 dark:bg-slate-950"
+                {...register('phone')}
               />
+              {errors.phone && (
+                <p className="text-sm text-red-600 dark:text-red-400" role="alert">{errors.phone.message}</p>
+              )}
             </div>
             <div className="flex flex-col gap-1 md:col-span-2">
               <label className="text-sm font-medium">E-mail</label>
               <input
                 type="email"
                 placeholder="joao@exemplo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="rounded-lg border border-slate-200 bg-white px-3 py-2 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-800 dark:bg-slate-950"
+                {...register('email')}
               />
+              {errors.email && (
+                <p className="text-sm text-red-600 dark:text-red-400" role="alert">{errors.email.message}</p>
+              )}
             </div>
           </div>
         </section>
@@ -167,22 +219,23 @@ export function FreelancerRegistrationForm() {
               <label
                 key={opt.value}
                 className={`relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-4 transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 ${
-                  roleSlug === opt.value ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800'
+                  watch('roleSlug') === opt.value ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800'
                 }`}
               >
                 <input
                   type="radio"
-                  name="role"
                   value={opt.value}
-                  checked={roleSlug === opt.value}
-                  onChange={() => setRoleSlug(opt.value)}
                   className="absolute right-3 top-3 size-5 shrink-0 appearance-none rounded-full border-2 border-slate-300 bg-white focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 checked:border-primary checked:bg-primary dark:border-slate-600 dark:bg-slate-800 dark:checked:border-primary dark:checked:bg-primary"
+                  {...register('roleSlug')}
                 />
                 <span className="text-3xl" aria-hidden>{opt.icon}</span>
                 <span className="text-sm font-bold">{opt.label}</span>
               </label>
             ))}
           </div>
+          {errors.roleSlug && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{errors.roleSlug.message}</p>
+          )}
         </section>
 
         {/* 3. Skills */}
@@ -199,14 +252,22 @@ export function FreelancerRegistrationForm() {
               >
                 <input
                   type="checkbox"
-                  checked={skills.has(skill)}
-                  onChange={() => toggleSkill(skill)}
+                  checked={skills.includes(skill)}
+                  onChange={() => {
+                    const next = skills.includes(skill)
+                      ? skills.filter((s) => s !== skill)
+                      : [...skills, skill]
+                    setValue('skills', next, { shouldValidate: true })
+                  }}
                   className="size-5 shrink-0 appearance-none rounded-full border-2 border-slate-300 bg-white focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 checked:border-primary checked:bg-primary dark:border-slate-600 dark:bg-slate-800 dark:checked:border-primary dark:checked:bg-primary"
                 />
                 <span className="text-sm">{skill}</span>
               </label>
             ))}
           </div>
+          {errors.skills && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{errors.skills.message}</p>
+          )}
         </section>
 
         {/* 4. Compliance */}
@@ -289,8 +350,17 @@ export function FreelancerRegistrationForm() {
                       <td key={day} className="text-center">
                         <input
                           type="checkbox"
-                          checked={Boolean(availability[slot][day])}
-                          onChange={() => toggleAvailability(slot, day)}
+                          checked={Boolean(availability[slot]?.[day])}
+                          onChange={() => {
+                            const next = {
+                              ...availability,
+                              [slot]: {
+                                ...availability[slot],
+                                [day]: !availability[slot]?.[day],
+                              },
+                            }
+                            setValue('availability', next, { shouldValidate: true })
+                          }}
                           className="size-5 shrink-0 appearance-none rounded-full border-2 border-slate-300 bg-white focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 checked:border-primary checked:bg-primary dark:border-slate-600 dark:bg-slate-800 dark:checked:border-primary dark:checked:bg-primary"
                         />
                       </td>
@@ -310,10 +380,11 @@ export function FreelancerRegistrationForm() {
             Salvar rascunho
           </button>
           <button
-            type="button"
-            className="rounded-xl bg-primary px-8 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-colors hover:opacity-90"
+            type="submit"
+            disabled={isSubmitting}
+            className="rounded-xl bg-primary px-8 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-colors hover:opacity-90 disabled:opacity-50"
           >
-            Continuar para revisão
+            {isSubmitting ? 'Enviando…' : 'Continuar para revisão'}
           </button>
         </div>
       </div>
@@ -374,6 +445,6 @@ export function FreelancerRegistrationForm() {
           </div>
         </div>
       </aside>
-    </div>
+    </form>
   )
 }

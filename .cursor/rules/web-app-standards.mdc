@@ -53,6 +53,11 @@ Aplicar ao trabalhar em `apps/web`. Stack: Next.js 14 App Router, React, TypeScr
 - Schemas de entrada com Zod; erros tratados e respostas adequadas.
 - `import type { ActionResponse } from '@/types/actions'`; todas as actions retornam `ActionResponse`.
 
+## API e DTOs
+
+- **Padrão de retorno da API**: Todas as respostas HTTP da Grove Opportunities API retornam no formato `{ data, statusCode, timestamp }`. O payload útil fica em `data`; `statusCode` e `timestamp` vêm no corpo. O cliente axios (`@/lib/api-client`) desempacota automaticamente e expõe apenas `data` em `response.data`.
+- **Tipagem de requisições e respostas**: Usar os DTOs do pacote `@org/types` para bater na API (ex.: `LoginDto`, `RegisterDto` para auth; `AuthTokensResponseDto`, `AuthProfileResponseDto` para respostas). Em componentes, após validação (Zod), converter ou garantir que o payload enviado respeite o DTO; se precisar de uma tipagem específica do formulário, definir no componente e mapear para o DTO antes de chamar a API.
+
 ## Convenções
 
 1. Mudanças de estado via Next.js App Router.

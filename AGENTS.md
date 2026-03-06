@@ -21,3 +21,8 @@
 - The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
 
 <!-- nx configuration end-->
+
+## API e DTOs (Grove Opportunities)
+
+- **Padrão de retorno da API**: As respostas HTTP retornam sempre `{ data, statusCode, timestamp }`. O payload útil está em `data`. O cliente axios desempacota e expõe só `data` em `response.data`.
+- **DTOs**: Usar os DTOs de `@org/types` para requisições e respostas da API (ex.: `LoginDto`, `RegisterDto`, `AuthTokensResponseDto`, `AuthProfileResponseDto`). Em formulários, validar com Zod e enviar payloads tipados com esses DTOs; se necessário, criar tipagem local no componente e mapear para o DTO antes da chamada.

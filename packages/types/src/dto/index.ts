@@ -1,4 +1,5 @@
 export * from './enums.js'
+export * from './api-response.dto.js'
 export * from './address.dto.js'
 export * from './user.dto.js'
 export * from './auth.dto.js'
