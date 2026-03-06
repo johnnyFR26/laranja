@@ -85,7 +85,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Obter perfil do usuário autenticado' })
   @ApiResponse({ status: 200, description: 'Perfil retornado com sucesso' })
   @ApiResponse({ status: 401, description: 'Não autorizado' })
-  getProfile(@CurrentUser('id') userId: string) {
+  getProfile(@CurrentUser('id') userId: number) {
     return this.authService.getProfile(userId);
   }
 

@@ -20,88 +20,122 @@ export type EstablishmentModel = runtime.Types.Result.DefaultSelection<Prisma.$E
 
 export type AggregateEstablishment = {
   _count: EstablishmentCountAggregateOutputType | null
+  _avg: EstablishmentAvgAggregateOutputType | null
+  _sum: EstablishmentSumAggregateOutputType | null
   _min: EstablishmentMinAggregateOutputType | null
   _max: EstablishmentMaxAggregateOutputType | null
 }
 
+export type EstablishmentAvgAggregateOutputType = {
+  id: number | null
+  ownerId: number | null
+  addressId: number | null
+}
+
+export type EstablishmentSumAggregateOutputType = {
+  id: number | null
+  ownerId: number | null
+  addressId: number | null
+}
+
 export type EstablishmentMinAggregateOutputType = {
-  id: string | null
-  ownerId: string | null
-  name: string | null
+  id: number | null
   slug: string | null
+  ownerId: number | null
+  name: string | null
   description: string | null
   logoUrl: string | null
   website: string | null
-  addressId: string | null
+  addressId: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type EstablishmentMaxAggregateOutputType = {
-  id: string | null
-  ownerId: string | null
-  name: string | null
+  id: number | null
   slug: string | null
+  ownerId: number | null
+  name: string | null
   description: string | null
   logoUrl: string | null
   website: string | null
-  addressId: string | null
+  addressId: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type EstablishmentCountAggregateOutputType = {
   id: number
+  slug: number
   ownerId: number
   name: number
-  slug: number
   description: number
   logoUrl: number
   website: number
   addressId: number
+  controls: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
-export type EstablishmentMinAggregateInputType = {
+export type EstablishmentAvgAggregateInputType = {
   id?: true
   ownerId?: true
-  name?: true
+  addressId?: true
+}
+
+export type EstablishmentSumAggregateInputType = {
+  id?: true
+  ownerId?: true
+  addressId?: true
+}
+
+export type EstablishmentMinAggregateInputType = {
+  id?: true
   slug?: true
+  ownerId?: true
+  name?: true
   description?: true
   logoUrl?: true
   website?: true
   addressId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type EstablishmentMaxAggregateInputType = {
   id?: true
+  slug?: true
   ownerId?: true
   name?: true
-  slug?: true
   description?: true
   logoUrl?: true
   website?: true
   addressId?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type EstablishmentCountAggregateInputType = {
   id?: true
+  slug?: true
   ownerId?: true
   name?: true
-  slug?: true
   description?: true
   logoUrl?: true
   website?: true
   addressId?: true
+  controls?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -143,6 +177,18 @@ export type EstablishmentAggregateArgs<ExtArgs extends runtime.Types.Extensions.
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: EstablishmentAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: EstablishmentSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: EstablishmentMinAggregateInputType
@@ -173,22 +219,28 @@ export type EstablishmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   _count?: EstablishmentCountAggregateInputType | true
+  _avg?: EstablishmentAvgAggregateInputType
+  _sum?: EstablishmentSumAggregateInputType
   _min?: EstablishmentMinAggregateInputType
   _max?: EstablishmentMaxAggregateInputType
 }
 
 export type EstablishmentGroupByOutputType = {
-  id: string
-  ownerId: string
-  name: string
+  id: number
   slug: string
+  ownerId: number
+  name: string
   description: string | null
   logoUrl: string | null
   website: string | null
-  addressId: string | null
+  addressId: number | null
+  controls: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: EstablishmentCountAggregateOutputType | null
+  _avg: EstablishmentAvgAggregateOutputType | null
+  _sum: EstablishmentSumAggregateOutputType | null
   _min: EstablishmentMinAggregateOutputType | null
   _max: EstablishmentMaxAggregateOutputType | null
 }
@@ -212,16 +264,18 @@ export type EstablishmentWhereInput = {
   AND?: Prisma.EstablishmentWhereInput | Prisma.EstablishmentWhereInput[]
   OR?: Prisma.EstablishmentWhereInput[]
   NOT?: Prisma.EstablishmentWhereInput | Prisma.EstablishmentWhereInput[]
-  id?: Prisma.UuidFilter<"Establishment"> | string
-  ownerId?: Prisma.UuidFilter<"Establishment"> | string
+  id?: Prisma.IntFilter<"Establishment"> | number
+  slug?: Prisma.UuidFilter<"Establishment"> | string
+  ownerId?: Prisma.IntFilter<"Establishment"> | number
   name?: Prisma.StringFilter<"Establishment"> | string
-  slug?: Prisma.StringFilter<"Establishment"> | string
   description?: Prisma.StringNullableFilter<"Establishment"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Establishment"> | string | null
   website?: Prisma.StringNullableFilter<"Establishment"> | string | null
-  addressId?: Prisma.UuidNullableFilter<"Establishment"> | string | null
+  addressId?: Prisma.IntNullableFilter<"Establishment"> | number | null
+  controls?: Prisma.JsonNullableFilter<"Establishment">
   createdAt?: Prisma.DateTimeFilter<"Establishment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Establishment"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Establishment"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   address?: Prisma.XOR<Prisma.AddressNullableScalarRelationFilter, Prisma.AddressWhereInput> | null
   serviceOffers?: Prisma.ServiceOfferListRelationFilter
@@ -229,24 +283,26 @@ export type EstablishmentWhereInput = {
 
 export type EstablishmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   addressId?: Prisma.SortOrderInput | Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   address?: Prisma.AddressOrderByWithRelationInput
   serviceOffers?: Prisma.ServiceOfferOrderByRelationAggregateInput
 }
 
 export type EstablishmentWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
-  ownerId?: string
+  id?: number
   slug?: string
+  ownerId?: number
   AND?: Prisma.EstablishmentWhereInput | Prisma.EstablishmentWhereInput[]
   OR?: Prisma.EstablishmentWhereInput[]
   NOT?: Prisma.EstablishmentWhereInput | Prisma.EstablishmentWhereInput[]
@@ -254,137 +310,156 @@ export type EstablishmentWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Establishment"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Establishment"> | string | null
   website?: Prisma.StringNullableFilter<"Establishment"> | string | null
-  addressId?: Prisma.UuidNullableFilter<"Establishment"> | string | null
+  addressId?: Prisma.IntNullableFilter<"Establishment"> | number | null
+  controls?: Prisma.JsonNullableFilter<"Establishment">
   createdAt?: Prisma.DateTimeFilter<"Establishment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Establishment"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Establishment"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   address?: Prisma.XOR<Prisma.AddressNullableScalarRelationFilter, Prisma.AddressWhereInput> | null
   serviceOffers?: Prisma.ServiceOfferListRelationFilter
-}, "id" | "ownerId" | "slug">
+}, "id" | "slug" | "ownerId">
 
 export type EstablishmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
   addressId?: Prisma.SortOrderInput | Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.EstablishmentCountOrderByAggregateInput
+  _avg?: Prisma.EstablishmentAvgOrderByAggregateInput
   _max?: Prisma.EstablishmentMaxOrderByAggregateInput
   _min?: Prisma.EstablishmentMinOrderByAggregateInput
+  _sum?: Prisma.EstablishmentSumOrderByAggregateInput
 }
 
 export type EstablishmentScalarWhereWithAggregatesInput = {
   AND?: Prisma.EstablishmentScalarWhereWithAggregatesInput | Prisma.EstablishmentScalarWhereWithAggregatesInput[]
   OR?: Prisma.EstablishmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EstablishmentScalarWhereWithAggregatesInput | Prisma.EstablishmentScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"Establishment"> | string
-  ownerId?: Prisma.UuidWithAggregatesFilter<"Establishment"> | string
+  id?: Prisma.IntWithAggregatesFilter<"Establishment"> | number
+  slug?: Prisma.UuidWithAggregatesFilter<"Establishment"> | string
+  ownerId?: Prisma.IntWithAggregatesFilter<"Establishment"> | number
   name?: Prisma.StringWithAggregatesFilter<"Establishment"> | string
-  slug?: Prisma.StringWithAggregatesFilter<"Establishment"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Establishment"> | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Establishment"> | string | null
   website?: Prisma.StringNullableWithAggregatesFilter<"Establishment"> | string | null
-  addressId?: Prisma.UuidNullableWithAggregatesFilter<"Establishment"> | string | null
+  addressId?: Prisma.IntNullableWithAggregatesFilter<"Establishment"> | number | null
+  controls?: Prisma.JsonNullableWithAggregatesFilter<"Establishment">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Establishment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Establishment"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Establishment"> | Date | string | null
 }
 
 export type EstablishmentCreateInput = {
-  id?: string
+  slug?: string
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutEstablishmentInput
   address?: Prisma.AddressCreateNestedOneWithoutEstablishmentsInput
   serviceOffers?: Prisma.ServiceOfferCreateNestedManyWithoutEstablishmentInput
 }
 
 export type EstablishmentUncheckedCreateInput = {
-  id?: string
-  ownerId: string
+  id?: number
+  slug?: string
+  ownerId: number
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
-  addressId?: string | null
+  addressId?: number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   serviceOffers?: Prisma.ServiceOfferUncheckedCreateNestedManyWithoutEstablishmentInput
 }
 
 export type EstablishmentUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutEstablishmentNestedInput
   address?: Prisma.AddressUpdateOneWithoutEstablishmentsNestedInput
   serviceOffers?: Prisma.ServiceOfferUpdateManyWithoutEstablishmentNestedInput
 }
 
 export type EstablishmentUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   serviceOffers?: Prisma.ServiceOfferUncheckedUpdateManyWithoutEstablishmentNestedInput
 }
 
 export type EstablishmentCreateManyInput = {
-  id?: string
-  ownerId: string
+  id?: number
+  slug?: string
+  ownerId: number
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
-  addressId?: string | null
+  addressId?: number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type EstablishmentUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type EstablishmentUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type EstablishmentListRelationFilter = {
@@ -404,41 +479,57 @@ export type EstablishmentNullableScalarRelationFilter = {
 
 export type EstablishmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   description?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   website?: Prisma.SortOrder
   addressId?: Prisma.SortOrder
+  controls?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+}
+
+export type EstablishmentAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  addressId?: Prisma.SortOrder
 }
 
 export type EstablishmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   description?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   website?: Prisma.SortOrder
   addressId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type EstablishmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  slug?: Prisma.SortOrder
   description?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   website?: Prisma.SortOrder
   addressId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+}
+
+export type EstablishmentSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  addressId?: Prisma.SortOrder
 }
 
 export type EstablishmentScalarRelationFilter = {
@@ -535,28 +626,31 @@ export type EstablishmentUpdateOneRequiredWithoutServiceOffersNestedInput = {
 }
 
 export type EstablishmentCreateWithoutAddressInput = {
-  id?: string
+  slug?: string
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutEstablishmentInput
   serviceOffers?: Prisma.ServiceOfferCreateNestedManyWithoutEstablishmentInput
 }
 
 export type EstablishmentUncheckedCreateWithoutAddressInput = {
-  id?: string
-  ownerId: string
+  id?: number
+  slug?: string
+  ownerId: number
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   serviceOffers?: Prisma.ServiceOfferUncheckedCreateNestedManyWithoutEstablishmentInput
 }
 
@@ -590,41 +684,46 @@ export type EstablishmentScalarWhereInput = {
   AND?: Prisma.EstablishmentScalarWhereInput | Prisma.EstablishmentScalarWhereInput[]
   OR?: Prisma.EstablishmentScalarWhereInput[]
   NOT?: Prisma.EstablishmentScalarWhereInput | Prisma.EstablishmentScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Establishment"> | string
-  ownerId?: Prisma.UuidFilter<"Establishment"> | string
+  id?: Prisma.IntFilter<"Establishment"> | number
+  slug?: Prisma.UuidFilter<"Establishment"> | string
+  ownerId?: Prisma.IntFilter<"Establishment"> | number
   name?: Prisma.StringFilter<"Establishment"> | string
-  slug?: Prisma.StringFilter<"Establishment"> | string
   description?: Prisma.StringNullableFilter<"Establishment"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Establishment"> | string | null
   website?: Prisma.StringNullableFilter<"Establishment"> | string | null
-  addressId?: Prisma.UuidNullableFilter<"Establishment"> | string | null
+  addressId?: Prisma.IntNullableFilter<"Establishment"> | number | null
+  controls?: Prisma.JsonNullableFilter<"Establishment">
   createdAt?: Prisma.DateTimeFilter<"Establishment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Establishment"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Establishment"> | Date | string | null
 }
 
 export type EstablishmentCreateWithoutOwnerInput = {
-  id?: string
+  slug?: string
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   address?: Prisma.AddressCreateNestedOneWithoutEstablishmentsInput
   serviceOffers?: Prisma.ServiceOfferCreateNestedManyWithoutEstablishmentInput
 }
 
 export type EstablishmentUncheckedCreateWithoutOwnerInput = {
-  id?: string
+  id?: number
+  slug?: string
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
-  addressId?: string | null
+  addressId?: number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   serviceOffers?: Prisma.ServiceOfferUncheckedCreateNestedManyWithoutEstablishmentInput
 }
 
@@ -645,55 +744,61 @@ export type EstablishmentUpdateToOneWithWhereWithoutOwnerInput = {
 }
 
 export type EstablishmentUpdateWithoutOwnerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   address?: Prisma.AddressUpdateOneWithoutEstablishmentsNestedInput
   serviceOffers?: Prisma.ServiceOfferUpdateManyWithoutEstablishmentNestedInput
 }
 
 export type EstablishmentUncheckedUpdateWithoutOwnerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   serviceOffers?: Prisma.ServiceOfferUncheckedUpdateManyWithoutEstablishmentNestedInput
 }
 
 export type EstablishmentCreateWithoutServiceOffersInput = {
-  id?: string
+  slug?: string
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutEstablishmentInput
   address?: Prisma.AddressCreateNestedOneWithoutEstablishmentsInput
 }
 
 export type EstablishmentUncheckedCreateWithoutServiceOffersInput = {
-  id?: string
-  ownerId: string
+  id?: number
+  slug?: string
+  ownerId: number
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
-  addressId?: string | null
+  addressId?: number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type EstablishmentCreateOrConnectWithoutServiceOffersInput = {
@@ -713,79 +818,89 @@ export type EstablishmentUpdateToOneWithWhereWithoutServiceOffersInput = {
 }
 
 export type EstablishmentUpdateWithoutServiceOffersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutEstablishmentNestedInput
   address?: Prisma.AddressUpdateOneWithoutEstablishmentsNestedInput
 }
 
 export type EstablishmentUncheckedUpdateWithoutServiceOffersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type EstablishmentCreateManyAddressInput = {
-  id?: string
-  ownerId: string
+  id?: number
+  slug?: string
+  ownerId: number
   name: string
-  slug: string
   description?: string | null
   logoUrl?: string | null
   website?: string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type EstablishmentUpdateWithoutAddressInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutEstablishmentNestedInput
   serviceOffers?: Prisma.ServiceOfferUpdateManyWithoutEstablishmentNestedInput
 }
 
 export type EstablishmentUncheckedUpdateWithoutAddressInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   serviceOffers?: Prisma.ServiceOfferUncheckedUpdateManyWithoutEstablishmentNestedInput
 }
 
 export type EstablishmentUncheckedUpdateManyWithoutAddressInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   slug?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -821,15 +936,17 @@ export type EstablishmentCountOutputTypeCountServiceOffersArgs<ExtArgs extends r
 
 export type EstablishmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   ownerId?: boolean
   name?: boolean
-  slug?: boolean
   description?: boolean
   logoUrl?: boolean
   website?: boolean
   addressId?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   address?: boolean | Prisma.Establishment$addressArgs<ExtArgs>
   serviceOffers?: boolean | Prisma.Establishment$serviceOffersArgs<ExtArgs>
@@ -838,48 +955,54 @@ export type EstablishmentSelect<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type EstablishmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   ownerId?: boolean
   name?: boolean
-  slug?: boolean
   description?: boolean
   logoUrl?: boolean
   website?: boolean
   addressId?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   address?: boolean | Prisma.Establishment$addressArgs<ExtArgs>
 }, ExtArgs["result"]["establishment"]>
 
 export type EstablishmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   ownerId?: boolean
   name?: boolean
-  slug?: boolean
   description?: boolean
   logoUrl?: boolean
   website?: boolean
   addressId?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   address?: boolean | Prisma.Establishment$addressArgs<ExtArgs>
 }, ExtArgs["result"]["establishment"]>
 
 export type EstablishmentSelectScalar = {
   id?: boolean
+  slug?: boolean
   ownerId?: boolean
   name?: boolean
-  slug?: boolean
   description?: boolean
   logoUrl?: boolean
   website?: boolean
   addressId?: boolean
+  controls?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type EstablishmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "description" | "logoUrl" | "website" | "addressId" | "createdAt" | "updatedAt", ExtArgs["result"]["establishment"]>
+export type EstablishmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "ownerId" | "name" | "description" | "logoUrl" | "website" | "addressId" | "controls" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["establishment"]>
 export type EstablishmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   address?: boolean | Prisma.Establishment$addressArgs<ExtArgs>
@@ -903,16 +1026,18 @@ export type $EstablishmentPayload<ExtArgs extends runtime.Types.Extensions.Inter
     serviceOffers: Prisma.$ServiceOfferPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
-    ownerId: string
-    name: string
+    id: number
     slug: string
+    ownerId: number
+    name: string
     description: string | null
     logoUrl: string | null
     website: string | null
-    addressId: string | null
+    addressId: number | null
+    controls: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["establishment"]>
   composites: {}
 }
@@ -1339,16 +1464,18 @@ export interface Prisma__EstablishmentClient<T, Null = never, ExtArgs extends ru
  * Fields of the Establishment model
  */
 export interface EstablishmentFieldRefs {
-  readonly id: Prisma.FieldRef<"Establishment", 'String'>
-  readonly ownerId: Prisma.FieldRef<"Establishment", 'String'>
-  readonly name: Prisma.FieldRef<"Establishment", 'String'>
+  readonly id: Prisma.FieldRef<"Establishment", 'Int'>
   readonly slug: Prisma.FieldRef<"Establishment", 'String'>
+  readonly ownerId: Prisma.FieldRef<"Establishment", 'Int'>
+  readonly name: Prisma.FieldRef<"Establishment", 'String'>
   readonly description: Prisma.FieldRef<"Establishment", 'String'>
   readonly logoUrl: Prisma.FieldRef<"Establishment", 'String'>
   readonly website: Prisma.FieldRef<"Establishment", 'String'>
-  readonly addressId: Prisma.FieldRef<"Establishment", 'String'>
+  readonly addressId: Prisma.FieldRef<"Establishment", 'Int'>
+  readonly controls: Prisma.FieldRef<"Establishment", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Establishment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Establishment", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Establishment", 'DateTime'>
 }
     
 

@@ -81,6 +81,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const AddressScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   street: 'street',
   number: 'number',
   complement: 'complement',
@@ -89,8 +90,10 @@ export const AddressScalarFieldEnum = {
   state: 'state',
   zipCode: 'zipCode',
   country: 'country',
+  controls: 'controls',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
@@ -98,6 +101,7 @@ export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeo
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   email: 'email',
   password: 'password',
   name: 'name',
@@ -105,8 +109,10 @@ export const UserScalarFieldEnum = {
   avatarUrl: 'avatarUrl',
   status: 'status',
   addressId: 'addressId',
+  controls: 'controls',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -114,10 +120,13 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const RoleScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   slug: 'slug',
+  name: 'name',
   description: 'description',
-  createdAt: 'createdAt'
+  controls: 'controls',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
@@ -125,9 +134,13 @@ export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof Role
 
 export const UserRoleScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   userId: 'userId',
   roleId: 'roleId',
-  createdAt: 'createdAt'
+  controls: 'controls',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type UserRoleScalarFieldEnum = (typeof UserRoleScalarFieldEnum)[keyof typeof UserRoleScalarFieldEnum]
@@ -135,15 +148,17 @@ export type UserRoleScalarFieldEnum = (typeof UserRoleScalarFieldEnum)[keyof typ
 
 export const EstablishmentScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   ownerId: 'ownerId',
   name: 'name',
-  slug: 'slug',
   description: 'description',
   logoUrl: 'logoUrl',
   website: 'website',
   addressId: 'addressId',
+  controls: 'controls',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type EstablishmentScalarFieldEnum = (typeof EstablishmentScalarFieldEnum)[keyof typeof EstablishmentScalarFieldEnum]
@@ -151,10 +166,13 @@ export type EstablishmentScalarFieldEnum = (typeof EstablishmentScalarFieldEnum)
 
 export const CategoryScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   slug: 'slug',
+  name: 'name',
   description: 'description',
-  createdAt: 'createdAt'
+  controls: 'controls',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
@@ -162,6 +180,7 @@ export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typ
 
 export const ServiceOfferScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   establishmentId: 'establishmentId',
   categoryId: 'categoryId',
   title: 'title',
@@ -170,8 +189,10 @@ export const ServiceOfferScalarFieldEnum = {
   budgetType: 'budgetType',
   status: 'status',
   deadline: 'deadline',
+  controls: 'controls',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type ServiceOfferScalarFieldEnum = (typeof ServiceOfferScalarFieldEnum)[keyof typeof ServiceOfferScalarFieldEnum]
@@ -179,8 +200,13 @@ export type ServiceOfferScalarFieldEnum = (typeof ServiceOfferScalarFieldEnum)[k
 
 export const ServiceOfferRoleScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   serviceOfferId: 'serviceOfferId',
-  roleId: 'roleId'
+  roleId: 'roleId',
+  controls: 'controls',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type ServiceOfferRoleScalarFieldEnum = (typeof ServiceOfferRoleScalarFieldEnum)[keyof typeof ServiceOfferRoleScalarFieldEnum]
@@ -188,13 +214,16 @@ export type ServiceOfferRoleScalarFieldEnum = (typeof ServiceOfferRoleScalarFiel
 
 export const ServiceSubscriptionScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   userId: 'userId',
   serviceOfferId: 'serviceOfferId',
   status: 'status',
   coverLetter: 'coverLetter',
   proposedBudget: 'proposedBudget',
+  controls: 'controls',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type ServiceSubscriptionScalarFieldEnum = (typeof ServiceSubscriptionScalarFieldEnum)[keyof typeof ServiceSubscriptionScalarFieldEnum]
@@ -202,12 +231,16 @@ export type ServiceSubscriptionScalarFieldEnum = (typeof ServiceSubscriptionScal
 
 export const ReviewScalarFieldEnum = {
   id: 'id',
+  slug: 'slug',
   serviceOfferId: 'serviceOfferId',
   authorId: 'authorId',
   targetId: 'targetId',
   rating: 'rating',
   comment: 'comment',
-  createdAt: 'createdAt'
+  controls: 'controls',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
@@ -221,12 +254,29 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 export const NullsOrder = {

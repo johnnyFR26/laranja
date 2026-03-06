@@ -20,46 +20,98 @@ export type ServiceOfferRoleModel = runtime.Types.Result.DefaultSelection<Prisma
 
 export type AggregateServiceOfferRole = {
   _count: ServiceOfferRoleCountAggregateOutputType | null
+  _avg: ServiceOfferRoleAvgAggregateOutputType | null
+  _sum: ServiceOfferRoleSumAggregateOutputType | null
   _min: ServiceOfferRoleMinAggregateOutputType | null
   _max: ServiceOfferRoleMaxAggregateOutputType | null
 }
 
+export type ServiceOfferRoleAvgAggregateOutputType = {
+  id: number | null
+  serviceOfferId: number | null
+  roleId: number | null
+}
+
+export type ServiceOfferRoleSumAggregateOutputType = {
+  id: number | null
+  serviceOfferId: number | null
+  roleId: number | null
+}
+
 export type ServiceOfferRoleMinAggregateOutputType = {
-  id: string | null
-  serviceOfferId: string | null
-  roleId: string | null
+  id: number | null
+  slug: string | null
+  serviceOfferId: number | null
+  roleId: number | null
+  createdAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ServiceOfferRoleMaxAggregateOutputType = {
-  id: string | null
-  serviceOfferId: string | null
-  roleId: string | null
+  id: number | null
+  slug: string | null
+  serviceOfferId: number | null
+  roleId: number | null
+  createdAt: Date | null
+  updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type ServiceOfferRoleCountAggregateOutputType = {
   id: number
+  slug: number
   serviceOfferId: number
   roleId: number
+  controls: number
+  createdAt: number
+  updatedAt: number
+  deletedAt: number
   _all: number
 }
 
 
-export type ServiceOfferRoleMinAggregateInputType = {
+export type ServiceOfferRoleAvgAggregateInputType = {
   id?: true
   serviceOfferId?: true
   roleId?: true
+}
+
+export type ServiceOfferRoleSumAggregateInputType = {
+  id?: true
+  serviceOfferId?: true
+  roleId?: true
+}
+
+export type ServiceOfferRoleMinAggregateInputType = {
+  id?: true
+  slug?: true
+  serviceOfferId?: true
+  roleId?: true
+  createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
 }
 
 export type ServiceOfferRoleMaxAggregateInputType = {
   id?: true
+  slug?: true
   serviceOfferId?: true
   roleId?: true
+  createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
 }
 
 export type ServiceOfferRoleCountAggregateInputType = {
   id?: true
+  slug?: true
   serviceOfferId?: true
   roleId?: true
+  controls?: true
+  createdAt?: true
+  updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -101,6 +153,18 @@ export type ServiceOfferRoleAggregateArgs<ExtArgs extends runtime.Types.Extensio
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ServiceOfferRoleAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ServiceOfferRoleSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ServiceOfferRoleMinAggregateInputType
@@ -131,15 +195,24 @@ export type ServiceOfferRoleGroupByArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   _count?: ServiceOfferRoleCountAggregateInputType | true
+  _avg?: ServiceOfferRoleAvgAggregateInputType
+  _sum?: ServiceOfferRoleSumAggregateInputType
   _min?: ServiceOfferRoleMinAggregateInputType
   _max?: ServiceOfferRoleMaxAggregateInputType
 }
 
 export type ServiceOfferRoleGroupByOutputType = {
-  id: string
-  serviceOfferId: string
-  roleId: string
+  id: number
+  slug: string
+  serviceOfferId: number
+  roleId: number
+  controls: runtime.JsonValue | null
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
   _count: ServiceOfferRoleCountAggregateOutputType | null
+  _avg: ServiceOfferRoleAvgAggregateOutputType | null
+  _sum: ServiceOfferRoleSumAggregateOutputType | null
   _min: ServiceOfferRoleMinAggregateOutputType | null
   _max: ServiceOfferRoleMaxAggregateOutputType | null
 }
@@ -163,89 +236,148 @@ export type ServiceOfferRoleWhereInput = {
   AND?: Prisma.ServiceOfferRoleWhereInput | Prisma.ServiceOfferRoleWhereInput[]
   OR?: Prisma.ServiceOfferRoleWhereInput[]
   NOT?: Prisma.ServiceOfferRoleWhereInput | Prisma.ServiceOfferRoleWhereInput[]
-  id?: Prisma.UuidFilter<"ServiceOfferRole"> | string
-  serviceOfferId?: Prisma.UuidFilter<"ServiceOfferRole"> | string
-  roleId?: Prisma.UuidFilter<"ServiceOfferRole"> | string
+  id?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  slug?: Prisma.UuidFilter<"ServiceOfferRole"> | string
+  serviceOfferId?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  roleId?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  controls?: Prisma.JsonNullableFilter<"ServiceOfferRole">
+  createdAt?: Prisma.DateTimeFilter<"ServiceOfferRole"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ServiceOfferRole"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceOfferRole"> | Date | string | null
   serviceOffer?: Prisma.XOR<Prisma.ServiceOfferScalarRelationFilter, Prisma.ServiceOfferWhereInput>
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
 }
 
 export type ServiceOfferRoleOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   serviceOffer?: Prisma.ServiceOfferOrderByWithRelationInput
   role?: Prisma.RoleOrderByWithRelationInput
 }
 
 export type ServiceOfferRoleWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
+  slug?: string
   serviceOfferId_roleId?: Prisma.ServiceOfferRoleServiceOfferIdRoleIdCompoundUniqueInput
   AND?: Prisma.ServiceOfferRoleWhereInput | Prisma.ServiceOfferRoleWhereInput[]
   OR?: Prisma.ServiceOfferRoleWhereInput[]
   NOT?: Prisma.ServiceOfferRoleWhereInput | Prisma.ServiceOfferRoleWhereInput[]
-  serviceOfferId?: Prisma.UuidFilter<"ServiceOfferRole"> | string
-  roleId?: Prisma.UuidFilter<"ServiceOfferRole"> | string
+  serviceOfferId?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  roleId?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  controls?: Prisma.JsonNullableFilter<"ServiceOfferRole">
+  createdAt?: Prisma.DateTimeFilter<"ServiceOfferRole"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ServiceOfferRole"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceOfferRole"> | Date | string | null
   serviceOffer?: Prisma.XOR<Prisma.ServiceOfferScalarRelationFilter, Prisma.ServiceOfferWhereInput>
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
-}, "id" | "serviceOfferId_roleId">
+}, "id" | "slug" | "serviceOfferId_roleId">
 
 export type ServiceOfferRoleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
+  controls?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ServiceOfferRoleCountOrderByAggregateInput
+  _avg?: Prisma.ServiceOfferRoleAvgOrderByAggregateInput
   _max?: Prisma.ServiceOfferRoleMaxOrderByAggregateInput
   _min?: Prisma.ServiceOfferRoleMinOrderByAggregateInput
+  _sum?: Prisma.ServiceOfferRoleSumOrderByAggregateInput
 }
 
 export type ServiceOfferRoleScalarWhereWithAggregatesInput = {
   AND?: Prisma.ServiceOfferRoleScalarWhereWithAggregatesInput | Prisma.ServiceOfferRoleScalarWhereWithAggregatesInput[]
   OR?: Prisma.ServiceOfferRoleScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ServiceOfferRoleScalarWhereWithAggregatesInput | Prisma.ServiceOfferRoleScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"ServiceOfferRole"> | string
-  serviceOfferId?: Prisma.UuidWithAggregatesFilter<"ServiceOfferRole"> | string
-  roleId?: Prisma.UuidWithAggregatesFilter<"ServiceOfferRole"> | string
+  id?: Prisma.IntWithAggregatesFilter<"ServiceOfferRole"> | number
+  slug?: Prisma.UuidWithAggregatesFilter<"ServiceOfferRole"> | string
+  serviceOfferId?: Prisma.IntWithAggregatesFilter<"ServiceOfferRole"> | number
+  roleId?: Prisma.IntWithAggregatesFilter<"ServiceOfferRole"> | number
+  controls?: Prisma.JsonNullableWithAggregatesFilter<"ServiceOfferRole">
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ServiceOfferRole"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ServiceOfferRole"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ServiceOfferRole"> | Date | string | null
 }
 
 export type ServiceOfferRoleCreateInput = {
-  id?: string
+  slug?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
   serviceOffer: Prisma.ServiceOfferCreateNestedOneWithoutRequiredRolesInput
   role: Prisma.RoleCreateNestedOneWithoutServiceOfferRolesInput
 }
 
 export type ServiceOfferRoleUncheckedCreateInput = {
-  id?: string
-  serviceOfferId: string
-  roleId: string
+  id?: number
+  slug?: string
+  serviceOfferId: number
+  roleId: number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferRoleUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   serviceOffer?: Prisma.ServiceOfferUpdateOneRequiredWithoutRequiredRolesNestedInput
   role?: Prisma.RoleUpdateOneRequiredWithoutServiceOfferRolesNestedInput
 }
 
 export type ServiceOfferRoleUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
+  roleId?: Prisma.IntFieldUpdateOperationsInput | number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferRoleCreateManyInput = {
-  id?: string
-  serviceOfferId: string
-  roleId: string
+  id?: number
+  slug?: string
+  serviceOfferId: number
+  roleId: number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferRoleUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferRoleUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
+  roleId?: Prisma.IntFieldUpdateOperationsInput | number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferRoleListRelationFilter = {
@@ -259,11 +391,22 @@ export type ServiceOfferRoleOrderByRelationAggregateInput = {
 }
 
 export type ServiceOfferRoleServiceOfferIdRoleIdCompoundUniqueInput = {
-  serviceOfferId: string
-  roleId: string
+  serviceOfferId: number
+  roleId: number
 }
 
 export type ServiceOfferRoleCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  serviceOfferId?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
+  controls?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+}
+
+export type ServiceOfferRoleAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
@@ -271,11 +414,25 @@ export type ServiceOfferRoleCountOrderByAggregateInput = {
 
 export type ServiceOfferRoleMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type ServiceOfferRoleMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  serviceOfferId?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+}
+
+export type ServiceOfferRoleSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   serviceOfferId?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
@@ -366,13 +523,22 @@ export type ServiceOfferRoleUncheckedUpdateManyWithoutServiceOfferNestedInput = 
 }
 
 export type ServiceOfferRoleCreateWithoutRoleInput = {
-  id?: string
+  slug?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
   serviceOffer: Prisma.ServiceOfferCreateNestedOneWithoutRequiredRolesInput
 }
 
 export type ServiceOfferRoleUncheckedCreateWithoutRoleInput = {
-  id?: string
-  serviceOfferId: string
+  id?: number
+  slug?: string
+  serviceOfferId: number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferRoleCreateOrConnectWithoutRoleInput = {
@@ -405,19 +571,33 @@ export type ServiceOfferRoleScalarWhereInput = {
   AND?: Prisma.ServiceOfferRoleScalarWhereInput | Prisma.ServiceOfferRoleScalarWhereInput[]
   OR?: Prisma.ServiceOfferRoleScalarWhereInput[]
   NOT?: Prisma.ServiceOfferRoleScalarWhereInput | Prisma.ServiceOfferRoleScalarWhereInput[]
-  id?: Prisma.UuidFilter<"ServiceOfferRole"> | string
-  serviceOfferId?: Prisma.UuidFilter<"ServiceOfferRole"> | string
-  roleId?: Prisma.UuidFilter<"ServiceOfferRole"> | string
+  id?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  slug?: Prisma.UuidFilter<"ServiceOfferRole"> | string
+  serviceOfferId?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  roleId?: Prisma.IntFilter<"ServiceOfferRole"> | number
+  controls?: Prisma.JsonNullableFilter<"ServiceOfferRole">
+  createdAt?: Prisma.DateTimeFilter<"ServiceOfferRole"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ServiceOfferRole"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"ServiceOfferRole"> | Date | string | null
 }
 
 export type ServiceOfferRoleCreateWithoutServiceOfferInput = {
-  id?: string
+  slug?: string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
   role: Prisma.RoleCreateNestedOneWithoutServiceOfferRolesInput
 }
 
 export type ServiceOfferRoleUncheckedCreateWithoutServiceOfferInput = {
-  id?: string
-  roleId: string
+  id?: number
+  slug?: string
+  roleId: number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferRoleCreateOrConnectWithoutServiceOfferInput = {
@@ -447,78 +627,136 @@ export type ServiceOfferRoleUpdateManyWithWhereWithoutServiceOfferInput = {
 }
 
 export type ServiceOfferRoleCreateManyRoleInput = {
-  id?: string
-  serviceOfferId: string
+  id?: number
+  slug?: string
+  serviceOfferId: number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferRoleUpdateWithoutRoleInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   serviceOffer?: Prisma.ServiceOfferUpdateOneRequiredWithoutRequiredRolesNestedInput
 }
 
 export type ServiceOfferRoleUncheckedUpdateWithoutRoleInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferRoleUncheckedUpdateManyWithoutRoleInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  serviceOfferId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  serviceOfferId?: Prisma.IntFieldUpdateOperationsInput | number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferRoleCreateManyServiceOfferInput = {
-  id?: string
-  roleId: string
+  id?: number
+  slug?: string
+  roleId: number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type ServiceOfferRoleUpdateWithoutServiceOfferInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   role?: Prisma.RoleUpdateOneRequiredWithoutServiceOfferRolesNestedInput
 }
 
 export type ServiceOfferRoleUncheckedUpdateWithoutServiceOfferInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.IntFieldUpdateOperationsInput | number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ServiceOfferRoleUncheckedUpdateManyWithoutServiceOfferInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.IntFieldUpdateOperationsInput | number
+  controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
 
 export type ServiceOfferRoleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   serviceOfferId?: boolean
   roleId?: boolean
+  controls?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceOfferRole"]>
 
 export type ServiceOfferRoleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   serviceOfferId?: boolean
   roleId?: boolean
+  controls?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceOfferRole"]>
 
 export type ServiceOfferRoleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  slug?: boolean
   serviceOfferId?: boolean
   roleId?: boolean
+  controls?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceOfferRole"]>
 
 export type ServiceOfferRoleSelectScalar = {
   id?: boolean
+  slug?: boolean
   serviceOfferId?: boolean
   roleId?: boolean
+  controls?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type ServiceOfferRoleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "serviceOfferId" | "roleId", ExtArgs["result"]["serviceOfferRole"]>
+export type ServiceOfferRoleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "serviceOfferId" | "roleId" | "controls" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["serviceOfferRole"]>
 export type ServiceOfferRoleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   serviceOffer?: boolean | Prisma.ServiceOfferDefaultArgs<ExtArgs>
   role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
@@ -539,9 +777,14 @@ export type $ServiceOfferRolePayload<ExtArgs extends runtime.Types.Extensions.In
     role: Prisma.$RolePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
-    serviceOfferId: string
-    roleId: string
+    id: number
+    slug: string
+    serviceOfferId: number
+    roleId: number
+    controls: runtime.JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["serviceOfferRole"]>
   composites: {}
 }
@@ -967,9 +1210,14 @@ export interface Prisma__ServiceOfferRoleClient<T, Null = never, ExtArgs extends
  * Fields of the ServiceOfferRole model
  */
 export interface ServiceOfferRoleFieldRefs {
-  readonly id: Prisma.FieldRef<"ServiceOfferRole", 'String'>
-  readonly serviceOfferId: Prisma.FieldRef<"ServiceOfferRole", 'String'>
-  readonly roleId: Prisma.FieldRef<"ServiceOfferRole", 'String'>
+  readonly id: Prisma.FieldRef<"ServiceOfferRole", 'Int'>
+  readonly slug: Prisma.FieldRef<"ServiceOfferRole", 'String'>
+  readonly serviceOfferId: Prisma.FieldRef<"ServiceOfferRole", 'Int'>
+  readonly roleId: Prisma.FieldRef<"ServiceOfferRole", 'Int'>
+  readonly controls: Prisma.FieldRef<"ServiceOfferRole", 'Json'>
+  readonly createdAt: Prisma.FieldRef<"ServiceOfferRole", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ServiceOfferRole", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"ServiceOfferRole", 'DateTime'>
 }
     
 
