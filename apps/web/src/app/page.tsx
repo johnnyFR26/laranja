@@ -16,10 +16,10 @@ export default function Index() {
               Welcome web 👋
             </h1>
             <Link
-              href="/register/freelancer"
-              className="rounded-xl bg-[#ff6933] px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
+              href="/register"
+              className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
             >
-              Cadastre-se como freelancer
+              Cadastre-se
             </Link>
           </div>
 

@@ -4,3 +4,7 @@ export {
   freelancerRegistrationSchema,
   type FreelancerRegistrationFormValues,
 } from './freelancer-registration'
+export {
+  establishmentRegistrationSchema,
+  type EstablishmentRegistrationFormValues,
+} from './establishment-registration'
