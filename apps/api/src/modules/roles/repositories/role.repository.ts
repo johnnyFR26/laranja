@@ -4,11 +4,30 @@ import { PrismaService } from '../../../database/prisma.service';
 import { BaseRepository } from '../../../common/repositories/base.repository';
 import { IRoleRepository } from '../contracts';
 import { IPaginationParams, IPaginatedResult } from '../../../common/contracts/base-repository.interface';
+import { CreateRoleDto } from '../dto';
 
 @Injectable()
 export class RoleRepository extends BaseRepository<Role> implements IRoleRepository {
   constructor(prisma: PrismaService) {
     super(prisma, 'role');
+  }
+
+  async createMany(roles: CreateRoleDto[]): Promise<Role[]> {
+    const data = roles.map((r) => {
+      const item: Record<string, unknown> = {
+        name: r.name,
+        description: r.description ?? null,
+        status: r.status ?? true,
+        ...(r.controls && { controls: r.controls }),
+      };
+      if (r.slug) item.slug = r.slug;
+      return item;
+    });
+    const result = await this.prisma.role.createManyAndReturn({
+      data,
+      skipDuplicates: true,
+    });
+    return result;
   }
 
   async findBySlug(slug: string): Promise<Role | null> {
@@ -64,7 +83,10 @@ export class RoleRepository extends BaseRepository<Role> implements IRoleReposit
 
   async getUserRoles(userId: string): Promise<Role[]> {
     const userRoles = await this.prisma.userRole.findMany({
-      where: { userId },
+      where: {
+        userId,
+        role: { status: true },
+      },
       include: { role: true },
     });
     return userRoles.map((ur) => ur.role);

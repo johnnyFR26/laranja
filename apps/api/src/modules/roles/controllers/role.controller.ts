@@ -19,7 +19,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { RoleService } from '../services/role.service';
-import { CreateRoleDto, UpdateRoleDto, FilterRoleDto, AssignRoleDto, RemoveRoleDto } from '../dto';
+import { CreateRoleDto, CreateManyRolesDto, UpdateRoleDto, FilterRoleDto, AssignRoleDto, RemoveRoleDto } from '../dto';
 import { Roles, Public } from '../../../common/decorators';
 
 @ApiTags('Roles')
@@ -38,6 +38,17 @@ export class RoleController {
   @ApiResponse({ status: 409, description: 'Conflict - Role already exists' })
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto);
+  }
+
+  @Post('create-many')
+  @Roles('admin')
+  @ApiOperation({ summary: 'Create multiple roles at once' })
+  @ApiResponse({ status: 201, description: 'Roles created successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request - Invalid or duplicate roles' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
+  createMany(@Body() createManyRolesDto: CreateManyRolesDto) {
+    return this.roleService.createMany(createManyRolesDto);
   }
 
   @Get()

@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, MaxLength, Matches } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, MaxLength, Matches } from 'class-validator';
 
 export class UpdateRoleDto {
   @ApiPropertyOptional({ example: 'Administrator', description: 'Role name' })
@@ -19,4 +19,9 @@ export class UpdateRoleDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @ApiPropertyOptional({ example: true, description: 'Whether the role is active' })
+  @IsOptional()
+  @IsBoolean()
+  status?: boolean;
 }

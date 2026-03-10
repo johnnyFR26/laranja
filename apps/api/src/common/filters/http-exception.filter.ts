@@ -23,9 +23,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
-      message = typeof exceptionResponse === 'string' 
-        ? exceptionResponse 
-        : (exceptionResponse as any).message || exceptionResponse;
+      message = typeof exceptionResponse === 'string'
+        ? exceptionResponse
+        : exceptionResponse;
     } else if (exception instanceof Error) {
       message = exception.message;
       this.logger.error(
@@ -34,11 +34,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      message,
-    });
+    const payload: Record<string, unknown> =
+      typeof message === 'object' && message !== null
+        ? { statusCode: status, timestamp: new Date().toISOString(), path: request.url, ...(message as object) }
+        : { statusCode: status, timestamp: new Date().toISOString(), path: request.url, message };
+    response.status(status).json(payload);
   }
 }

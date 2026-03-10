@@ -104,13 +104,15 @@ model Role {
   name        String   @unique @db.VarChar(100)
   description String?  @db.Text
   controls    Json?    @db.Json
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime?
+  status      Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   userRoles         UserRole[]
   serviceOfferRoles ServiceOfferRole[]
-
+  @@index([slug])
+  @@index([status])
   @@map("roles")
 }
 

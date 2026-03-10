@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { RoleRepository } from '../repositories/role.repository';
-import { CreateRoleDto, UpdateRoleDto, FilterRoleDto, AssignRoleDto, RemoveRoleDto } from '../dto';
+import { CreateRoleDto, CreateManyRolesDto, UpdateRoleDto, FilterRoleDto, AssignRoleDto, RemoveRoleDto } from '../dto';
 import { IPaginatedResult } from '../../../common/contracts/base-repository.interface';
 import { Role } from '../../../generated/client';
 
@@ -9,10 +9,12 @@ export class RoleService {
   constructor(private readonly roleRepository: RoleRepository) {}
 
   async create(createRoleDto: CreateRoleDto): Promise<Role> {
-    // Check if slug already exists
-    const existingBySlug = await this.roleRepository.findBySlug(createRoleDto.slug);
-    if (existingBySlug) {
-      throw new ConflictException(`Role with slug '${createRoleDto.slug}' already exists`);
+    // Check if slug already exists (when provided)
+    if (createRoleDto.slug) {
+      const existingBySlug = await this.roleRepository.findBySlug(createRoleDto.slug);
+      if (existingBySlug) {
+        throw new ConflictException(`Role with slug '${createRoleDto.slug}' already exists`);
+      }
     }
 
     // Check if name already exists
@@ -24,10 +26,35 @@ export class RoleService {
     return this.roleRepository.create(createRoleDto);
   }
 
+  async createMany(createManyRolesDto: CreateManyRolesDto): Promise<{ created: Role[]; count: number }> {
+    const { roles } = createManyRolesDto;
+
+    // Check for duplicates within the request (same slug or name)
+    const slugs = new Set<string>();
+    const names = new Set<string>();
+    for (const r of roles) {
+      if (r.slug && slugs.has(r.slug)) {
+        throw new BadRequestException(`Duplicate slug '${r.slug}' in request`);
+      }
+      if (names.has(r.name)) {
+        throw new BadRequestException(`Duplicate name '${r.name}' in request`);
+      }
+      if (r.slug) slugs.add(r.slug);
+      names.add(r.name);
+    }
+
+    const created = await this.roleRepository.createMany(roles);
+    return { created, count: created.length };
+  }
+
   async findAll(filterDto: FilterRoleDto): Promise<IPaginatedResult<Role>> {
-    const { page = 1, limit = 10, search } = filterDto;
+    const { page = 1, limit = 10, search, status } = filterDto;
 
     const where: Record<string, unknown> = {};
+
+    if (status !== undefined) {
+      where.status = status;
+    }
 
     if (search) {
       where.OR = [
