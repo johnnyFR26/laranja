@@ -1,0 +1,5 @@
+export { JobDetailHero } from './job-detail-hero'
+export { JobDetailStats } from './job-detail-stats'
+export { JobDetailDescription } from './job-detail-description'
+export { JobDetailEstablishmentCard } from './job-detail-establishment'
+export { JobDetailSidebar } from './job-detail-sidebar'

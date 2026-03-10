@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -44,6 +45,7 @@ const TOTAL_STEPS = 5
 const PERCENT = 20
 
 export function FreelancerRegistrationForm() {
+  const router = useRouter()
   const avatarInputRef = useRef<HTMLInputElement>(null)
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
@@ -90,6 +92,7 @@ export function FreelancerRegistrationForm() {
     }
     // TODO: enviar payload para API (incluir avatarFile se houver)
     console.log(payload, avatarFile)
+    router.push('/register/complete')
   }
 
   const skills = watch('skills') ?? []

@@ -28,8 +28,8 @@ export default function LoginPage() {
           <LoginForm />
           <p className="mt-6 text-center text-sm text-slate-500">
             Não tem conta?{' '}
-            <Link href="/register/freelancer" className="font-bold text-primary hover:underline">
-              Cadastre-se como freelancer
+            <Link href="/register" className="font-bold text-primary hover:underline">
+              Cadastre-se
             </Link>
           </p>
         </div>
