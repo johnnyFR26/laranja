@@ -9,7 +9,6 @@ export class RoleService {
   constructor(private readonly roleRepository: RoleRepository) {}
 
   async create(createRoleDto: CreateRoleDto): Promise<Role> {
-    // Check if slug already exists (when provided)
     if (createRoleDto.slug) {
       const existingBySlug = await this.roleRepository.findBySlug(createRoleDto.slug);
       if (existingBySlug) {
@@ -17,7 +16,6 @@ export class RoleService {
       }
     }
 
-    // Check if name already exists
     const existingByName = await this.roleRepository.findByName(createRoleDto.name);
     if (existingByName) {
       throw new ConflictException(`Role with name '${createRoleDto.name}' already exists`);
@@ -29,7 +27,6 @@ export class RoleService {
   async createMany(createManyRolesDto: CreateManyRolesDto): Promise<{ created: Role[]; count: number }> {
     const { roles } = createManyRolesDto;
 
-    // Check for duplicates within the request (same slug or name)
     const slugs = new Set<string>();
     const names = new Set<string>();
     for (const r of roles) {
@@ -89,7 +86,6 @@ export class RoleService {
       throw new NotFoundException(`Role with ID '${id}' not found`);
     }
 
-    // Check if slug is being updated and if it conflicts
     if (updateRoleDto.slug && updateRoleDto.slug !== existingRole.slug) {
       const existingBySlug = await this.roleRepository.findBySlug(updateRoleDto.slug);
       if (existingBySlug) {
@@ -97,7 +93,6 @@ export class RoleService {
       }
     }
 
-    // Check if name is being updated and if it conflicts
     if (updateRoleDto.name && updateRoleDto.name !== existingRole.name) {
       const existingByName = await this.roleRepository.findByName(updateRoleDto.name);
       if (existingByName) {
@@ -125,7 +120,6 @@ export class RoleService {
   async assignRolesToUser(assignRoleDto: AssignRoleDto): Promise<{ message: string }> {
     const { userId, roleIds } = assignRoleDto;
 
-    // Validate that all roles exist
     for (const roleId of roleIds) {
       const role = await this.roleRepository.findById(roleId);
       if (!role) {
@@ -145,7 +139,6 @@ export class RoleService {
   }
 
   async setUserRoles(userId: string, roleIds: string[]): Promise<{ message: string }> {
-    // Validate that all roles exist
     for (const roleId of roleIds) {
       const role = await this.roleRepository.findById(roleId);
       if (!role) {

@@ -121,12 +121,10 @@ export class RoleRepository extends BaseRepository<Role> implements IRoleReposit
 
   async setUserRoles(userId: string, roleIds: string[]): Promise<void> {
     await this.prisma.$transaction(async (tx) => {
-      // Remove all existing roles
       await tx.userRole.deleteMany({
         where: { userId },
       });
 
-      // Assign new roles
       if (roleIds.length > 0) {
         const data = roleIds.map((roleId) => ({
           userId,
