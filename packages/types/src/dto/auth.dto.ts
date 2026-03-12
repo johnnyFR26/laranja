@@ -1,3 +1,6 @@
+import { EstablishmentDto } from "./establishment.dto.js"
+import { UserRoleDto } from "./user-role.dto.js"
+
 export interface LoginDto {
   email: string
   password: string
@@ -8,7 +11,16 @@ export interface RegisterDto {
   password: string
   name: string
   phone?: string | null
-  roles: string[];
+  /** IDs das roles (vindos do backend) */
+  roleIds: string[]
+  /** Disponibilidade e skills do freelancer */
+  controls: {
+    skills: string[];
+    availability: {
+      morning: Record<string, boolean>;
+      evening: Record<string, boolean>;
+    };
+  }
 }
 
 /** Usuário retornado em login/register/profile (snake_case conforme API) */
@@ -19,7 +31,8 @@ export interface AuthUserDto {
   avatarUrl?: string | null
   phone?: string | null
   status?: string
-  roles: string[]
+  roles: UserRoleDto[]
+  establishment: EstablishmentDto | null
 }
 
 /** Corpo da resposta de POST /auth/login e POST /auth/register */
@@ -30,16 +43,7 @@ export interface AuthTokensResponseDto {
 }
 
 /** Corpo da resposta de GET /auth/profile */
-export interface AuthProfileResponseDto {
-  id: string
-  email: string
-  name: string | null
-  phone: string | null
-  avatarUrl: string | null
-  status: string
-  address: unknown
-  roles: string[]
-}
+export interface AuthProfileResponseDto extends AuthUserDto{}
 
 /** Corpo da resposta de POST /auth/refresh */
 export interface AuthRefreshResponseDto {

@@ -32,7 +32,7 @@ export const freelancerRegistrationSchema = z.object({
     .string()
     .max(20, 'Telefone deve ter no máximo 20 caracteres')
     .optional(),
-  roles: z.array(z.string()).min(1, 'Selecione ao menos uma função'),
+  rolesIds: z.array(z.string()).min(1, 'Selecione ao menos uma função'),
   skills: z
     .array(z.string())
     .min(1, 'Selecione ao menos uma habilidade'),
