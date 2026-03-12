@@ -33,14 +33,6 @@ function formatTimeRange(start: string | undefined, end: string | undefined): st
   return `${toLabel(start)} - ${toLabel(end)}`
 }
 
-function parseDurationHours(start: string | undefined, end: string | undefined): number {
-  if (!start || !end) return 0
-  const [sh, sm] = start.split(':').map(Number)
-  const [eh, em] = end.split(':').map(Number)
-  let mins = (eh * 60 + em) - (sh * 60 + sm)
-  if (mins <= 0) mins += 24 * 60
-  return Math.round((mins / 60) * 10) / 10
-}
 
 export function CreateShiftPreview({
   values,
@@ -51,8 +43,6 @@ export function CreateShiftPreview({
   const dateLabel = formatDisplayDate(values.date)
   const shiftLabel = formatTimeRange(values.shiftStart, values.shiftEnd)
   const rate = values.hourlyRate ? `R$ ${Number(values.hourlyRate).toFixed(2).replace('.', ',')}/h` : '—'
-  const hours = parseDurationHours(values.shiftStart, values.shiftEnd)
-  const isOvernight = values.shiftStart && values.shiftEnd && values.shiftStart > values.shiftEnd
   const requirements: string[] = []
   if (values.description?.trim())
     requirements.push(

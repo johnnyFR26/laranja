@@ -14,7 +14,7 @@ export function PortalShell({ children }: PortalShellProps) {
   const sidebarUser = authUser
     ? {
         name: authUser.name ?? authUser.email,
-        establishmentName: authUser.roles?.includes('owner') ? undefined : undefined,
+        establishmentName: authUser.establishment ? undefined : undefined,
         avatarUrl: authUser.avatarUrl ?? null,
       }
     : null
