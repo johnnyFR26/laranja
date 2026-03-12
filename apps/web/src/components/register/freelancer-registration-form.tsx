@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { DayOfWeek, ShiftSlot } from '@org/types'
@@ -9,6 +9,7 @@ import {
   freelancerRegistrationSchema,
   type FreelancerRegistrationFormValues,
 } from '@/validators'
+import { useAuth, useRoles } from '@/hooks'
 
 const SKILLS = [
   'Fine Dining Experience',
@@ -34,11 +35,14 @@ const SHIFTS: { slot: ShiftSlot; label: string }[] = [
   { slot: 'evening', label: 'Noite (16h–0h)' },
 ]
 
-const ROLE_OPTIONS: { value: FreelancerRegistrationFormValues['roleSlug']; label: string; icon: string }[] = [
-  { value: 'waiter', label: 'Garçom', icon: '🍽️' },
-  { value: 'kitchen-assistant', label: 'Auxiliar de Cozinha', icon: '👨‍🍳' },
-  { value: 'both', label: 'Ambos', icon: '👥' },
-]
+function getRoleIcon(slug: string): string {
+  const icons: Record<string, string> = {
+    waiter: '🍽️',
+    'kitchen-assistant': '👨‍🍳',
+    both: '👥',
+  }
+  return icons[slug] ?? '👨‍🍳'
+}
 
 const STEP = 1
 const TOTAL_STEPS = 5
@@ -50,22 +54,49 @@ export function FreelancerRegistrationForm() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
 
+  const { register: registerUser } = useAuth()
+  const { roles, loadRoles, isLoading: rolesLoading } = useRoles()
+
+  const roleOptions = useMemo(
+    () =>
+      roles.map((r) => ({
+        value: r.slug,
+        label: r.name,
+        icon: getRoleIcon(r.slug),
+      })),
+    [roles]
+  )
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    getValues,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FreelancerRegistrationFormValues>({
     resolver: zodResolver(freelancerRegistrationSchema),
     defaultValues: {
       name: '',
       email: '',
+      password: '',
       phone: '',
+      roles: [],
       skills: [],
       availability: { morning: {}, evening: {} },
     },
   })
+
+  useEffect(() => {
+    loadRoles()
+  }, [loadRoles])
+
+  useEffect(() => {
+    if (roleOptions.length > 0 && !getValues('roleSlug')) {
+      setValue('roleSlug', roleOptions[0].value)
+    }
+  }, [roleOptions, setValue, getValues])
 
   useEffect(() => {
     return () => {
@@ -85,14 +116,21 @@ export function FreelancerRegistrationForm() {
     avatarInputRef.current?.click()
   }
 
-  const onSubmit = (data: FreelancerRegistrationFormValues) => {
-    const payload = {
-      ...data,
+  const onSubmit = async (data: FreelancerRegistrationFormValues) => {
+    const credentials = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
       phone: data.phone?.trim() || null,
+      roles: data.roles,
     }
-    // TODO: enviar payload para API (incluir avatarFile se houver)
-    console.log(payload, avatarFile)
-    router.push('/register/complete')
+    try {
+      await registerUser(credentials)
+      router.push('/register/complete')
+    } catch (err: unknown) {
+      const message = err && typeof err === 'object' && 'message' in err ? String((err as { message: unknown }).message) : 'Erro ao criar conta.'
+      setError('root', { type: 'manual', message })
+    }
   }
 
   const skills = watch('skills') ?? []
@@ -100,6 +138,11 @@ export function FreelancerRegistrationForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+      {errors.root && (
+        <div className="lg:col-span-12 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300" role="alert">
+          {errors.root.message}
+        </div>
+      )}
       <div className="space-y-8 lg:col-span-8">
         {/* Progress */}
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -210,6 +253,18 @@ export function FreelancerRegistrationForm() {
                 <p className="text-sm text-red-600 dark:text-red-400" role="alert">{errors.email.message}</p>
               )}
             </div>
+            <div className="flex flex-col gap-1 md:col-span-2">
+              <label className="text-sm font-medium">Senha</label>
+              <input
+                type="password"
+                placeholder="Mín. 8 caracteres, maiúscula, minúscula, número e especial"
+                className="rounded-lg border border-slate-200 bg-white px-3 py-2 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-800 dark:bg-slate-950"
+                {...register('password')}
+              />
+              {errors.password && (
+                <p className="text-sm text-red-600 dark:text-red-400" role="alert">{errors.password.message}</p>
+              )}
+            </div>
           </div>
         </section>
 
@@ -219,25 +274,29 @@ export function FreelancerRegistrationForm() {
             <span className="text-primary" aria-hidden>💼</span>
             <h2 className="text-xl font-bold">2. Função profissional</h2>
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {ROLE_OPTIONS.map((opt) => (
-              <label
-                key={opt.value}
-                className={`relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-4 transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 ${
-                  watch('roleSlug') === opt.value ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800'
-                }`}
-              >
-                <input
-                  type="radio"
-                  value={opt.value}
-                  className="absolute right-3 top-3 size-5 shrink-0 appearance-none rounded-full border-2 border-slate-300 bg-white focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 checked:border-primary checked:bg-primary dark:border-slate-600 dark:bg-slate-800 dark:checked:border-primary dark:checked:bg-primary"
-                  {...register('roleSlug')}
-                />
-                <span className="text-3xl" aria-hidden>{opt.icon}</span>
-                <span className="text-sm font-bold">{opt.label}</span>
-              </label>
-            ))}
-          </div>
+          {rolesLoading ? (
+            <p className="text-sm text-slate-500">Carregando funções…</p>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {roleOptions.map((opt) => (
+                <label
+                  key={opt.value}
+                  className={`relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-4 transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 ${
+                    watch('roleSlug') === opt.value ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    value={opt.value}
+                    className="absolute right-3 top-3 size-5 shrink-0 appearance-none rounded-full border-2 border-slate-300 bg-white focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 checked:border-primary checked:bg-primary dark:border-slate-600 dark:bg-slate-800 dark:checked:border-primary dark:checked:bg-primary"
+                    {...register('roleSlug')}
+                  />
+                  <span className="text-3xl" aria-hidden>{opt.icon}</span>
+                  <span className="text-sm font-bold">{opt.label}</span>
+                </label>
+              ))}
+            </div>
+          )}
           {errors.roleSlug && (
             <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{errors.roleSlug.message}</p>
           )}

@@ -8,6 +8,7 @@ export interface RegisterDto {
   password: string
   name: string
   phone?: string | null
+  roles: string[];
 }
 
 /** Usuário retornado em login/register/profile (snake_case conforme API) */

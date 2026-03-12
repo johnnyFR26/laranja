@@ -1,7 +1,5 @@
 import { z } from 'zod'
 
-const ROLE_SLUGS = ['waiter', 'kitchen-assistant', 'both'] as const
-
 const availabilitySchema = z.object({
   morning: z.record(z.string(), z.boolean()),
   evening: z.record(z.string(), z.boolean()),
@@ -13,6 +11,9 @@ const availabilitySchema = z.object({
  * o que mantém compatibilidade total com react-hook-form v7 + Zod v4.
  * Conversões de payload (ex.: phone vazio → null) ocorrem no onSubmit antes de chamar a API.
  */
+const passwordMinLength = 8
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
+
 export const freelancerRegistrationSchema = z.object({
   name: z
     .string()
@@ -23,11 +24,15 @@ export const freelancerRegistrationSchema = z.object({
     .string()
     .min(1, 'E-mail é obrigatório')
     .email('E-mail inválido'),
+  password: z
+    .string()
+    .min(passwordMinLength, 'Senha deve ter no mínimo 8 caracteres')
+    .regex(passwordRegex, 'Senha deve conter maiúscula, minúscula, número e caractere especial (@$!%*?&)'),
   phone: z
     .string()
     .max(20, 'Telefone deve ter no máximo 20 caracteres')
     .optional(),
-  roleSlug: z.enum(ROLE_SLUGS, { error: 'Selecione uma função' }),
+  roles: z.array(z.string()).min(1, 'Selecione ao menos uma função'),
   skills: z
     .array(z.string())
     .min(1, 'Selecione ao menos uma habilidade'),
