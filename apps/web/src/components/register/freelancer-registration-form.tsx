@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { DayOfWeek, ShiftSlot } from '@org/types'
+import type { DayOfWeek, RegisterDto, ShiftSlot } from '@org/types'
 import {
   freelancerRegistrationSchema,
   type FreelancerRegistrationFormValues,
@@ -50,9 +50,10 @@ const PERCENT = 20
 
 export function FreelancerRegistrationForm() {
   const router = useRouter()
+  const formRef = useRef<HTMLFormElement>(null)
   const avatarInputRef = useRef<HTMLInputElement>(null)
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
-  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [, setAvatarFile] = useState<File | null>(null)
 
   const { register: registerUser } = useAuth()
   const { roles, loadRoles, isLoading: rolesLoading } = useRoles()
@@ -60,7 +61,7 @@ export function FreelancerRegistrationForm() {
   const roleOptions = useMemo(
     () =>
       roles.map((r) => ({
-        value: r.slug,
+        value: String(r.id),
         label: r.name,
         icon: getRoleIcon(r.slug),
       })),
@@ -82,7 +83,7 @@ export function FreelancerRegistrationForm() {
       email: '',
       password: '',
       phone: '',
-      roles: [],
+      rolesIds: [],
       skills: [],
       availability: { morning: {}, evening: {} },
     },
@@ -93,8 +94,8 @@ export function FreelancerRegistrationForm() {
   }, [loadRoles])
 
   useEffect(() => {
-    if (roleOptions.length > 0 && !getValues('roleSlug')) {
-      setValue('roleSlug', roleOptions[0].value)
+    if (roleOptions.length > 0 && getValues('rolesIds').length === 0) {
+      setValue('rolesIds', [roleOptions[0].value])
     }
   }, [roleOptions, setValue, getValues])
 
@@ -117,12 +118,16 @@ export function FreelancerRegistrationForm() {
   }
 
   const onSubmit = async (data: FreelancerRegistrationFormValues) => {
-    const credentials = {
+    const credentials: RegisterDto = {
       name: data.name,
       email: data.email,
       password: data.password,
       phone: data.phone?.trim() || null,
-      roles: data.roles,
+      roleIds: data.rolesIds,
+      controls: {
+        availability: data.availability,
+        skills: data.skills,
+      },
     }
     try {
       await registerUser(credentials)
@@ -136,10 +141,27 @@ export function FreelancerRegistrationForm() {
   const skills = watch('skills') ?? []
   const availability = watch('availability') ?? { morning: {}, evening: {} }
 
+  const onInvalid = (errs: Record<string, unknown>) => {
+    const first = Object.values(errs)[0] as { message?: string } | undefined
+    const msg = (typeof first === 'object' && first?.message) ?? 'Verifique os campos obrigatórios.'
+    setError('root', { type: 'manual', message: msg as string | undefined })
+    requestAnimationFrame(() => {
+      document.getElementById('form-errors')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
+      className="grid grid-cols-1 gap-8 lg:grid-cols-12"
+    >
       {errors.root && (
-        <div className="lg:col-span-12 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300" role="alert">
+        <div
+          id="form-errors"
+          className="lg:col-span-12 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300"
+          role="alert"
+        >
           {errors.root.message}
         </div>
       )}
@@ -282,14 +304,15 @@ export function FreelancerRegistrationForm() {
                 <label
                   key={opt.value}
                   className={`relative flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 p-4 transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5 ${
-                    watch('roleSlug') === opt.value ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800'
+                    watch('rolesIds')?.includes(opt.value) ? 'border-primary bg-primary/5' : 'border-slate-100 dark:border-slate-800'
                   }`}
                 >
                   <input
                     type="radio"
                     value={opt.value}
                     className="absolute right-3 top-3 size-5 shrink-0 appearance-none rounded-full border-2 border-slate-300 bg-white focus:ring-2 focus:ring-primary/20 focus:ring-offset-0 checked:border-primary checked:bg-primary dark:border-slate-600 dark:bg-slate-800 dark:checked:border-primary dark:checked:bg-primary"
-                    {...register('roleSlug')}
+                    checked={watch('rolesIds')?.includes(opt.value) ?? false}
+                    onChange={() => setValue('rolesIds', [opt.value], { shouldValidate: true })}
                   />
                   <span className="text-3xl" aria-hidden>{opt.icon}</span>
                   <span className="text-sm font-bold">{opt.label}</span>
@@ -297,8 +320,8 @@ export function FreelancerRegistrationForm() {
               ))}
             </div>
           )}
-          {errors.roleSlug && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{errors.roleSlug.message}</p>
+          {errors.rolesIds && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">{errors.rolesIds.message}</p>
           )}
         </section>
 

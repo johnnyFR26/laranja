@@ -15,6 +15,7 @@ import { CategoriesModule } from '../modules/categories/categories.module';
 import { EstablishmentsModule } from '../modules/establishments/establishments.module';
 import { ServiceOffersModule } from '../modules/service-offers/service-offers.module';
 import { RolesModule } from '../modules/roles/roles.module';
+import { AddressesModule } from '../modules/addresses/addresses.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { RolesModule } from '../modules/roles/roles.module';
     EstablishmentsModule,
     ServiceOffersModule,
     RolesModule,
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [

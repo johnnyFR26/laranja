@@ -79,29 +79,57 @@ export class AuthService {
 
     const hashedPassword = await argon2.hash(registerDto.password);
 
-    const user = await this.prisma.user.create({
-      data: {
-        email: registerDto.email,
-        name: registerDto.name,
-        phone: registerDto.phone,
-        password: hashedPassword,
-      },
+    const controls = registerDto.controls
+      ? ({ skills: registerDto.controls.skills, availability: registerDto.controls.availability } as object)
+      : undefined;
+
+    const user = await this.prisma.$transaction(async (tx) => {
+      const newUser = await this.prisma.user.create({
+        data: {
+          email: registerDto.email,
+          name: registerDto.name,
+          phone: registerDto.phone,
+          password: hashedPassword,
+          controls: controls ?? undefined,
+        },
+      });
+
+      if (registerDto.roleIds?.length) {
+        const roleIds = registerDto.roleIds.map((id) => parseInt(String(id), 10)).filter((n) => !Number.isNaN(n));
+        if (roleIds.length) {
+          const roles = await tx.role.findMany({ where: { id: { in: roleIds } } });
+          if (roles.length) {
+            await tx.userRole.createMany({
+              data: roles.map((r) => ({ userId: newUser.id, roleId: r.id })),
+              skipDuplicates: true,
+            });
+          }
+        }
+      }
+
+      return newUser;
     });
 
+    const userWithRoles = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      include: { userRoles: { include: { role: true } } },
+    });
+
+    const roles = userWithRoles?.userRoles.map((ur) => ur.role.slug) ?? [];
     const payload = {
       sub: user.id,
       email: user.email,
-      roles: [],
+      roles,
     };
 
     return {
       access_token: this.jwtService.sign(payload),
       refresh_token: this.jwtService.sign(payload, { expiresIn: '30d' }),
       user: {
-        id: user.id,
+        id: String(user.id),
         email: user.email,
         name: user.name,
-        roles: [],
+        roles,
       },
     };
   }

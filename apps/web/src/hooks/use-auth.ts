@@ -55,12 +55,12 @@ export interface AuthError {
 export function useAuth() {
   const { user, isAuthenticated, isLoading, setUser, setLoading, logout: storeLogout } = useAuthStore()
 
-  const isOwner = Boolean(user?.roles?.includes(OWNER_ROLE))
+  const isOwner = Boolean(user?.establishment)
 
   /** Caminho para onde redirecionar após login: owner -> /freelancers, caso contrário -> /jobs */
   const getRedirectPath = useCallback((): string => {
     if (!user) return '/login'
-    return user.roles?.includes(OWNER_ROLE) ? '/freelancers' : '/jobs'
+    return user.establishment ? '/freelancers' : '/jobs'
   }, [user])
 
   /** Carrega o perfil a partir do token salvo (hidratação ao montar o app) */
@@ -96,7 +96,7 @@ export function useAuth() {
         const { access_token, refresh_token, user } = data
         setStoredTokens(access_token, refresh_token)
         setUser(user)
-        return user.roles?.includes(OWNER_ROLE) ? '/freelancers' : '/jobs'
+        return Boolean(user.establishment) ? '/freelancers' : '/jobs'
       } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
           const message =
@@ -120,7 +120,7 @@ export function useAuth() {
         if (access_token) setStoredTokens(access_token, refresh_token)
         if (!user) throw { message: 'Resposta inválida do servidor.' } as AuthError
         setUser(user)
-        return user.roles?.includes(OWNER_ROLE) ? '/freelancers' : '/jobs'
+        return Boolean(user.establishment) ? '/freelancers' : '/jobs'
       } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
           const message =
