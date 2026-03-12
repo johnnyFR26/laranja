@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class RegisterControlsDto {
   @ApiPropertyOptional({ type: [String], description: 'Skills do freelancer' })
@@ -29,16 +29,16 @@ export class RegisterControlsDto {
 export class RegisterDto {
   @ApiProperty({ example: 'user@example.com' })
   @IsEmail({}, { message: 'Email inválido' })
-  email: string;
+  email!: string;
 
   @ApiProperty({ minLength: 8 })
   @IsString()
   @MinLength(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
-  password: string;
+  password!: string;
 
   @ApiProperty({ example: 'João Silva' })
   @IsString()
-  name: string;
+  name!: string;
 
   @ApiPropertyOptional({ example: '+55 11 99999-9999' })
   @IsOptional()
@@ -56,7 +56,7 @@ export class RegisterDto {
   @Transform(({ value }: { value: unknown }) =>
     Array.isArray(value) ? value.map((id) => String(id)) : value
   )
-  roleIds?: string[];
+  roleIds!: string[];
 
   @ApiPropertyOptional({ type: RegisterControlsDto, description: 'Skills e disponibilidade' })
   @IsOptional()
