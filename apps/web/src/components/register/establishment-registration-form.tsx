@@ -13,6 +13,7 @@ import {
   establishmentRegistrationSchema,
   type EstablishmentRegistrationFormValues,
 } from '@/validators/establishment-registration'
+import { RegisterDto } from '@/types/api/auth'
 
 const STEP_USER = 1
 const STEP_ESTABLISHMENT = 2
@@ -47,11 +48,20 @@ export function EstablishmentRegistrationForm() {
     setApiError(null)
     try {
       await registerUser({
+
         email: data.email,
         password: data.password,
         name: data.name,
         phone: data.phone?.trim() || undefined,
-      })
+        roleIds: [],
+        controls: {
+          skills: [],
+          availability: {
+            morning: {},
+            evening: {},
+          },
+        },
+      } as RegisterDto)
       setStep(STEP_ESTABLISHMENT)
     } catch (err: unknown) {
       const message =

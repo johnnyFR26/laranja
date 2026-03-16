@@ -34,8 +34,6 @@ function clearStoredToken(): void {
   sessionStorage.removeItem(REFRESH_TOKEN_KEY)
 }
 
-/** Slug do role de dono de estabelecimento; quem tem esse role é redirecionado para /freelancers */
-const OWNER_ROLE = 'owner'
 
 /** Credenciais de login; use LoginDto de @org/types para requisição à API */
 export type LoginCredentials = LoginDto

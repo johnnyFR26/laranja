@@ -15,8 +15,8 @@ export interface RegisterDto {
   roleIds: string[]
   /** Disponibilidade e skills do freelancer */
   controls: {
-    skills: string[];
-    availability: {
+    skills?: string[];
+    availability?: {
       morning: Record<string, boolean>;
       evening: Record<string, boolean>;
     };
