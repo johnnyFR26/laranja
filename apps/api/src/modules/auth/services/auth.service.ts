@@ -170,6 +170,7 @@ export class AuthService {
           },
         },
         address: true,
+        establishment: true,
       },
     });
 
@@ -178,14 +179,16 @@ export class AuthService {
     }
 
     return {
-      id: user.id,
+      id: String(user.id),
       email: user.email,
       name: user.name,
       phone: user.phone,
       avatarUrl: user.avatarUrl,
       status: user.status,
       address: user.address,
+      controls: user.controls as { skills?: string[]; availability?: Record<string, unknown> } | null,
       roles: user.userRoles.map((ur) => ur.role.slug),
+      establishment: user.establishment ? user.establishment : null,
     };
   }
 }

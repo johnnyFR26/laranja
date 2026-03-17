@@ -17,7 +17,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
     return this.model.findMany(params);
   }
 
-  async findById(id: string): Promise<T | null> {
+  async findById(id: number): Promise<T | null> {
     return this.model.findUnique({
       where: { id },
     });
@@ -36,7 +36,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
     });
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     await this.model.delete({
       where: { id },
     });

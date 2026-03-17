@@ -1,3 +1,4 @@
+import type { AddressDto } from "./address.dto.js"
 import { EstablishmentDto } from "./establishment.dto.js"
 import { UserRoleDto } from "./user-role.dto.js"
 
@@ -23,6 +24,15 @@ export interface RegisterDto {
   }
 }
 
+/** Controls do perfil (skills, availability do freelancer) */
+export interface UserControlsDto {
+  skills?: string[]
+  availability?: {
+    morning?: Record<string, boolean>
+    evening?: Record<string, boolean>
+  }
+}
+
 /** Usuário retornado em login/register/profile (snake_case conforme API) */
 export interface AuthUserDto {
   id: string
@@ -31,8 +41,12 @@ export interface AuthUserDto {
   avatarUrl?: string | null
   phone?: string | null
   status?: string
-  roles: UserRoleDto[]
+  roles: UserRoleDto[] | string[]
   establishment: EstablishmentDto | null
+  /** Endereço do usuário (apenas em GET /auth/profile) */
+  address?: import('./address.dto.js').AddressDto | null
+  /** Skills e disponibilidade (apenas em GET /auth/profile) */
+  controls?: UserControlsDto | null
 }
 
 /** Corpo da resposta de POST /auth/login e POST /auth/register */

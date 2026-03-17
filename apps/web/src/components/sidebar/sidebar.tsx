@@ -287,7 +287,7 @@ function SidebarPanel({
           </span>
           <div className="flex flex-col">
             <span className="text-lg font-bold text-primary dark:text-slate-100">
-              Hospitality Pro
+              Grove Opportunities
             </span>
             <span className="text-xs text-slate-500">Merchant Portal</span>
           </div>
@@ -365,10 +365,7 @@ export function Sidebar({ user, currentPath = '/' }: SidebarProps) {
 
   const items = NAV_ITEMS.map((item) => ({
     ...item,
-    active:
-      item.href === '/dashboard'
-        ? currentPath === '/dashboard'
-        : currentPath.startsWith(item.href),
+    active: currentPath.startsWith(item.href),
   }))
 
   const closeSidebar = () => setSidebarOpen(false)

@@ -16,7 +16,7 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
     });
   }
 
-  async findWithRoles(id: string): Promise<User | null> {
+  async findWithRoles(id: number): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { id },
       include: {
@@ -31,7 +31,7 @@ export class UserRepository extends BaseRepository<User> implements IUserReposit
   }
 
   // Override findById to include relations
-  async findById(id: string): Promise<User | null> {
+  async findById(id: number): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: { id },
       include: {
