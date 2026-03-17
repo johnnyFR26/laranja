@@ -11,6 +11,7 @@ import { categoriesEndpoints } from './categories.endpoints'
 import { establishmentsEndpoints } from './establishments.endpoints'
 import { serviceOffersEndpoints } from './service-offers.endpoints'
 import { rolesEndpoints } from './roles.endpoints'
+import { addressesEndpoints } from './addresses.endpoints'
 
 export { authEndpoints } from './auth.endpoints'
 export { healthEndpoints } from './health.endpoints'
@@ -19,6 +20,7 @@ export { categoriesEndpoints } from './categories.endpoints'
 export { establishmentsEndpoints } from './establishments.endpoints'
 export { serviceOffersEndpoints } from './service-offers.endpoints'
 export { rolesEndpoints } from './roles.endpoints'
+export { addressesEndpoints } from './addresses.endpoints'
 
 /** Acesso aos endpoints por categoria */
 export const endpoints = {
@@ -29,4 +31,5 @@ export const endpoints = {
   establishments: establishmentsEndpoints,
   serviceOffers: serviceOffersEndpoints,
   roles: rolesEndpoints,
+  addresses: addressesEndpoints,
 } as const

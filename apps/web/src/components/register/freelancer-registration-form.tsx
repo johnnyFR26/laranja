@@ -9,7 +9,11 @@ import {
   freelancerRegistrationSchema,
   type FreelancerRegistrationFormValues,
 } from '@/validators'
+import type { AddressFormValues } from '@/validators/address'
 import { useAuth, useRoles } from '@/hooks'
+import { apiClient } from '@/lib/api-client'
+import { endpoints } from '@/config/api/endpoints'
+import { AddressForm } from '@/components/address/address-form'
 
 const SKILLS = [
   'Fine Dining Experience',
@@ -44,7 +48,8 @@ function getRoleIcon(slug: string): string {
   return icons[slug] ?? '👨‍🍳'
 }
 
-const STEP = 1
+const STEP_MAIN = 1
+const STEP_ADDRESS = 2
 const TOTAL_STEPS = 5
 const PERCENT = 20
 
@@ -52,10 +57,11 @@ export function FreelancerRegistrationForm() {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
   const avatarInputRef = useRef<HTMLInputElement>(null)
+  const [step, setStep] = useState(STEP_MAIN)
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [, setAvatarFile] = useState<File | null>(null)
 
-  const { register: registerUser } = useAuth()
+  const { user, register: registerUser } = useAuth()
   const { roles, loadRoles, isLoading: rolesLoading } = useRoles()
 
   const roleOptions = useMemo(
@@ -131,7 +137,7 @@ export function FreelancerRegistrationForm() {
     }
     try {
       await registerUser(credentials)
-      router.push('/register/complete')
+      setStep(STEP_ADDRESS)
     } catch (err: unknown) {
       const message = err && typeof err === 'object' && 'message' in err ? String((err as { message: unknown }).message) : 'Erro ao criar conta.'
       setError('root', { type: 'manual', message })
@@ -142,12 +148,51 @@ export function FreelancerRegistrationForm() {
   const availability = watch('availability') ?? { morning: {}, evening: {} }
 
   const onInvalid = (errs: Record<string, unknown>) => {
-    const first = Object.values(errs)[0] as { message?: string } | undefined
+    const first = Object.values(errors)[0] as { message?: string } | undefined
     const msg = (typeof first === 'object' && first?.message) ?? 'Verifique os campos obrigatórios.'
     setError('root', { type: 'manual', message: msg as string | undefined })
     requestAnimationFrame(() => {
       document.getElementById('form-errors')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     })
+  }
+
+  const onAddressSubmit = async (data: AddressFormValues) => {
+    if (!user?.id) return
+    try {
+      const { data: address } = await apiClient.post<{ id: number }>(endpoints.addresses.create, {
+        street: data.street,
+        number: data.number || null,
+        complement: data.complement || null,
+        neighborhood: data.neighborhood || null,
+        city: data.city,
+        state: data.state.toUpperCase(),
+        zipCode: data.zipCode,
+        country: (data.country || 'BR').toUpperCase(),
+      })
+      await apiClient.patch(endpoints.users.byId(String(user.id)), { addressId: address.id })
+      router.push('/register/complete')
+    } catch (err: unknown) {
+      throw err
+    }
+  }
+
+  if (step === STEP_ADDRESS) {
+    return (
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <h1 className="text-3xl font-black tracking-tight text-secondary dark:text-slate-100">
+            Complete seu cadastro
+          </h1>
+          <p className="mt-1 text-slate-500 dark:text-slate-400">
+            Informe seu endereço para finalizar.
+          </p>
+        </div>
+        <AddressForm
+          onSubmit={onAddressSubmit}
+          submitLabel="Concluir cadastro"
+        />
+      </div>
+    )
   }
 
   return (
@@ -180,7 +225,7 @@ export function FreelancerRegistrationForm() {
               </div>
               <div className="text-right">
                 <p className="text-sm font-semibold text-primary dark:text-slate-300">
-                  Etapa {STEP} de {TOTAL_STEPS}
+                  Etapa {STEP_MAIN} de {TOTAL_STEPS}
                 </p>
                 <p className="text-xs text-slate-400">{PERCENT}% concluído</p>
               </div>

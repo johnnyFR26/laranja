@@ -16,17 +16,12 @@ export class EstablishmentService {
     private readonly prisma: PrismaService,
   ) {}
 
-  async create(ownerId: string, createDto: CreateEstablishmentDto): Promise<Establishment> {
+  async create(ownerId: number, createDto: CreateEstablishmentDto): Promise<Establishment> {
     // Check if owner already has an establishment
+    console.log(ownerId);
     const existingByOwner = await this.establishmentRepository.findByOwner(ownerId);
     if (existingByOwner) {
       throw new ConflictException('Usuário já possui um estabelecimento');
-    }
-
-    // Check if slug is already in use
-    const existingBySlug = await this.establishmentRepository.findBySlug(createDto.slug);
-    if (existingBySlug) {
-      throw new ConflictException('Slug já está em uso');
     }
 
     return this.establishmentRepository.create({
@@ -53,7 +48,7 @@ export class EstablishmentService {
     });
   }
 
-  async findOne(id: string): Promise<Establishment> {
+  async findOne(id: number): Promise<Establishment> {
     const establishment = await this.establishmentRepository.findWithServiceOffers(id);
     if (!establishment) {
       throw new NotFoundException('Estabelecimento não encontrado');
@@ -69,11 +64,11 @@ export class EstablishmentService {
     return establishment;
   }
 
-  async findByOwner(ownerId: string): Promise<Establishment | null> {
+  async findByOwner(ownerId: number): Promise<Establishment | null> {
     return this.establishmentRepository.findByOwner(ownerId);
   }
 
-  async update(id: string, updateDto: UpdateEstablishmentDto): Promise<Establishment> {
+  async update(id: number, updateDto: UpdateEstablishmentDto): Promise<Establishment> {
     await this.findOne(id);
 
     if (updateDto.slug) {
@@ -86,7 +81,7 @@ export class EstablishmentService {
     return this.establishmentRepository.update(id, updateDto);
   }
 
-  async remove(id: string): Promise<void> {
+    async remove(id: number): Promise<void> {
     await this.findOne(id);
     await this.establishmentRepository.delete(id);
   }

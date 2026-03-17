@@ -36,7 +36,7 @@ export class EstablishmentController {
   @ApiOperation({ summary: 'Criar estabelecimento' })
   @ApiResponse({ status: 201, description: 'Estabelecimento criado com sucesso' })
   @ApiResponse({ status: 409, description: 'Usuário já possui estabelecimento ou slug em uso' })
-  create(@CurrentUser('id') userId: string, @Body() createDto: CreateEstablishmentDto) {
+  create(@CurrentUser('id') userId: number, @Body() createDto: CreateEstablishmentDto) {
     return this.establishmentService.create(userId, createDto);
   }
 
@@ -51,7 +51,7 @@ export class EstablishmentController {
   @Get('me')
   @ApiOperation({ summary: 'Obter meu estabelecimento' })
   @ApiResponse({ status: 200, description: 'Estabelecimento do usuário autenticado' })
-  findMyEstablishment(@CurrentUser('id') userId: string) {
+  findMyEstablishment(@CurrentUser('id') userId: number) {
     return this.establishmentService.findByOwner(userId);
   }
 
@@ -61,7 +61,7 @@ export class EstablishmentController {
   @ApiParam({ name: 'id', description: 'ID do estabelecimento' })
   @ApiResponse({ status: 200, description: 'Estabelecimento encontrado' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.establishmentService.findOne(id);
   }
 
@@ -78,7 +78,8 @@ export class EstablishmentController {
   @ApiParam({ name: 'id', description: 'ID do estabelecimento' })
   @ApiResponse({ status: 200, description: 'Estabelecimento atualizado' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  update(@Param('id') id: string, @Body() updateDto: UpdateEstablishmentDto) {
+  update(@Param('id') id: number, @Body() updateDto: UpdateEstablishmentDto) {
+
     return this.establishmentService.update(id, updateDto);
   }
 
@@ -88,7 +89,7 @@ export class EstablishmentController {
   @ApiParam({ name: 'id', description: 'ID do estabelecimento' })
   @ApiResponse({ status: 204, description: 'Estabelecimento removido' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.establishmentService.remove(id);
   }
 }

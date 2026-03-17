@@ -19,7 +19,7 @@ export class EstablishmentRepository extends BaseRepository<Establishment> {
     });
   }
 
-  async findByOwner(ownerId: string): Promise<Establishment | null> {
+  async findByOwner(ownerId: number): Promise<Establishment | null> {
     return this.prisma.establishment.findUnique({
       where: { ownerId },
       include: {
@@ -33,7 +33,7 @@ export class EstablishmentRepository extends BaseRepository<Establishment> {
     });
   }
 
-  async findWithServiceOffers(id: string): Promise<Establishment | null> {
+  async findWithServiceOffers(id: number): Promise<Establishment | null> {
     return this.prisma.establishment.findUnique({
       where: { id },
       include: {
@@ -55,7 +55,7 @@ export class EstablishmentRepository extends BaseRepository<Establishment> {
   }
 
   // Override findById to include relations
-  async findById(id: string): Promise<Establishment | null> {
+  async findById(id: number): Promise<Establishment | null> {
     return this.prisma.establishment.findUnique({
       where: { id },
       include: {

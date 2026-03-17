@@ -1,5 +1,6 @@
-import { IsString, IsOptional, IsEmail, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsEmail, IsEnum, IsInt } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { UserStatus } from '../../../generated/client';
 
 export class UpdateUserDto {
@@ -22,4 +23,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEnum(UserStatus)
   status?: UserStatus;
+
+  @ApiPropertyOptional({ description: 'ID do endereço vinculado' })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  addressId?: number;
 }

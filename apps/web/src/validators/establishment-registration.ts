@@ -10,11 +10,6 @@ export const establishmentRegistrationSchema = z.object({
     .min(1, 'Nome do estabelecimento é obrigatório')
     .min(2, 'Nome deve ter no mínimo 2 caracteres')
     .max(255, 'Nome deve ter no máximo 255 caracteres'),
-  slug: z
-    .string()
-    .min(1, 'Slug é obrigatório')
-    .max(100, 'Slug deve ter no máximo 100 caracteres')
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug: apenas letras minúsculas, números e hífens'),
   description: z
     .string()
     .max(2000, 'Descrição deve ter no máximo 2000 caracteres')

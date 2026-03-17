@@ -1,5 +1,6 @@
-import { IsString, IsOptional, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsInt } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class UpdateEstablishmentDto {
   @ApiPropertyOptional({ example: 'Minha Empresa' })
@@ -27,8 +28,9 @@ export class UpdateEstablishmentDto {
   @IsString()
   website?: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ description: 'ID do endereço vinculado' })
   @IsOptional()
-  @IsUUID()
-  addressId?: string;
+  @Type(() => Number)
+  @IsInt()
+  addressId?: number;
 }

@@ -29,7 +29,7 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
     });
   }
 
-  async update(id: string, data: Partial<T>): Promise<T> {
+  async update(id: number, data: Partial<T>): Promise<T> {
     return this.model.update({
       where: { id },
       data,

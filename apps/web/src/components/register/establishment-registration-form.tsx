@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
@@ -13,25 +13,23 @@ import {
   establishmentRegistrationSchema,
   type EstablishmentRegistrationFormValues,
 } from '@/validators/establishment-registration'
+import type { AddressFormValues } from '@/validators/address'
 import { RegisterDto } from '@/types/api/auth'
+import { apiClient } from '@/lib/api-client'
+import { endpoints } from '@/config/api/endpoints'
+import { CreateEstablishmentDto, EstablishmentDto } from '@org/types'
+import { AddressForm } from '@/components/address/address-form'
 
 const STEP_USER = 1
 const STEP_ESTABLISHMENT = 2
-const TOTAL_STEPS = 2
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-}
+const STEP_ADDRESS = 3
+const TOTAL_STEPS = 3
 
 export function EstablishmentRegistrationForm() {
   const router = useRouter()
-  const { user, register: registerUser } = useAuth()
-  const [step, setStep] = useState<number>(STEP_USER)
+  const { register: registerUser } = useAuth()
+  const [step, setStep] = useState<number>(1)
+  const [establishmentId, setEstablishmentId] = useState<string | null>(null)
   const [apiError, setApiError] = useState<string | null>(null)
 
   const userForm = useForm<RegisterFormValues>({
@@ -41,13 +39,13 @@ export function EstablishmentRegistrationForm() {
 
   const establishmentForm = useForm<EstablishmentRegistrationFormValues>({
     resolver: zodResolver(establishmentRegistrationSchema),
-    defaultValues: { name: '', slug: '', description: '', website: '' },
+    defaultValues: { name: '', description: '', website: '' },
   })
 
   const onUserSubmit = async (data: RegisterFormValues) => {
     setApiError(null)
     try {
-      await registerUser({
+       await registerUser({
 
         email: data.email,
         password: data.password,
@@ -72,29 +70,50 @@ export function EstablishmentRegistrationForm() {
     }
   }
 
-  const onEstablishmentSubmit = (data: EstablishmentRegistrationFormValues) => {
-    if (!user?.id) return
-    const payload = {
-      ownerId: user.id,
-      name: data.name,
-      slug: data.slug,
-      description: data.description?.trim() || null,
-      logoUrl: data.logoUrl?.trim() || null,
-      website: data.website?.trim() || null,
+  const onEstablishmentSubmit = async (data: EstablishmentRegistrationFormValues) => {
+    setApiError(null)
+    try {
+      const { data: establishment } = await apiClient.post<EstablishmentDto>(endpoints.establishments.create, {
+        name: data.name,
+        description: data.description?.trim() || null,
+        logoUrl: data.logoUrl?.trim() || null,
+        website: data.website?.trim() || null,
+      } as CreateEstablishmentDto)
+      setEstablishmentId(String(establishment.id))
+      setStep(STEP_ADDRESS)
+    } catch (err: unknown) {
+      const message =
+        err && typeof err === 'object' && 'message' in err
+          ? String((err as { message: string }).message)
+          : 'Erro ao criar estabelecimento. Tente novamente.'
+      setApiError(message)
     }
-    // TODO: POST /establishments com payload (CreateEstablishmentDto)
-    console.log(payload)
-    router.push('/register/complete')
   }
 
-  const establishmentName = establishmentForm.watch('name')
-  useEffect(() => {
-    if (!establishmentName) return
-    const currentSlug = establishmentForm.getValues('slug')
-    if (currentSlug === '') {
-      establishmentForm.setValue('slug', slugify(establishmentName), { shouldValidate: false })
+  const onAddressSubmit = async (data: AddressFormValues) => {
+    if (!establishmentId) return
+    setApiError(null)
+    try {
+      const { data: address } = await apiClient.post<{ id: number }>(endpoints.addresses.create, {
+        street: data.street,
+        number: data.number || null,
+        complement: data.complement || null,
+        neighborhood: data.neighborhood || null,
+        city: data.city,
+        state: data.state.toUpperCase(),
+        zipCode: data.zipCode,
+        country: (data.country || 'BR').toUpperCase(),
+      })
+      await apiClient.patch(endpoints.establishments.byId(establishmentId), { addressId: address.id })
+      router.push('/register/complete')
+    } catch (err: unknown) {
+      const message =
+        err && typeof err === 'object' && 'message' in err
+          ? String((err as { message: string }).message)
+          : 'Erro ao cadastrar endereço. Tente novamente.'
+      setApiError(message)
     }
-  }, [establishmentName])
+  }
 
   const progressPercent = (step / TOTAL_STEPS) * 100
 
@@ -110,7 +129,9 @@ export function EstablishmentRegistrationForm() {
             <p className="mt-1 text-slate-500 dark:text-slate-400">
               {step === STEP_USER
                 ? 'Dados do responsável (conta de acesso).'
-                : 'Dados do seu estabelecimento.'}
+                : step === STEP_ESTABLISHMENT
+                  ? 'Dados do seu estabelecimento.'
+                  : 'Endereço do estabelecimento.'}
             </p>
           </div>
           <div className="text-right">
@@ -252,26 +273,6 @@ export function EstablishmentRegistrationForm() {
               )}
             </div>
             <div>
-              <label htmlFor="est-slug" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                Slug (URL)
-              </label>
-              <input
-                id="est-slug"
-                type="text"
-                placeholder="restaurante-do-joao"
-                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 font-mono text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-                {...establishmentForm.register('slug')}
-              />
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                Apenas letras minúsculas, números e hífens. Gerado automaticamente pelo nome.
-              </p>
-              {establishmentForm.formState.errors.slug && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
-                  {establishmentForm.formState.errors.slug.message}
-                </p>
-              )}
-            </div>
-            <div>
               <label htmlFor="est-description" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Descrição
               </label>
@@ -319,10 +320,26 @@ export function EstablishmentRegistrationForm() {
               disabled={establishmentForm.formState.isSubmitting}
               className="flex-1 rounded-xl bg-primary py-4 font-bold text-white shadow-primary-glow transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-              {establishmentForm.formState.isSubmitting ? 'Enviando…' : 'Concluir cadastro'}
+              {establishmentForm.formState.isSubmitting ? 'Enviando…' : 'Continuar'}
             </button>
           </div>
         </form>
+      )}
+
+      {step === STEP_ADDRESS && (
+        <div>
+          {apiError && (
+            <p className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400" role="alert">
+              {apiError}
+            </p>
+          )}
+          <AddressForm
+            onSubmit={onAddressSubmit}
+            onBack={() => setStep(STEP_ESTABLISHMENT)}
+            showBackButton
+            submitLabel="Concluir cadastro"
+          />
+        </div>
       )}
     </div>
   )

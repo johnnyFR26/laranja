@@ -4,11 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class CreateEstablishmentDto {
   @ApiProperty({ example: 'Minha Empresa' })
   @IsString()
-  name: string;
-
-  @ApiProperty({ example: 'minha-empresa' })
-  @IsString()
-  slug: string;
+  name!: string;
 
   @ApiPropertyOptional({ example: 'Descrição da empresa...' })
   @IsOptional()

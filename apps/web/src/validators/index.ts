@@ -13,3 +13,4 @@ export {
   type CreateShiftFormValues,
   JOB_ROLE_OPTIONS,
 } from './create-shift'
+export { addressSchema, type AddressFormValues } from './address'
