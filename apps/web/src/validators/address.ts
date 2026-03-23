@@ -8,7 +8,7 @@ export const addressSchema = z.object({
   city: z.string().min(1, 'Cidade é obrigatória').max(100),
   state: z.string().length(2, 'Estado deve ter 2 caracteres (ex: SP)'),
   zipCode: z.string().min(1, 'CEP é obrigatório').max(20),
-  country: z.string().length(2, 'País deve ter 2 caracteres (ex: BR)').optional().default('BR'),
+  country: z.string().length(2, 'País deve ter 2 caracteres (ex: BR)'),
 })
 
 export type AddressFormValues = z.infer<typeof addressSchema>

@@ -1,4 +1,3 @@
-import type { AddressDto } from "./address.dto.js"
 import { EstablishmentDto } from "./establishment.dto.js"
 import { UserRoleDto } from "./user-role.dto.js"
 
