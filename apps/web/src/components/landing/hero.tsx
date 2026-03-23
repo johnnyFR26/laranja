@@ -26,7 +26,7 @@ export function Hero() {
 
             <h1 className="text-balance text-4xl font-black tracking-tight text-secondary sm:text-5xl lg:text-6xl dark:text-white">
               A plataforma completa para{' '}
-              <span className="text-primary">hospitalidade</span>
+              <span className="text-primary">oportunidades</span>
             </h1>
 
             <p className="mx-auto mt-6 max-w-xl text-pretty text-lg leading-relaxed text-slate-600 lg:mx-0 dark:text-slate-400">
