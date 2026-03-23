@@ -9,8 +9,8 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: 'Merchant Dashboard - Grove Opportunities',
-  description: 'Hospitality Pro Merchant Portal',
+  title: 'Grove Opportunities - Conectando Talentos à Hospitalidade',
+  description: 'A plataforma que conecta estabelecimentos de hospitalidade aos melhores profissionais freelancers. Encontre turnos, contrate talentos, cresça seu negócio.',
 }
 
 export default function RootLayout({
