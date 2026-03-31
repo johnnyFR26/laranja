@@ -2,7 +2,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ServiceOffer } from '../../../generated/client';
+import { Prisma } from '../../../generated/client';
+import { BudgetType, ServiceOffer, ServiceOfferStatus } from '../../../generated/client';
 import { ServiceOfferRepository } from '../repositories/service-offer.repository';
 import { CreateServiceOfferDto, UpdateServiceOfferDto, FilterServiceOfferDto } from '../dto';
 import { IPaginatedResult } from '../../../common/contracts/base-repository.interface';
@@ -16,17 +17,39 @@ export class ServiceOfferService {
   ) {}
 
   async create(createDto: CreateServiceOfferDto): Promise<ServiceOffer> {
-    const data: any = {
+    const establishment = await this.prisma.establishment.findUnique({
+      where: { slug: createDto.establishmentId },
+    });
+    if (!establishment) {
+      throw new NotFoundException('Estabelecimento não encontrado');
+    }
+
+    let categoryId: number | null = null;
+    if (createDto.categoryId) {
+      const category = await this.prisma.category.findUnique({
+        where: { slug: createDto.categoryId },
+      });
+      if (!category) {
+        throw new NotFoundException('Categoria não encontrada');
+      }
+      categoryId = category.id;
+    }
+
+    const data: Prisma.ServiceOfferCreateInput = {
       title: createDto.title,
       description: createDto.description,
-      establishmentId: createDto.establishmentId,
-      categoryId: createDto.categoryId,
+      establishment: { connect: { id: establishment.id } },
       budget: createDto.budget,
-      budgetType: createDto.budgetType,
+      budgetType: createDto.budgetType ?? BudgetType.FIXED,
+      status: createDto.status ?? ServiceOfferStatus.OPEN,
       deadline: createDto.deadline ? new Date(createDto.deadline) : undefined,
+      ...(categoryId != null ? { category: { connect: { id: categoryId } } } : {}),
+      ...(createDto.controls != null
+        ? { controls: createDto.controls as Prisma.InputJsonValue }
+        : {}),
     };
 
-    return this.serviceOfferRepository.create(data);
+    return this.prisma.serviceOffer.create({ data });
   }
 
   async findAll(filters: FilterServiceOfferDto): Promise<IPaginatedResult<ServiceOffer>> {

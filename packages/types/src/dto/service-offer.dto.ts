@@ -15,6 +15,7 @@ export interface ServiceOfferDto {
 }
 
 export interface CreateServiceOfferDto {
+  /** Slug UUID do estabelecimento (`establishments.slug`). */
   establishmentId: string
   categoryId?: string | null
   title: string
@@ -23,6 +24,8 @@ export interface CreateServiceOfferDto {
   budgetType?: BudgetTypeDto
   status?: ServiceOfferStatusDto
   deadline?: string | null
+  /** Metadados extra (ex.: turno) — coluna JSON `controls` na API. */
+  controls?: Record<string, unknown> | null
 }
 
 export interface UpdateServiceOfferDto {

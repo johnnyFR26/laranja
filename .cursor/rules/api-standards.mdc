@@ -1,0 +1,39 @@
+---
+description: Padrões mínimos da API NestJS (Grove Opportunities) — envelope de resposta, módulos, validação, auth
+globs: apps/api/**/*
+alwaysApply: false
+---
+
+# API NestJS (`apps/api`)
+
+Stack: NestJS, Prisma (cliente em `src/generated`), Swagger em `/api`, documentação alternativa em `/reference` (não produção).
+
+## Envelope de resposta
+
+- **Sucesso:** `TransformInterceptor` global envolve todo retorno em `{ data, statusCode, timestamp }`. Nos controllers e services, **devolver só o payload** (objeto ou array); não montar manualmente esse envelope.
+- **Erro:** `HttpExceptionFilter` global formata respostas de erro; usar `HttpException` / exceções Nest com mensagens claras.
+
+## Estrutura por feature
+
+- Preferir: `controllers/`, `services/`, `repositories/`, `contracts/*-repository.interface.ts`, `dto/`, `*.module.ts`.
+- Repositórios usam o cliente Prisma gerado; tipos de modelo em `src/generated`.
+
+## Validação e DTOs
+
+- DTOs de entrada com **class-validator** / **class-transformer** (`@IsString()`, `@IsOptional()`, etc.), alinhados ao que o cliente envia.
+- Tipos compartilhados com o front ficam em **`@org/types`** quando existirem; DTOs da API podem espelhar ou estender esses contratos.
+
+## Autenticação e autorização
+
+- Rotas protegidas: `@UseGuards(JwtAuthGuard, …)` conforme necessário.
+- Rotas públicas: `@Public()` no handler (ou classe, conforme padrão do projeto).
+- Utilizador atual: `@CurrentUser()` / `@CurrentUser('id')` nos parâmetros do método.
+
+## Documentação
+
+- Controllers com `@ApiTags`, `@ApiOperation`, `@ApiBearerAuth` onde aplicável; respostas de exemplo coerentes com o payload real **após** o interceptor (o Swagger pode descrever o corpo já no formato envelope ou o `data` interno — manter consistência com o que está no código).
+
+## Convenções
+
+- Prefixo global da app: **`/api`** (`setGlobalPrefix('api')`).
+- Não contornar pipes globais com validação duplicada sem necessidade; respeitar whitelist/forbid do `ValidationPipe` global.

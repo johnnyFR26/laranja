@@ -1,7 +1,7 @@
-import { IsString, IsOptional, IsEnum, IsUUID, IsNumber, IsDateString, Min } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsUUID, IsNumber, IsDateString, Min, IsObject } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { BudgetType } from '../../../generated/client';
+import { BudgetType, ServiceOfferStatus } from '../../../generated/client';
 
 export class CreateServiceOfferDto {
   @ApiProperty({ example: 'Desenvolvimento de Website' })
@@ -12,6 +12,7 @@ export class CreateServiceOfferDto {
   @IsString()
   description: string;
 
+  /** Slug UUID do estabelecimento (`establishments.slug`). */
   @ApiProperty()
   @IsUUID()
   establishmentId: string;
@@ -33,8 +34,19 @@ export class CreateServiceOfferDto {
   @IsEnum(BudgetType)
   budgetType?: BudgetType;
 
+  @ApiPropertyOptional({ enum: ServiceOfferStatus, default: ServiceOfferStatus.OPEN })
+  @IsOptional()
+  @IsEnum(ServiceOfferStatus)
+  status?: ServiceOfferStatus;
+
   @ApiPropertyOptional()
   @IsOptional()
   @IsDateString()
   deadline?: string;
+
+  /** Metadados extra (ex.: turno, uniforme) — coluna `controls` JSON no Prisma. */
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsObject()
+  controls?: Record<string, unknown>;
 }

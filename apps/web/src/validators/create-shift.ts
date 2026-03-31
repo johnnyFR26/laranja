@@ -15,9 +15,10 @@ export const createShiftSchema = z.object({
   date: z.string().min(1, 'Selecione a data'),
   shiftStart: z.string().min(1, 'Horário de início é obrigatório'),
   shiftEnd: z.string().min(1, 'Horário de fim é obrigatório'),
-  hourlyRate: z
+  payMode: z.enum(['hourly', 'day'], { error: 'Escolha por hora ou valor do dia' }),
+  rate: z
     .string()
-    .min(1, 'Valor por hora é obrigatório')
+    .min(1, 'Valor é obrigatório')
     .refine((v) => !Number.isNaN(Number(v)) && Number(v) >= 0, 'Valor inválido'),
   dressCode: z.string().max(255).optional().or(z.literal('')),
   description: z.string().min(1, 'Descrição é obrigatória').max(2000),

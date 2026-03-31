@@ -42,7 +42,15 @@ export function CreateShiftPreview({
 }: CreateShiftPreviewProps) {
   const dateLabel = formatDisplayDate(values.date)
   const shiftLabel = formatTimeRange(values.shiftStart, values.shiftEnd)
-  const rate = values.hourlyRate ? `R$ ${Number(values.hourlyRate).toFixed(2).replace('.', ',')}/h` : '—'
+  const payMode = values.payMode
+  const rate =
+    values.rate && payMode
+      ? payMode === 'hourly'
+        ? `R$ ${Number(values.rate).toFixed(2).replace('.', ',')}/h`
+        : `R$ ${Number(values.rate).toFixed(2).replace('.', ',')}/dia`
+      : values.rate
+        ? `R$ ${Number(values.rate).toFixed(2).replace('.', ',')}`
+        : '—'
   const requirements: string[] = []
   if (values.description?.trim())
     requirements.push(

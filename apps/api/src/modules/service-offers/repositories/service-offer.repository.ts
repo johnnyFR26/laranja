@@ -4,6 +4,32 @@ import { PrismaService } from '../../../database/prisma.service';
 import { BaseRepository } from '../../../common/repositories/base.repository';
 import { IServiceOfferRepository } from '../contracts/service-offer-repository.interface';
 
+const SERVICE_OFFER_RELATIONS = {
+  category: true,
+  establishment: {
+    include: {
+      owner: true,
+      address: true,
+    },
+  },
+  requiredRoles: {
+    include: {
+      role: true,
+    },
+  },
+  subscriptions: {
+    include: {
+      user: true,
+    },
+  },
+  _count: {
+    select: {
+      subscriptions: true,
+      reviews: true,
+    },
+  },
+} as const;
+
 @Injectable()
 export class ServiceOfferRepository extends BaseRepository<ServiceOffer> implements IServiceOfferRepository {
   constructor(prisma: PrismaService) {
@@ -43,37 +69,24 @@ export class ServiceOfferRepository extends BaseRepository<ServiceOffer> impleme
   }
 
   async findWithRelations(id: string): Promise<ServiceOffer | null> {
+    const numericId = Number.parseInt(id, 10);
+    const isNumericId =
+      !Number.isNaN(numericId) && id.trim() !== '' && String(numericId) === id.trim();
+
+    if (isNumericId) {
+      return this.prisma.serviceOffer.findUnique({
+        where: { id: numericId },
+        include: SERVICE_OFFER_RELATIONS,
+      });
+    }
+
     return this.prisma.serviceOffer.findUnique({
-      where: { id },
-      include: {
-        category: true,
-        establishment: {
-          include: {
-            owner: true,
-            address: true,
-          },
-        },
-        requiredRoles: {
-          include: {
-            role: true,
-          },
-        },
-        subscriptions: {
-          include: {
-            user: true,
-          },
-        },
-        _count: {
-          select: {
-            subscriptions: true,
-            reviews: true,
-          },
-        },
-      },
+      where: { slug: id },
+      include: SERVICE_OFFER_RELATIONS,
     });
   }
 
-  // Override findById to include relations
+  // Override findById to include relations (slug UUID ou id numérico)
   async findById(id: string): Promise<ServiceOffer | null> {
     return this.findWithRelations(id);
   }

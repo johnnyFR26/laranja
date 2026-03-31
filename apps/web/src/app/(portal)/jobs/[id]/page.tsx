@@ -7,6 +7,8 @@ import {
   JobDetailEstablishmentCard,
   JobDetailSidebar,
 } from '@/components/job-detail'
+import { getServiceOffer } from '@/lib/fetch-service-offer-server'
+import { mapServiceOfferDetailToJobDetail } from '@/lib/map-service-offer-to-job-detail'
 import type { JobDetailData } from '@/types/job-detail'
 
 const MOCK_JOBS: Record<string, JobDetailData> = {
@@ -111,6 +113,14 @@ export async function generateMetadata({
   params,
 }: JobDetailPageProps): Promise<Metadata> {
   const { id } = await params
+  const fromApi = await getServiceOffer(id)
+  if (fromApi) {
+    const job = mapServiceOfferDetailToJobDetail(fromApi, id)
+    return {
+      title: `${job.title} - Grove Opportunities`,
+      description: job.description.slice(0, 160),
+    }
+  }
   const job = MOCK_JOBS[id]
   if (!job) return { title: 'Vaga não encontrada' }
   return {
@@ -121,7 +131,10 @@ export async function generateMetadata({
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
   const { id } = await params
-  const job = MOCK_JOBS[id]
+  const fromApi = await getServiceOffer(id)
+  const job: JobDetailData | undefined = fromApi
+    ? mapServiceOfferDetailToJobDetail(fromApi, id)
+    : MOCK_JOBS[id]
 
   if (!job) notFound()
 

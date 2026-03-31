@@ -4,12 +4,17 @@ import { useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import type { CreateServiceOfferDto } from '@org/types'
 import {
   createShiftSchema,
   type CreateShiftFormValues,
   JOB_ROLE_OPTIONS,
 } from '@/validators/create-shift'
 import { CreateShiftPreview } from './create-shift-preview'
+import { useAuthStore } from '@/stores/auth-store'
+import { apiClient } from '@/lib/api-client'
+import { serviceOffersEndpoints } from '@/config/api/endpoints'
 
 const MONTH_NAMES = [
   'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -63,7 +68,10 @@ function parseDuration(start: string | undefined, end: string | undefined): { ho
 }
 
 export function CreateShiftForm() {
-  
+  const router = useRouter()
+  const user = useAuthStore((s) => s.user)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
   const [calendarMonth, setCalendarMonth] = useState(() => new Date().getMonth())
   const [calendarYear, setCalendarYear] = useState(() => new Date().getFullYear())
 
@@ -80,13 +88,15 @@ export function CreateShiftForm() {
       date: '',
       shiftStart: '18:00',
       shiftEnd: '02:00',
-      hourlyRate: '',
+      payMode: 'hourly',
+      rate: '',
       dressCode: '',
       description: '',
     },
   })
 
   const values = watch()
+  const payMode = watch('payMode')
   const monthDays = useMemo(
     () => getMonthDays(calendarYear, calendarMonth),
     [calendarYear, calendarMonth]
@@ -94,18 +104,46 @@ export function CreateShiftForm() {
   const selectedDate = values.date
   const { hours, overnight } = parseDuration(values.shiftStart, values.shiftEnd)
 
-  const onSubmit = (data: CreateShiftFormValues) => {
-    const payload = {
-      title: data.jobRole,
-      description: data.description,
-      dressCode: data.dressCode || undefined,
-      date: data.date,
-      shiftStart: data.shiftStart,
-      shiftEnd: data.shiftEnd,
-      hourlyRate: Number(data.hourlyRate),
+  const establishment = user && 'establishment' in user ? user.establishment : null
+  const establishmentName = establishment?.name ?? 'Seu estabelecimento'
+
+  const onSubmit = async (data: CreateShiftFormValues) => {
+    setSubmitError(null)
+    if (!establishment?.slug) {
+      setSubmitError('Apenas contas de estabelecimento podem publicar vagas. Complete o cadastro do seu espaço.')
+      return
     }
-    // TODO: POST /service-offers ou endpoint de shifts
-    console.log(payload)
+
+    const payload: CreateServiceOfferDto = {
+      title: data.jobRole,
+      description: data.description.trim(),
+      establishmentId: establishment.slug,
+      budget: Number(data.rate),
+      budgetType: data.payMode === 'hourly' ? 'HOURLY' : 'FIXED',
+      status: 'OPEN',
+      deadline: `${data.date}T23:59:59.000Z`,
+      controls: {
+        shiftDate: data.date,
+        shiftStart: data.shiftStart,
+        shiftEnd: data.shiftEnd,
+        dressCode: data.dressCode?.trim() || null,
+        payMode: data.payMode,
+      },
+    }
+
+    try {
+      await apiClient.post(serviceOffersEndpoints.create, payload)
+      router.push('/jobs')
+      router.refresh()
+    } catch (err: unknown) {
+      const data =
+        err && typeof err === 'object' && 'response' in err
+          ? (err as { response?: { data?: { message?: unknown } } }).response?.data
+          : undefined
+      const raw = data?.message
+      const msg = Array.isArray(raw) ? raw.join(', ') : typeof raw === 'string' ? raw : null
+      setSubmitError(msg ?? 'Não foi possível criar a vaga. Tente novamente.')
+    }
   }
 
   return (
@@ -124,6 +162,12 @@ export function CreateShiftForm() {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-8 rounded-xl border-t-4 border-t-primary border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
         >
+          {submitError && (
+            <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200" role="alert">
+              {submitError}
+            </p>
+          )}
+
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-secondary dark:text-slate-200">
@@ -254,21 +298,52 @@ export function CreateShiftForm() {
               </div>
             </div>
 
+            <div className="flex flex-col gap-3 md:col-span-2">
+              <span className="text-sm font-semibold text-secondary dark:text-slate-200">
+                Tipo de valor
+              </span>
+              <div className="flex flex-wrap gap-6">
+                <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                  <input
+                    type="radio"
+                    value="hourly"
+                    className="size-4 border-slate-300 text-primary focus:ring-primary"
+                    {...register('payMode')}
+                  />
+                  Por hora
+                </label>
+                <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                  <input
+                    type="radio"
+                    value="day"
+                    className="size-4 border-slate-300 text-primary focus:ring-primary"
+                    {...register('payMode')}
+                  />
+                  Valor do dia (turno)
+                </label>
+              </div>
+              {errors.payMode && (
+                <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+                  {errors.payMode.message}
+                </p>
+              )}
+            </div>
+
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-secondary dark:text-slate-200">
-                Valor por hora (R$)
+                {payMode === 'hourly' ? 'Valor por hora (R$)' : 'Valor do dia (R$)'}
               </label>
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                placeholder="45,00"
+                placeholder={payMode === 'hourly' ? '45,00' : '200,00'}
                 className="rounded-lg border border-slate-200 bg-slate-50 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-                {...register('hourlyRate')}
+                {...register('rate')}
               />
-              {errors.hourlyRate && (
+              {errors.rate && (
                 <p className="text-sm text-red-600 dark:text-red-400" role="alert">
-                  {errors.hourlyRate.message}
+                  {errors.rate.message}
                 </p>
               )}
             </div>
@@ -335,7 +410,7 @@ export function CreateShiftForm() {
         <div className="mt-4">
           <CreateShiftPreview
             values={values}
-            establishmentName="Seu estabelecimento"
+            establishmentName={establishmentName}
             establishmentRating="4.9 (120+ reviews)"
           />
         </div>
