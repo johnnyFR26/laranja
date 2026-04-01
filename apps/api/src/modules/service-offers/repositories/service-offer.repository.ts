@@ -36,9 +36,15 @@ export class ServiceOfferRepository extends BaseRepository<ServiceOffer> impleme
     super(prisma, 'serviceOffer');
   }
 
-  async findByEstablishment(establishmentId: string): Promise<ServiceOffer[]> {
+  async findByEstablishment(establishmentSlug: string): Promise<ServiceOffer[]> {
+    const establishment = await this.prisma.establishment.findUnique({
+      where: { slug: establishmentSlug },
+    });
+    if (!establishment) {
+      return [];
+    }
     return this.prisma.serviceOffer.findMany({
-      where: { establishmentId },
+      where: { establishmentId: establishment.id },
       include: {
         category: true,
         establishment: true,
@@ -57,9 +63,15 @@ export class ServiceOfferRepository extends BaseRepository<ServiceOffer> impleme
     });
   }
 
-  async findByCategory(categoryId: string): Promise<ServiceOffer[]> {
+  async findByCategory(categorySlug: string): Promise<ServiceOffer[]> {
+    const category = await this.prisma.category.findUnique({
+      where: { slug: categorySlug },
+    });
+    if (!category) {
+      return [];
+    }
     return this.prisma.serviceOffer.findMany({
-      where: { categoryId },
+      where: { categoryId: category.id },
       include: {
         category: true,
         establishment: true,
@@ -68,26 +80,14 @@ export class ServiceOfferRepository extends BaseRepository<ServiceOffer> impleme
     });
   }
 
-  async findWithRelations(id: string): Promise<ServiceOffer | null> {
-    const numericId = Number.parseInt(id, 10);
-    const isNumericId =
-      !Number.isNaN(numericId) && id.trim() !== '' && String(numericId) === id.trim();
-
-    if (isNumericId) {
-      return this.prisma.serviceOffer.findUnique({
-        where: { id: numericId },
-        include: SERVICE_OFFER_RELATIONS,
-      });
-    }
-
+  async findWithRelations(slug: string): Promise<ServiceOffer | null> {
     return this.prisma.serviceOffer.findUnique({
-      where: { slug: id },
+      where: { slug },
       include: SERVICE_OFFER_RELATIONS,
     });
   }
 
-  // Override findById to include relations (slug UUID ou id numérico)
-  async findById(id: string): Promise<ServiceOffer | null> {
-    return this.findWithRelations(id);
+  async findBySlug(slug: string): Promise<ServiceOffer | null> {
+    return this.findWithRelations(slug);
   }
 }

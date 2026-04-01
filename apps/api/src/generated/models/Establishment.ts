@@ -245,7 +245,7 @@ export type EstablishmentGroupByOutputType = {
   _max: EstablishmentMaxAggregateOutputType | null
 }
 
-type GetEstablishmentGroupByPayload<T extends EstablishmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetEstablishmentGroupByPayload<T extends EstablishmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EstablishmentGroupByOutputType, T['by']> &
       {
@@ -1672,6 +1672,11 @@ export type EstablishmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` Establishments.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Establishments.
+   */
   distinct?: Prisma.EstablishmentScalarFieldEnum | Prisma.EstablishmentScalarFieldEnum[]
 }
 

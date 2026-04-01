@@ -26,11 +26,12 @@ export class UserService {
       throw new ConflictException('Email já está em uso');
     }
 
+    let rolesForAssign: { id: number }[] = [];
     if (roleIds && roleIds.length > 0) {
-      const roles = await this.prisma.role.findMany({
-        where: { id: { in: roleIds } },
+      rolesForAssign = await this.prisma.role.findMany({
+        where: { slug: { in: roleIds } },
       });
-      if (roles.length !== roleIds.length) {
+      if (rolesForAssign.length !== roleIds.length) {
         throw new BadRequestException('Uma ou mais roles não foram encontradas');
       }
     }
@@ -46,11 +47,11 @@ export class UserService {
         } as any,
       });
 
-      if (roleIds && roleIds.length > 0) {
+      if (rolesForAssign.length > 0) {
         await tx.userRole.createMany({
-          data: roleIds.map((roleId) => ({
+          data: rolesForAssign.map((role) => ({
             userId: newUser.id,
-            roleId,
+            roleId: role.id,
           })),
         });
       }
@@ -85,8 +86,8 @@ export class UserService {
     });
   }
 
-  async findOne(id: number): Promise<User> {
-    const user = await this.userRepository.findById(id);
+  async findOne(slug: string): Promise<User> {
+    const user = await this.userRepository.findBySlug(slug);
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
@@ -97,13 +98,13 @@ export class UserService {
     return this.userRepository.findByEmail(email);
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    await this.findOne(id);
-    return this.userRepository.update(id, updateUserDto);
+  async update(slug: string, updateUserDto: UpdateUserDto): Promise<User> {
+    await this.findOne(slug);
+    return this.userRepository.update(slug, updateUserDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.findOne(id);
-    await this.userRepository.delete(id);
+  async remove(slug: string): Promise<void> {
+    await this.findOne(slug);
+    await this.userRepository.delete(slug);
   }
 }

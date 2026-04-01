@@ -3,6 +3,22 @@ import { Establishment } from '../../../generated/client';
 import { PrismaService } from '../../../database/prisma.service';
 import { BaseRepository } from '../../../common/repositories/base.repository';
 
+const ESTABLISHMENT_WITH_SERVICE_OFFERS_INCLUDE = {
+  owner: true,
+  address: true,
+  serviceOffers: {
+    include: {
+      category: true,
+      _count: {
+        select: {
+          subscriptions: true,
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' as const },
+  },
+} as const;
+
 @Injectable()
 export class EstablishmentRepository extends BaseRepository<Establishment> {
   constructor(prisma: PrismaService) {
@@ -33,35 +49,10 @@ export class EstablishmentRepository extends BaseRepository<Establishment> {
     });
   }
 
-  async findWithServiceOffers(id: number): Promise<Establishment | null> {
+  async findWithServiceOffersBySlug(slug: string): Promise<Establishment | null> {
     return this.prisma.establishment.findUnique({
-      where: { id },
-      include: {
-        owner: true,
-        address: true,
-        serviceOffers: {
-          include: {
-            category: true,
-            _count: {
-              select: {
-                subscriptions: true,
-              },
-            },
-          },
-          orderBy: { createdAt: 'desc' },
-        },
-      },
-    });
-  }
-
-  // Override findById to include relations
-  async findById(id: number): Promise<Establishment | null> {
-    return this.prisma.establishment.findUnique({
-      where: { id },
-      include: {
-        owner: true,
-        address: true,
-      },
+      where: { slug },
+      include: ESTABLISHMENT_WITH_SERVICE_OFFERS_INCLUDE,
     });
   }
 }

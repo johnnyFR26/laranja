@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -49,32 +50,35 @@ export class UserController {
     return this.userService.findAll(filterDto);
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Buscar usuário por ID' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @Get(':slug')
+  @ApiOperation({ summary: 'Buscar usuário por slug' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do usuário' })
   @ApiResponse({ status: 200, description: 'Usuário encontrado' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  findOne(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.userService.findOne(slug);
   }
 
-  @Patch(':id')
+  @Patch(':slug')
   @ApiOperation({ summary: 'Atualizar usuário' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do usuário' })
   @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  update(
+    @Param('slug', ParseUUIDPipe) slug: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.update(slug, updateUserDto);
   }
 
-  @Delete(':id')
+  @Delete(':slug')
   @Roles('admin')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remover usuário' })
-  @ApiParam({ name: 'id', description: 'ID do usuário' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do usuário' })
   @ApiResponse({ status: 204, description: 'Usuário removido com sucesso' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  remove(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.userService.remove(slug);
   }
 }

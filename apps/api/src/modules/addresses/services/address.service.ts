@@ -32,25 +32,21 @@ export class AddressService {
     });
   }
 
-  async findOne(id: string): Promise<Address> {
-    const address = await this.addressRepository.findById(id);
+  async findOne(slug: string): Promise<Address> {
+    const address = await this.addressRepository.findBySlug(slug);
     if (!address) {
       throw new NotFoundException('Endereço não encontrado');
     }
     return address;
   }
 
-  async findBySlug(slug: string): Promise<Address | null> {
-    return this.addressRepository.findBySlug(slug);
+  async update(slug: string, updateAddressDto: UpdateAddressDto): Promise<Address> {
+    await this.findOne(slug);
+    return this.addressRepository.update(slug, updateAddressDto as Partial<Address>);
   }
 
-  async update(id: string, updateAddressDto: UpdateAddressDto): Promise<Address> {
-    await this.findOne(id);
-    return this.addressRepository.update(id, updateAddressDto as Partial<Address>);
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.findOne(id);
-    await this.addressRepository.delete(id);
+  async remove(slug: string): Promise<void> {
+    await this.findOne(slug);
+    await this.addressRepository.delete(slug);
   }
 }

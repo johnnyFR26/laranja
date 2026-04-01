@@ -60,7 +60,8 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
       refresh_token: this.jwtService.sign(payload, { expiresIn: '30d' }),
       user: {
-        id: user.id,
+        id: String(user.id),
+        slug: user.slug,
         email: user.email,
         name: user.name,
         roles: user.userRoles.map((ur: any) => ur.role.slug),
@@ -127,6 +128,7 @@ export class AuthService {
       refresh_token: this.jwtService.sign(payload, { expiresIn: '30d' }),
       user: {
         id: String(user.id),
+        slug: user.slug,
         email: user.email,
         name: user.name,
         roles,
@@ -180,6 +182,7 @@ export class AuthService {
 
     return {
       id: String(user.id),
+      slug: user.slug,
       email: user.email,
       name: user.name,
       phone: user.phone,

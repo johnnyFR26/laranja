@@ -64,15 +64,7 @@ export class RoleService {
     return this.roleRepository.findAllPaginated({ page, limit }, where);
   }
 
-  async findOne(id: string): Promise<Role> {
-    const role = await this.roleRepository.findById(id);
-    if (!role) {
-      throw new NotFoundException(`Role with ID '${id}' not found`);
-    }
-    return role;
-  }
-
-  async findBySlug(slug: string): Promise<Role> {
+  async findOne(slug: string): Promise<Role> {
     const role = await this.roleRepository.findBySlug(slug);
     if (!role) {
       throw new NotFoundException(`Role with slug '${slug}' not found`);
@@ -80,10 +72,10 @@ export class RoleService {
     return role;
   }
 
-  async update(id: string, updateRoleDto: UpdateRoleDto): Promise<Role> {
-    const existingRole = await this.roleRepository.findById(id);
+  async update(slug: string, updateRoleDto: UpdateRoleDto): Promise<Role> {
+    const existingRole = await this.roleRepository.findBySlug(slug);
     if (!existingRole) {
-      throw new NotFoundException(`Role with ID '${id}' not found`);
+      throw new NotFoundException(`Role with slug '${slug}' not found`);
     }
 
     if (updateRoleDto.slug && updateRoleDto.slug !== existingRole.slug) {
@@ -100,16 +92,16 @@ export class RoleService {
       }
     }
 
-    return this.roleRepository.update(id, updateRoleDto);
+    return this.roleRepository.update(slug, updateRoleDto);
   }
 
-  async remove(id: string): Promise<{ message: string }> {
-    const existingRole = await this.roleRepository.findById(id);
+  async remove(slug: string): Promise<{ message: string }> {
+    const existingRole = await this.roleRepository.findBySlug(slug);
     if (!existingRole) {
-      throw new NotFoundException(`Role with ID '${id}' not found`);
+      throw new NotFoundException(`Role with slug '${slug}' not found`);
     }
 
-    await this.roleRepository.delete(id);
+    await this.roleRepository.delete(slug);
     return { message: `Role '${existingRole.name}' deleted successfully` };
   }
 
@@ -120,10 +112,10 @@ export class RoleService {
   async assignRolesToUser(assignRoleDto: AssignRoleDto): Promise<{ message: string }> {
     const { userId, roleIds } = assignRoleDto;
 
-    for (const roleId of roleIds) {
-      const role = await this.roleRepository.findById(roleId);
+    for (const roleSlug of roleIds) {
+      const role = await this.roleRepository.findBySlug(roleSlug);
       if (!role) {
-        throw new BadRequestException(`Role with ID '${roleId}' not found`);
+        throw new BadRequestException(`Role with slug '${roleSlug}' not found`);
       }
     }
 
@@ -139,10 +131,10 @@ export class RoleService {
   }
 
   async setUserRoles(userId: string, roleIds: string[]): Promise<{ message: string }> {
-    for (const roleId of roleIds) {
-      const role = await this.roleRepository.findById(roleId);
+    for (const roleSlug of roleIds) {
+      const role = await this.roleRepository.findBySlug(roleSlug);
       if (!role) {
-        throw new BadRequestException(`Role with ID '${roleId}' not found`);
+        throw new BadRequestException(`Role with slug '${roleSlug}' not found`);
       }
     }
 

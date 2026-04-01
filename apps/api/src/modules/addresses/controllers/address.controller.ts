@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -48,32 +49,35 @@ export class AddressController {
     return this.addressService.findAll(filterDto);
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Buscar endereço por ID' })
-  @ApiParam({ name: 'id', description: 'ID numérico do endereço' })
+  @Get(':slug')
+  @ApiOperation({ summary: 'Buscar endereço por slug' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do endereço' })
   @ApiResponse({ status: 200, description: 'Endereço encontrado' })
   @ApiResponse({ status: 404, description: 'Endereço não encontrado' })
-  findOne(@Param('id') id: string) {
-    return this.addressService.findOne(id);
+  findOne(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.addressService.findOne(slug);
   }
 
-  @Patch(':id')
+  @Patch(':slug')
   @ApiOperation({ summary: 'Atualizar endereço' })
-  @ApiParam({ name: 'id', description: 'ID numérico do endereço' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do endereço' })
   @ApiResponse({ status: 200, description: 'Endereço atualizado com sucesso' })
   @ApiResponse({ status: 404, description: 'Endereço não encontrado' })
-  update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return this.addressService.update(id, updateAddressDto);
+  update(
+    @Param('slug', ParseUUIDPipe) slug: string,
+    @Body() updateAddressDto: UpdateAddressDto,
+  ) {
+    return this.addressService.update(slug, updateAddressDto);
   }
 
-  @Delete(':id')
+  @Delete(':slug')
   @Roles('admin')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remover endereço' })
-  @ApiParam({ name: 'id', description: 'ID numérico do endereço' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do endereço' })
   @ApiResponse({ status: 204, description: 'Endereço removido com sucesso' })
   @ApiResponse({ status: 404, description: 'Endereço não encontrado' })
-  remove(@Param('id') id: string) {
-    return this.addressService.remove(id);
+  remove(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.addressService.remove(slug);
   }
 }

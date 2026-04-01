@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -55,41 +56,35 @@ export class EstablishmentController {
     return this.establishmentService.findByOwner(userId);
   }
 
-  @Get(':id')
-  @Public()
-  @ApiOperation({ summary: 'Buscar estabelecimento por ID' })
-  @ApiParam({ name: 'id', description: 'ID do estabelecimento' })
-  @ApiResponse({ status: 200, description: 'Estabelecimento encontrado' })
-  @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  findOne(@Param('id') id: number) {
-    return this.establishmentService.findOne(id);
-  }
-
-  @Get('slug/:slug')
+  @Get(':slug')
   @Public()
   @ApiOperation({ summary: 'Buscar estabelecimento por slug' })
-  @ApiParam({ name: 'slug', description: 'Slug do estabelecimento' })
-  findBySlug(@Param('slug') slug: string) {
-    return this.establishmentService.findBySlug(slug);
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do estabelecimento' })
+  @ApiResponse({ status: 200, description: 'Estabelecimento encontrado' })
+  @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
+  findOne(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.establishmentService.findOne(slug);
   }
 
-  @Patch(':id')
+  @Patch(':slug')
   @ApiOperation({ summary: 'Atualizar estabelecimento' })
-  @ApiParam({ name: 'id', description: 'ID do estabelecimento' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do estabelecimento' })
   @ApiResponse({ status: 200, description: 'Estabelecimento atualizado' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  update(@Param('id') id: number, @Body() updateDto: UpdateEstablishmentDto) {
-
-    return this.establishmentService.update(id, updateDto);
+  update(
+    @Param('slug', ParseUUIDPipe) slug: string,
+    @Body() updateDto: UpdateEstablishmentDto,
+  ) {
+    return this.establishmentService.update(slug, updateDto);
   }
 
-  @Delete(':id')
+  @Delete(':slug')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remover estabelecimento' })
-  @ApiParam({ name: 'id', description: 'ID do estabelecimento' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) do estabelecimento' })
   @ApiResponse({ status: 204, description: 'Estabelecimento removido' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  remove(@Param('id') id: number) {
-    return this.establishmentService.remove(id);
+  remove(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.establishmentService.remove(slug);
   }
 }

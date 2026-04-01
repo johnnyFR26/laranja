@@ -65,11 +65,11 @@ export class ServiceOfferService {
     }
 
     if (establishmentId) {
-      where.establishmentId = establishmentId;
+      where.establishment = { slug: establishmentId };
     }
 
     if (categoryId) {
-      where.categoryId = categoryId;
+      where.category = { slug: categoryId };
     }
 
     if (status) {
@@ -96,41 +96,41 @@ export class ServiceOfferService {
     });
   }
 
-  async findOne(id: string): Promise<ServiceOffer> {
-    const serviceOffer = await this.serviceOfferRepository.findById(id);
+  async findOne(slug: string): Promise<ServiceOffer> {
+    const serviceOffer = await this.serviceOfferRepository.findBySlug(slug);
     if (!serviceOffer) {
       throw new NotFoundException('Oferta de serviço não encontrada');
     }
     return serviceOffer;
   }
 
-  async findByEstablishment(establishmentId: string): Promise<ServiceOffer[]> {
-    return this.serviceOfferRepository.findByEstablishment(establishmentId);
+  async findByEstablishment(establishmentSlug: string): Promise<ServiceOffer[]> {
+    return this.serviceOfferRepository.findByEstablishment(establishmentSlug);
   }
 
-  async findByCategory(categoryId: string): Promise<ServiceOffer[]> {
-    return this.serviceOfferRepository.findByCategory(categoryId);
+  async findByCategory(categorySlug: string): Promise<ServiceOffer[]> {
+    return this.serviceOfferRepository.findByCategory(categorySlug);
   }
 
-  async update(id: string, updateDto: UpdateServiceOfferDto): Promise<ServiceOffer> {
-    await this.findOne(id);
+  async update(slug: string, updateDto: UpdateServiceOfferDto): Promise<ServiceOffer> {
+    await this.findOne(slug);
 
     const data: any = { ...updateDto };
     if (updateDto.deadline) {
       data.deadline = new Date(updateDto.deadline);
     }
 
-    return this.serviceOfferRepository.update(id, data);
+    return this.serviceOfferRepository.update(slug, data);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.findOne(id);
-    await this.serviceOfferRepository.delete(id);
+  async remove(slug: string): Promise<void> {
+    await this.findOne(slug);
+    await this.serviceOfferRepository.delete(slug);
   }
 
-  async updateStatus(id: string, status: string): Promise<ServiceOffer> {
-    await this.findOne(id);
-    return this.serviceOfferRepository.update(id, { status } as any);
+  async updateStatus(slug: string, status: string): Promise<ServiceOffer> {
+    await this.findOne(slug);
+    return this.serviceOfferRepository.update(slug, { status } as any);
   }
 
   async findOpenOffers(): Promise<ServiceOffer[]> {

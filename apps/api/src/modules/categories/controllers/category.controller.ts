@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -49,42 +50,37 @@ export class CategoryController {
     return this.categoryService.findAll(filterDto);
   }
 
-  @Get(':id')
-  @Public()
-  @ApiOperation({ summary: 'Buscar categoria por ID' })
-  @ApiParam({ name: 'id', description: 'ID da categoria' })
-  @ApiResponse({ status: 200, description: 'Categoria encontrada' })
-  @ApiResponse({ status: 404, description: 'Categoria não encontrada' })
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(id);
-  }
-
-  @Get('slug/:slug')
+  @Get(':slug')
   @Public()
   @ApiOperation({ summary: 'Buscar categoria por slug' })
-  @ApiParam({ name: 'slug', description: 'Slug da categoria' })
-  findBySlug(@Param('slug') slug: string) {
-    return this.categoryService.findBySlug(slug);
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da categoria' })
+  @ApiResponse({ status: 200, description: 'Categoria encontrada' })
+  @ApiResponse({ status: 404, description: 'Categoria não encontrada' })
+  findOne(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.categoryService.findOne(slug);
   }
 
-  @Patch(':id')
+  @Patch(':slug')
   @Roles('admin')
   @ApiOperation({ summary: 'Atualizar categoria' })
-  @ApiParam({ name: 'id', description: 'ID da categoria' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da categoria' })
   @ApiResponse({ status: 200, description: 'Categoria atualizada' })
   @ApiResponse({ status: 404, description: 'Categoria não encontrada' })
-  update(@Param('id') id: string, @Body() updateDto: UpdateCategoryDto) {
-    return this.categoryService.update(id, updateDto);
+  update(
+    @Param('slug', ParseUUIDPipe) slug: string,
+    @Body() updateDto: UpdateCategoryDto,
+  ) {
+    return this.categoryService.update(slug, updateDto);
   }
 
-  @Delete(':id')
+  @Delete(':slug')
   @Roles('admin')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remover categoria' })
-  @ApiParam({ name: 'id', description: 'ID da categoria' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da categoria' })
   @ApiResponse({ status: 204, description: 'Categoria removida' })
   @ApiResponse({ status: 404, description: 'Categoria não encontrada' })
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(id);
+  remove(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.categoryService.remove(slug);
   }
 }

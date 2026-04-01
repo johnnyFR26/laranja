@@ -10,12 +10,12 @@ export class FilterServiceOfferDto extends PaginationDto {
   @IsString()
   search?: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ description: 'Slug (UUID) do estabelecimento' })
   @IsOptional()
   @IsUUID()
   establishmentId?: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ description: 'Slug (UUID) da categoria' })
   @IsOptional()
   @IsUUID()
   categoryId?: string;

@@ -39,37 +39,29 @@ export class CategoryService {
     });
   }
 
-  async findOne(id: string): Promise<Category> {
-    const category = await this.categoryRepository.findWithServiceOffers(id);
+  async findOne(slug: string): Promise<Category> {
+    const category = await this.categoryRepository.findWithServiceOffers(slug);
     if (!category) {
       throw new NotFoundException('Categoria não encontrada');
     }
     return category;
   }
 
-  async findBySlug(slug: string): Promise<Category> {
-    const category = await this.categoryRepository.findBySlug(slug);
-    if (!category) {
-      throw new NotFoundException('Categoria não encontrada');
-    }
-    return category;
-  }
-
-  async update(id: string, updateDto: UpdateCategoryDto): Promise<Category> {
-    await this.findOne(id);
+  async update(slug: string, updateDto: UpdateCategoryDto): Promise<Category> {
+    await this.findOne(slug);
 
     if (updateDto.slug) {
       const existingBySlug = await this.categoryRepository.findBySlug(updateDto.slug);
-      if (existingBySlug && existingBySlug.id !== id) {
+      if (existingBySlug && existingBySlug.slug !== slug) {
         throw new ConflictException('Categoria com este slug já existe');
       }
     }
 
-    return this.categoryRepository.update(id, updateDto);
+    return this.categoryRepository.update(slug, updateDto);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.findOne(id);
-    await this.categoryRepository.delete(id);
+  async remove(slug: string): Promise<void> {
+    await this.findOne(slug);
+    await this.categoryRepository.delete(slug);
   }
 }

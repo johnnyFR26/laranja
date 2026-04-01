@@ -59,59 +59,9 @@ export class RoleController {
     return this.roleService.findAll(filterDto);
   }
 
-  @Get(':id')
-  @Public()
-  @ApiOperation({ summary: 'Get a role by ID' })
-  @ApiParam({ name: 'id', description: 'Role UUID' })
-  @ApiResponse({ status: 200, description: 'Role found' })
-  @ApiResponse({ status: 404, description: 'Role not found' })
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.roleService.findOne(id);
-  }
-
-  @Get('slug/:slug')
-  @Public()
-  @ApiOperation({ summary: 'Get a role by slug' })
-  @ApiParam({ name: 'slug', description: 'Role slug' })
-  @ApiResponse({ status: 200, description: 'Role found' })
-  @ApiResponse({ status: 404, description: 'Role not found' })
-  findBySlug(@Param('slug') slug: string) {
-    return this.roleService.findBySlug(slug);
-  }
-
-  @Patch(':id')
-  @Roles('admin')
-  @ApiOperation({ summary: 'Update a role' })
-  @ApiParam({ name: 'id', description: 'Role UUID' })
-  @ApiResponse({ status: 200, description: 'Role updated successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
-  @ApiResponse({ status: 404, description: 'Role not found' })
-  @ApiResponse({ status: 409, description: 'Conflict - Role already exists' })
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateRoleDto: UpdateRoleDto,
-  ) {
-    return this.roleService.update(id, updateRoleDto);
-  }
-
-  @Delete(':id')
-  @Roles('admin')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Delete a role' })
-  @ApiParam({ name: 'id', description: 'Role UUID' })
-  @ApiResponse({ status: 200, description: 'Role deleted successfully' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
-  @ApiResponse({ status: 404, description: 'Role not found' })
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.roleService.remove(id);
-  }
-
   @Get('user/:userId')
   @ApiOperation({ summary: 'Get all roles for a user' })
-  @ApiParam({ name: 'userId', description: 'User UUID' })
+  @ApiParam({ name: 'userId', description: 'Slug (UUID) do usuário' })
   @ApiResponse({ status: 200, description: 'List of user roles' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   getUserRoles(@Param('userId', ParseUUIDPipe) userId: string) {
@@ -122,7 +72,7 @@ export class RoleController {
   @Roles('admin')
   @ApiOperation({ summary: 'Assign roles to a user' })
   @ApiResponse({ status: 201, description: 'Roles assigned successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request - Invalid role ID' })
+  @ApiResponse({ status: 400, description: 'Bad request - Invalid role slug' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
   assignRolesToUser(@Body() assignRoleDto: AssignRoleDto) {
@@ -143,9 +93,9 @@ export class RoleController {
   @Patch('user/:userId/set')
   @Roles('admin')
   @ApiOperation({ summary: 'Set all roles for a user (replaces existing roles)' })
-  @ApiParam({ name: 'userId', description: 'User UUID' })
+  @ApiParam({ name: 'userId', description: 'Slug (UUID) do usuário' })
   @ApiResponse({ status: 200, description: 'User roles set successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request - Invalid role ID' })
+  @ApiResponse({ status: 400, description: 'Bad request - Invalid role slug' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
   setUserRoles(
@@ -153,5 +103,45 @@ export class RoleController {
     @Body('roleIds') roleIds: string[],
   ) {
     return this.roleService.setUserRoles(userId, roleIds);
+  }
+
+  @Get(':slug')
+  @Public()
+  @ApiOperation({ summary: 'Get a role by slug' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da role' })
+  @ApiResponse({ status: 200, description: 'Role found' })
+  @ApiResponse({ status: 404, description: 'Role not found' })
+  findOne(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.roleService.findOne(slug);
+  }
+
+  @Patch(':slug')
+  @Roles('admin')
+  @ApiOperation({ summary: 'Update a role' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da role' })
+  @ApiResponse({ status: 200, description: 'Role updated successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
+  @ApiResponse({ status: 404, description: 'Role not found' })
+  @ApiResponse({ status: 409, description: 'Conflict - Role already exists' })
+  update(
+    @Param('slug', ParseUUIDPipe) slug: string,
+    @Body() updateRoleDto: UpdateRoleDto,
+  ) {
+    return this.roleService.update(slug, updateRoleDto);
+  }
+
+  @Delete(':slug')
+  @Roles('admin')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Delete a role' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da role' })
+  @ApiResponse({ status: 200, description: 'Role deleted successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
+  @ApiResponse({ status: 404, description: 'Role not found' })
+  remove(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.roleService.remove(slug);
   }
 }

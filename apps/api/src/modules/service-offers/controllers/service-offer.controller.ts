@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -54,55 +55,58 @@ export class ServiceOfferController {
     return this.serviceOfferService.findOpenOffers();
   }
 
-  @Get(':id')
-  @Public()
-  @ApiOperation({ summary: 'Buscar oferta por ID' })
-  @ApiParam({ name: 'id', description: 'ID da oferta' })
-  @ApiResponse({ status: 200, description: 'Oferta encontrada' })
-  @ApiResponse({ status: 404, description: 'Oferta não encontrada' })
-  findOne(@Param('id') id: string) {
-    return this.serviceOfferService.findOne(id);
-  }
-
-  @Get('establishment/:establishmentId')
+  @Get('establishment/:establishmentSlug')
   @Public()
   @ApiOperation({ summary: 'Listar ofertas por estabelecimento' })
-  @ApiParam({ name: 'establishmentId', description: 'ID do estabelecimento' })
-  findByEstablishment(@Param('establishmentId') establishmentId: string) {
-    return this.serviceOfferService.findByEstablishment(establishmentId);
+  @ApiParam({ name: 'establishmentSlug', description: 'Slug (UUID) do estabelecimento' })
+  findByEstablishment(@Param('establishmentSlug', ParseUUIDPipe) establishmentSlug: string) {
+    return this.serviceOfferService.findByEstablishment(establishmentSlug);
   }
 
-  @Get('category/:categoryId')
+  @Get('category/:categorySlug')
   @Public()
   @ApiOperation({ summary: 'Listar ofertas por categoria' })
-  @ApiParam({ name: 'categoryId', description: 'ID da categoria' })
-  findByCategory(@Param('categoryId') categoryId: string) {
-    return this.serviceOfferService.findByCategory(categoryId);
+  @ApiParam({ name: 'categorySlug', description: 'Slug (UUID) da categoria' })
+  findByCategory(@Param('categorySlug', ParseUUIDPipe) categorySlug: string) {
+    return this.serviceOfferService.findByCategory(categorySlug);
   }
 
-  @Patch(':id')
+  @Get(':slug')
+  @Public()
+  @ApiOperation({ summary: 'Buscar oferta por slug' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da oferta' })
+  @ApiResponse({ status: 200, description: 'Oferta encontrada' })
+  @ApiResponse({ status: 404, description: 'Oferta não encontrada' })
+  findOne(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.serviceOfferService.findOne(slug);
+  }
+
+  @Patch(':slug')
   @ApiOperation({ summary: 'Atualizar oferta' })
-  @ApiParam({ name: 'id', description: 'ID da oferta' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da oferta' })
   @ApiResponse({ status: 200, description: 'Oferta atualizada com sucesso' })
   @ApiResponse({ status: 404, description: 'Oferta não encontrada' })
-  update(@Param('id') id: string, @Body() updateDto: UpdateServiceOfferDto) {
-    return this.serviceOfferService.update(id, updateDto);
+  update(
+    @Param('slug', ParseUUIDPipe) slug: string,
+    @Body() updateDto: UpdateServiceOfferDto,
+  ) {
+    return this.serviceOfferService.update(slug, updateDto);
   }
 
-  @Patch(':id/status')
+  @Patch(':slug/status')
   @ApiOperation({ summary: 'Atualizar status da oferta' })
-  @ApiParam({ name: 'id', description: 'ID da oferta' })
-  updateStatus(@Param('id') id: string, @Body('status') status: string) {
-    return this.serviceOfferService.updateStatus(id, status);
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da oferta' })
+  updateStatus(@Param('slug', ParseUUIDPipe) slug: string, @Body('status') status: string) {
+    return this.serviceOfferService.updateStatus(slug, status);
   }
 
-  @Delete(':id')
+  @Delete(':slug')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remover oferta' })
-  @ApiParam({ name: 'id', description: 'ID da oferta' })
+  @ApiParam({ name: 'slug', description: 'Slug (UUID) da oferta' })
   @ApiResponse({ status: 204, description: 'Oferta removida com sucesso' })
   @ApiResponse({ status: 404, description: 'Oferta não encontrada' })
-  remove(@Param('id') id: string) {
-    return this.serviceOfferService.remove(id);
+  remove(@Param('slug', ParseUUIDPipe) slug: string) {
+    return this.serviceOfferService.remove(slug);
   }
 }

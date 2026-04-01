@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Role } from '../../../generated/client';
 import { PrismaService } from '../../../database/prisma.service';
 import { BaseRepository } from '../../../common/repositories/base.repository';
@@ -28,12 +28,6 @@ export class RoleRepository extends BaseRepository<Role> implements IRoleReposit
       skipDuplicates: true,
     });
     return result;
-  }
-
-  async findBySlug(slug: string): Promise<Role | null> {
-    return this.prisma.role.findUnique({
-      where: { slug },
-    });
   }
 
   async findByName(name: string): Promise<Role | null> {
@@ -68,9 +62,9 @@ export class RoleRepository extends BaseRepository<Role> implements IRoleReposit
     };
   }
 
-  async findWithUsers(id: string): Promise<Role | null> {
+  async findWithUsers(slug: string): Promise<Role | null> {
     return this.prisma.role.findUnique({
-      where: { id },
+      where: { slug },
       include: {
         userRoles: {
           include: {
@@ -81,10 +75,16 @@ export class RoleRepository extends BaseRepository<Role> implements IRoleReposit
     });
   }
 
-  async getUserRoles(userId: string): Promise<Role[]> {
+  async getUserRoles(userSlug: string): Promise<Role[]> {
+    const user = await this.prisma.user.findUnique({
+      where: { slug: userSlug },
+    });
+    if (!user) {
+      return [];
+    }
     const userRoles = await this.prisma.userRole.findMany({
       where: {
-        userId,
+        userId: user.id,
         role: { status: true },
       },
       include: { role: true },
@@ -92,10 +92,19 @@ export class RoleRepository extends BaseRepository<Role> implements IRoleReposit
     return userRoles.map((ur) => ur.role);
   }
 
-  async assignRolesToUser(userId: string, roleIds: string[]): Promise<void> {
-    const data = roleIds.map((roleId) => ({
-      userId,
-      roleId,
+  async assignRolesToUser(userSlug: string, roleSlugs: string[]): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { slug: userSlug },
+    });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+    const roles = await this.prisma.role.findMany({
+      where: { slug: { in: roleSlugs } },
+    });
+    const data = roles.map((role) => ({
+      userId: user.id,
+      roleId: role.id,
     }));
 
     await this.prisma.userRole.createMany({
@@ -104,31 +113,56 @@ export class RoleRepository extends BaseRepository<Role> implements IRoleReposit
     });
   }
 
-  async removeRolesFromUser(userId: string, roleIds: string[]): Promise<void> {
+  async removeRolesFromUser(userSlug: string, roleSlugs: string[]): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { slug: userSlug },
+    });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+    const roles = await this.prisma.role.findMany({
+      where: { slug: { in: roleSlugs } },
+    });
+    const roleIds = roles.map((r) => r.id);
     await this.prisma.userRole.deleteMany({
       where: {
-        userId,
+        userId: user.id,
         roleId: { in: roleIds },
       },
     });
   }
 
-  async removeAllRolesFromUser(userId: string): Promise<void> {
+  async removeAllRolesFromUser(userSlug: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { slug: userSlug },
+    });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
     await this.prisma.userRole.deleteMany({
-      where: { userId },
+      where: { userId: user.id },
     });
   }
 
-  async setUserRoles(userId: string, roleIds: string[]): Promise<void> {
+  async setUserRoles(userSlug: string, roleSlugs: string[]): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { slug: userSlug },
+    });
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
     await this.prisma.$transaction(async (tx) => {
       await tx.userRole.deleteMany({
-        where: { userId },
+        where: { userId: user.id },
       });
 
-      if (roleIds.length > 0) {
-        const data = roleIds.map((roleId) => ({
-          userId,
-          roleId,
+      if (roleSlugs.length > 0) {
+        const roles = await tx.role.findMany({
+          where: { slug: { in: roleSlugs } },
+        });
+        const data = roles.map((role) => ({
+          userId: user.id,
+          roleId: role.id,
         }));
 
         await tx.userRole.createMany({

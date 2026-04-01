@@ -17,9 +17,9 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
     return this.model.findMany(params);
   }
 
-  async findById(id: number): Promise<T | null> {
+  async findBySlug(slug: string): Promise<T | null> {
     return this.model.findUnique({
-      where: { id },
+      where: { slug },
     });
   }
 
@@ -29,16 +29,16 @@ export abstract class BaseRepository<T> implements IBaseRepository<T> {
     });
   }
 
-  async update(id: number, data: Partial<T>): Promise<T> {
+  async update(slug: string, data: Partial<T>): Promise<T> {
     return this.model.update({
-      where: { id },
+      where: { slug },
       data,
     });
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(slug: string): Promise<void> {
     await this.model.delete({
-      where: { id },
+      where: { slug },
     });
   }
 

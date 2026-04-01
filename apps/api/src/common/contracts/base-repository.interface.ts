@@ -1,9 +1,9 @@
 export interface IBaseRepository<T> {
   findAll(params?: any): Promise<T[]>;
-  findById(id: string | number): Promise<T | null>;
+  findBySlug(slug: string): Promise<T | null>;
   create(data: Partial<T>): Promise<T>;
-  update(id: string | number, data: Partial<T>): Promise<T>;
-  delete(id: string | number): Promise<void>;
+  update(slug: string, data: Partial<T>): Promise<T>;
+  delete(slug: string): Promise<void>;
   count(params?: any): Promise<number>;
 }
 

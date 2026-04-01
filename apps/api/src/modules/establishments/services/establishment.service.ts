@@ -48,16 +48,8 @@ export class EstablishmentService {
     });
   }
 
-  async findOne(id: number): Promise<Establishment> {
-    const establishment = await this.establishmentRepository.findWithServiceOffers(id);
-    if (!establishment) {
-      throw new NotFoundException('Estabelecimento não encontrado');
-    }
-    return establishment;
-  }
-
-  async findBySlug(slug: string): Promise<Establishment> {
-    const establishment = await this.establishmentRepository.findBySlug(slug);
+  async findOne(slug: string): Promise<Establishment> {
+    const establishment = await this.establishmentRepository.findWithServiceOffersBySlug(slug);
     if (!establishment) {
       throw new NotFoundException('Estabelecimento não encontrado');
     }
@@ -68,21 +60,21 @@ export class EstablishmentService {
     return this.establishmentRepository.findByOwner(ownerId);
   }
 
-  async update(id: number, updateDto: UpdateEstablishmentDto): Promise<Establishment> {
-    await this.findOne(id);
+  async update(slug: string, updateDto: UpdateEstablishmentDto): Promise<Establishment> {
+    await this.findOne(slug);
 
     if (updateDto.slug) {
       const existingBySlug = await this.establishmentRepository.findBySlug(updateDto.slug);
-      if (existingBySlug && existingBySlug.id !== id) {
+      if (existingBySlug && existingBySlug.slug !== slug) {
         throw new ConflictException('Slug já está em uso');
       }
     }
 
-    return this.establishmentRepository.update(id, updateDto);
+    return this.establishmentRepository.update(slug, updateDto);
   }
 
-    async remove(id: number): Promise<void> {
-    await this.findOne(id);
-    await this.establishmentRepository.delete(id);
+  async remove(slug: string): Promise<void> {
+    await this.findOne(slug);
+    await this.establishmentRepository.delete(slug);
   }
 }

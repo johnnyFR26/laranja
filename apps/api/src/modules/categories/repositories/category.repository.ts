@@ -9,15 +9,9 @@ export class CategoryRepository extends BaseRepository<Category> {
     super(prisma, 'category');
   }
 
-  async findBySlug(slug: string): Promise<Category | null> {
+  async findWithServiceOffers(slug: string): Promise<Category | null> {
     return this.prisma.category.findUnique({
       where: { slug },
-    });
-  }
-
-  async findWithServiceOffers(id: string): Promise<Category | null> {
-    return this.prisma.category.findUnique({
-      where: { id },
       include: {
         serviceOffers: {
           where: { status: 'OPEN' },
