@@ -29,7 +29,7 @@ export function EstablishmentRegistrationForm() {
   const router = useRouter()
   const { register: registerUser } = useAuth()
   const [step, setStep] = useState<number>(1)
-  const [establishmentId, setEstablishmentId] = useState<string | null>(null)
+  const [establishmentSlug, setEstablishmentSlug] = useState<string | null>(null)
   const [apiError, setApiError] = useState<string | null>(null)
 
   const userForm = useForm<RegisterFormValues>({
@@ -79,7 +79,7 @@ export function EstablishmentRegistrationForm() {
         logoUrl: data.logoUrl?.trim() || null,
         website: data.website?.trim() || null,
       } as CreateEstablishmentDto)
-      setEstablishmentId(String(establishment.id))
+      setEstablishmentSlug(establishment.slug)
       setStep(STEP_ADDRESS)
     } catch (err: unknown) {
       const message =
@@ -91,7 +91,7 @@ export function EstablishmentRegistrationForm() {
   }
 
   const onAddressSubmit = async (data: AddressFormValues) => {
-    if (!establishmentId) return
+    if (!establishmentSlug) return
     setApiError(null)
     try {
       const { data: address } = await apiClient.post<{ id: number }>(endpoints.addresses.create, {
@@ -104,7 +104,7 @@ export function EstablishmentRegistrationForm() {
         zipCode: data.zipCode,
         country: (data.country || 'BR').toUpperCase(),
       })
-      await apiClient.patch(endpoints.establishments.byId(establishmentId), { addressId: address.id })
+      await apiClient.patch(endpoints.establishments.bySlug(establishmentSlug), { addressId: address.id })
       router.push('/register/complete')
     } catch (err: unknown) {
       const message =

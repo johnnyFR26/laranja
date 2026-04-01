@@ -1,5 +1,6 @@
 /**
  * Endpoints de endereços (OpenAPI: /api/addresses/*).
+ * Recurso identificado por slug UUID.
  */
 
 const ADDRESSES = '/addresses' as const
@@ -7,5 +8,5 @@ const ADDRESSES = '/addresses' as const
 export const addressesEndpoints = {
   list: ADDRESSES,
   create: ADDRESSES,
-  byId: (id: string | number) => `${ADDRESSES}/${id}` as const,
+  bySlug: (slug: string) => `${ADDRESSES}/${slug}` as const,
 } as const

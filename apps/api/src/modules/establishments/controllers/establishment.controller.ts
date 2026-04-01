@@ -56,35 +56,36 @@ export class EstablishmentController {
     return this.establishmentService.findByOwner(userId);
   }
 
-  @Get(':slug')
+  /** Segmento `:id` é o slug UUID público (não o id numérico interno do Prisma). */
+  @Get(':id')
   @Public()
   @ApiOperation({ summary: 'Buscar estabelecimento por slug' })
-  @ApiParam({ name: 'slug', description: 'Slug (UUID) do estabelecimento' })
+  @ApiParam({ name: 'id', description: 'Slug UUID público do estabelecimento' })
   @ApiResponse({ status: 200, description: 'Estabelecimento encontrado' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  findOne(@Param('slug', ParseUUIDPipe) slug: string) {
+  findOne(@Param('id', ParseUUIDPipe) slug: string) {
     return this.establishmentService.findOne(slug);
   }
 
-  @Patch(':slug')
+  @Patch(':id')
   @ApiOperation({ summary: 'Atualizar estabelecimento' })
-  @ApiParam({ name: 'slug', description: 'Slug (UUID) do estabelecimento' })
+  @ApiParam({ name: 'id', description: 'Slug UUID público do estabelecimento' })
   @ApiResponse({ status: 200, description: 'Estabelecimento atualizado' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
   update(
-    @Param('slug', ParseUUIDPipe) slug: string,
+    @Param('id', ParseUUIDPipe) slug: string,
     @Body() updateDto: UpdateEstablishmentDto,
   ) {
     return this.establishmentService.update(slug, updateDto);
   }
 
-  @Delete(':slug')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Remover estabelecimento' })
-  @ApiParam({ name: 'slug', description: 'Slug (UUID) do estabelecimento' })
+  @ApiParam({ name: 'id', description: 'Slug UUID público do estabelecimento' })
   @ApiResponse({ status: 204, description: 'Estabelecimento removido' })
   @ApiResponse({ status: 404, description: 'Estabelecimento não encontrado' })
-  remove(@Param('slug', ParseUUIDPipe) slug: string) {
+  remove(@Param('id', ParseUUIDPipe) slug: string) {
     return this.establishmentService.remove(slug);
   }
 }

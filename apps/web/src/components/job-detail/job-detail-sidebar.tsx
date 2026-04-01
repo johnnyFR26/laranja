@@ -41,7 +41,7 @@ export function JobDetailSidebar({ job }: JobDetailSidebarProps) {
         </ul>
         <div className="space-y-3">
           <Link
-            href={`/jobs/${job.id}/apply`}
+            href={`/jobs/${job.slug}/apply`}
             className="flex w-full items-center justify-center rounded-xl bg-primary py-4 font-black text-white shadow-lg shadow-primary/20 transition-transform hover:bg-primary/90 active:scale-[0.98]"
           >
             CANDIDATAR-SE A ESTA VAGA
@@ -68,8 +68,8 @@ export function JobDetailSidebar({ job }: JobDetailSidebarProps) {
           <div className="space-y-4">
             {job.otherRoles.map((role) => (
               <Link
-                key={role.id}
-                href={`/jobs/${role.id}`}
+                key={role.slug}
+                href={`/jobs/${role.slug}`}
                 className="flex items-center justify-between rounded-lg bg-secondary/5 p-3 transition-colors hover:bg-secondary/10 dark:bg-slate-700/50 dark:hover:bg-slate-700"
               >
                 <div>

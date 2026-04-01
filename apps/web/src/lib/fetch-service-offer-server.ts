@@ -3,12 +3,12 @@ import axios from 'axios'
 import { cache } from 'react'
 import { apiServerClient } from '@/lib/api-client'
 
-async function fetchServiceOfferByIdUncached(
-  id: string
+async function fetchServiceOfferBySlugUncached(
+  slug: string
 ): Promise<ServiceOfferDetailApiDto | null> {
   try {
     const { data } = await apiServerClient.get<ServiceOfferDetailApiDto>(
-      `/service-offers/${encodeURIComponent(id)}`,
+      `/service-offers/${encodeURIComponent(slug)}`,
     )
     return data ?? null
   } catch (err) {
@@ -18,4 +18,4 @@ async function fetchServiceOfferByIdUncached(
 }
 
 /** Uma query por request (dedupe entre metadata e página). */
-export const getServiceOffer = cache(fetchServiceOfferByIdUncached)
+export const getServiceOffer = cache(fetchServiceOfferBySlugUncached)

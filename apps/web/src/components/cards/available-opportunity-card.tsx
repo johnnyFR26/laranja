@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 export interface AvailableOpportunityCardData {
-  id: string
+  /** Slug UUID da oferta (URL /jobs/:slug) */
+  slug: string
   venueName: string
   location: string
   role: string
@@ -75,7 +76,7 @@ export function AvailableOpportunityCard({ opportunity }: AvailableOpportunityCa
         </p>
         <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{opportunity.dateLabel}</p>
         <Link
-          href={`/jobs/${opportunity.id}`}
+          href={`/jobs/${opportunity.slug}`}
           className="mt-4 flex w-full items-center justify-center rounded-lg border-2 border-primary bg-transparent px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary-light"
         >
           Ver detalhes

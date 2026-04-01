@@ -1,6 +1,6 @@
 /**
  * Map de endpoints por categoria (OpenAPI Grove Opportunities API).
- * Uso: endpoints.auth.login, endpoints.users.byId(id), etc.
+ * Uso: endpoints.auth.login, endpoints.users.bySlug(slug), etc.
  * Seguro e escalável: um único lugar para paths, fácil adicionar novas categorias.
  */
 

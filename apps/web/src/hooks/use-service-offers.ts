@@ -11,6 +11,7 @@ import { serviceOffersEndpoints } from '@/config/api/endpoints'
 
 /**
  * Query params alinhados ao FilterServiceOfferDto da API (GET /api/service-offers).
+ * `establishmentId` e `categoryId` são slugs UUID (não ids numéricos).
  * @see apps/api/src/modules/service-offers/dto/filter-service-offer.dto.ts
  */
 export type FilterServiceOffersParams = FilterServiceOfferQueryDto

@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { Establishment } from '../../../generated/client';
 import { EstablishmentRepository } from '../repositories/establishment.repository';
@@ -49,7 +50,10 @@ export class EstablishmentService {
   }
 
   async findOne(slug: string): Promise<Establishment> {
-    const establishment = await this.establishmentRepository.findWithServiceOffersBySlug(slug);
+    if (!slug?.trim()) {
+      throw new BadRequestException('Slug do estabelecimento é obrigatório');
+    }
+    const establishment = await this.establishmentRepository.findWithServiceOffersBySlug(slug.trim());
     if (!establishment) {
       throw new NotFoundException('Estabelecimento não encontrado');
     }
@@ -61,20 +65,27 @@ export class EstablishmentService {
   }
 
   async update(slug: string, updateDto: UpdateEstablishmentDto): Promise<Establishment> {
-    await this.findOne(slug);
+    if (!slug?.trim()) {
+      throw new BadRequestException('Slug do estabelecimento é obrigatório');
+    }
+    await this.findOne(slug.trim());
 
+    const currentSlug = slug.trim();
     if (updateDto.slug) {
       const existingBySlug = await this.establishmentRepository.findBySlug(updateDto.slug);
-      if (existingBySlug && existingBySlug.slug !== slug) {
+      if (existingBySlug && existingBySlug.slug !== currentSlug) {
         throw new ConflictException('Slug já está em uso');
       }
     }
 
-    return this.establishmentRepository.update(slug, updateDto);
+    return this.establishmentRepository.update(currentSlug, updateDto);
   }
 
   async remove(slug: string): Promise<void> {
-    await this.findOne(slug);
-    await this.establishmentRepository.delete(slug);
+    if (!slug?.trim()) {
+      throw new BadRequestException('Slug do estabelecimento é obrigatório');
+    }
+    await this.findOne(slug.trim());
+    await this.establishmentRepository.delete(slug.trim());
   }
 }

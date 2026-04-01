@@ -157,7 +157,7 @@ export function FreelancerRegistrationForm() {
   }
 
   const onAddressSubmit = async (data: AddressFormValues) => {
-    if (!user?.id) return
+    if (!user?.slug) return
     try {
       const { data: address } = await apiClient.post<{ id: number }>(endpoints.addresses.create, {
         street: data.street,
@@ -169,7 +169,7 @@ export function FreelancerRegistrationForm() {
         zipCode: data.zipCode,
         country: (data.country || 'BR').toUpperCase(),
       })
-      await apiClient.patch(endpoints.users.byId(String(user.id)), { addressId: address.id })
+      await apiClient.patch(endpoints.users.bySlug(user.slug), { addressId: address.id })
       router.push('/register/complete')
     } catch (err: unknown) {
       throw err

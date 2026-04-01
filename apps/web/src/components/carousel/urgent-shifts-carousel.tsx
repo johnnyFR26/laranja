@@ -63,7 +63,7 @@ export function UrgentShiftsCarousel({ shifts }: UrgentShiftsCarouselProps) {
         style={{ scrollbarWidth: 'thin' }}
       >
         {shifts.map((shift) => (
-          <UrgentShiftCard key={shift.id} shift={shift} />
+          <UrgentShiftCard key={shift.slug} shift={shift} />
         ))}
       </div>
     </section>

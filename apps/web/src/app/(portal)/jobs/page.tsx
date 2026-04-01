@@ -4,7 +4,7 @@ import type { UrgentShiftCardData } from '@/components/cards/urgent-shift-card'
 
 const MOCK_URGENT_SHIFTS: UrgentShiftCardData[] = [
   {
-    id: 'u1',
+    slug: 'u1',
     venueName: 'The Grand Bistro',
     location: 'Downtown',
     role: 'Server Assistant',
@@ -16,7 +16,7 @@ const MOCK_URGENT_SHIFTS: UrgentShiftCardData[] = [
     icon: 'restaurant',
   },
   {
-    id: 'u2',
+    slug: 'u2',
     venueName: 'Sunrise Cafe',
     location: 'North Harbor',
     role: 'Barista',
@@ -28,7 +28,7 @@ const MOCK_URGENT_SHIFTS: UrgentShiftCardData[] = [
     icon: 'cafe',
   },
   {
-    id: 'u3',
+    slug: 'u3',
     venueName: 'City Center Hotel',
     location: 'Financial District',
     role: 'Porter',
@@ -40,7 +40,7 @@ const MOCK_URGENT_SHIFTS: UrgentShiftCardData[] = [
     icon: 'hotel',
   },
   {
-    id: 'u4',
+    slug: 'u4',
     venueName: 'Ocean Grill',
     location: 'Bay Area',
     role: 'Line Cook',

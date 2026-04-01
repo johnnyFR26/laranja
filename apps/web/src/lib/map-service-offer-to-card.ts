@@ -44,7 +44,7 @@ export function mapOpenOfferToCard(offer: ServiceOfferOpenApiDto): AvailableOppo
   const dateLabel = formatDateLabel(offer.deadline) || formatDateLabel(offer.createdAt) || '—'
 
   return {
-    id: String(offer.slug),
+    slug: offer.slug,
     venueName: offer.establishment?.name ?? 'Estabelecimento',
     location,
     role: offer.title,

@@ -1,5 +1,6 @@
 /**
  * Endpoints de usuários (OpenAPI: /api/users/*).
+ * Recurso identificado por slug UUID (não pelo id numérico interno).
  */
 
 const USERS = '/users' as const
@@ -7,5 +8,5 @@ const USERS = '/users' as const
 export const usersEndpoints = {
   list: USERS,
   create: USERS,
-  byId: (id: string) => `${USERS}/${id}` as const,
+  bySlug: (slug: string) => `${USERS}/${slug}` as const,
 } as const

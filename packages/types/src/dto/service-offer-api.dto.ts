@@ -22,7 +22,7 @@ export interface ServiceOfferOpenApiDto {
   category?: { name: string | null } | null
 }
 
-/** Role aninhada em GET /api/service-offers/:id (requiredRoles). */
+/** Role aninhada em GET /api/service-offers/:slug (requiredRoles). */
 export interface ServiceOfferDetailRoleApiDto {
   role: {
     name: string
@@ -45,7 +45,7 @@ export interface ServiceOfferDetailAddressApiDto {
 }
 
 /**
- * Payload de GET /api/service-offers/:id (Prisma + includes).
+ * Payload de GET /api/service-offers/:slug (Prisma + includes).
  * Valores numéricos/Decimal vêm como string ou number no JSON.
  */
 export interface ServiceOfferDetailApiDto {

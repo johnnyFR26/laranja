@@ -22,14 +22,16 @@ export interface JobDetailSummaryItem {
 }
 
 export interface JobDetailOtherRole {
-  id: string
+  /** Slug UUID da oferta relacionada (mock / links) */
+  slug: string
   role: string
   timeLabel: string
   rate: string
 }
 
 export interface JobDetailData {
-  id: string
+  /** Slug UUID da oferta (segmento de URL /jobs/:slug) */
+  slug: string
   title: string
   /** Ex.: "The Gourmet Kitchen • Fine Dining Experience" */
   subtitle: string

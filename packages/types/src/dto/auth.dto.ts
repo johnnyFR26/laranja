@@ -11,7 +11,7 @@ export interface RegisterDto {
   password: string
   name: string
   phone?: string | null
-  /** IDs das roles (vindos do backend) */
+  /** Slugs UUID das roles (alinhado à API) */
   roleIds: string[]
   /** Disponibilidade e skills do freelancer */
   controls: {
@@ -35,6 +35,8 @@ export interface UserControlsDto {
 /** Usuário retornado em login/register/profile (snake_case conforme API) */
 export interface AuthUserDto {
   id: string
+  /** Slug UUID público (rotas /users/:slug) */
+  slug: string
   email: string
   name: string | null
   avatarUrl?: string | null

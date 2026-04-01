@@ -1,7 +1,8 @@
 import Link from 'next/link'
 
 export interface UrgentShiftCardData {
-  id: string
+  /** Slug UUID da oferta (URL /jobs/:slug) */
+  slug: string
   venueName: string
   location: string
   role: string
@@ -54,7 +55,7 @@ export function UrgentShiftCard({ shift }: UrgentShiftCardProps) {
         {shift.dateLabel} • {shift.timeRange}
       </p>
       <Link
-        href={`/jobs/${shift.id}/apply`}
+        href={`/jobs/${shift.slug}/apply`}
         className="mt-4 flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-primary-glow transition-opacity hover:opacity-90"
       >
         Aplicação rápida

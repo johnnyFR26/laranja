@@ -9,7 +9,7 @@ import { mapOpenOfferToCard } from '@/lib/map-service-offer-to-card'
 /** Fallback visual enquanto a API não tem dados ou falha (mantido de propósito). */
 const MOCK_AVAILABLE_OPPORTUNITIES: AvailableOpportunityCardData[] = [
   {
-    id: 'a1',
+    slug: 'a1',
     venueName: 'Pasta House',
     location: 'Upper East',
     role: 'Waiter',
@@ -18,7 +18,7 @@ const MOCK_AVAILABLE_OPPORTUNITIES: AvailableOpportunityCardData[] = [
     dateLabel: '7 de março',
   },
   {
-    id: 'a2',
+    slug: 'a2',
     venueName: 'Green Garden',
     location: 'Riverside',
     role: 'Hostess',
@@ -27,7 +27,7 @@ const MOCK_AVAILABLE_OPPORTUNITIES: AvailableOpportunityCardData[] = [
     dateLabel: '8 de março',
   },
   {
-    id: 'a3',
+    slug: 'a3',
     venueName: 'Sky Lounge',
     location: 'Rooftop',
     role: 'Mixologist',
@@ -36,7 +36,7 @@ const MOCK_AVAILABLE_OPPORTUNITIES: AvailableOpportunityCardData[] = [
     dateLabel: '9 de março',
   },
   {
-    id: 'a4',
+    slug: 'a4',
     venueName: 'Urban Kitchen',
     location: 'SOHO',
     role: 'Prep Cook',
@@ -124,7 +124,7 @@ export function AvailableOpportunitiesSection() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {displayRows.map((opp) => (
-          <AvailableOpportunityCard key={opp.id} opportunity={opp} />
+          <AvailableOpportunityCard key={opp.slug} opportunity={opp} />
         ))}
       </div>
 

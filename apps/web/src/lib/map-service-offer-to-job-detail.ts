@@ -38,10 +38,7 @@ function mapsSearchUrl(
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`
 }
 
-export function mapServiceOfferDetailToJobDetail(
-  offer: ServiceOfferDetailApiDto,
-  routeParam: string
-): JobDetailData {
+export function mapServiceOfferDetailToJobDetail(offer: ServiceOfferDetailApiDto): JobDetailData {
   const budget = parseBudget(offer.budget)
   const formattedMoney = (n: number) =>
     new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n)
@@ -82,7 +79,7 @@ export function mapServiceOfferDetailToJobDetail(
   const subs = offer._count?.subscriptions ?? 0
 
   return {
-    id: routeParam,
+    slug: offer.slug,
     title: offer.title,
     subtitle,
     heroImageUrl: offer.establishment.logoUrl,

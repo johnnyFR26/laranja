@@ -13,7 +13,7 @@ import type { JobDetailData } from '@/types/job-detail'
 
 const MOCK_JOBS: Record<string, JobDetailData> = {
   a1: {
-    id: 'a1',
+    slug: 'a1',
     title: 'Garçom',
     subtitle: 'The Gourmet Kitchen • Experiência em fine dining',
     heroImageUrl:
@@ -49,12 +49,12 @@ const MOCK_JOBS: Record<string, JobDetailData> = {
       { label: 'Refeições', value: 'Incluídas' },
     ],
     otherRoles: [
-      { id: 'a2', role: 'Auxiliar de cozinha', timeLabel: 'Amanhã • 10:00', rate: 'R$ 22/h' },
-      { id: 'a3', role: 'Bartender', timeLabel: 'Sáb • 19:00', rate: 'R$ 30/h' },
+      { slug: 'a2', role: 'Auxiliar de cozinha', timeLabel: 'Amanhã • 10:00', rate: 'R$ 22/h' },
+      { slug: 'a3', role: 'Bartender', timeLabel: 'Sáb • 19:00', rate: 'R$ 30/h' },
     ],
   },
   a2: {
-    id: 'a2',
+    slug: 'a2',
     title: 'Auxiliar de cozinha',
     subtitle: 'Pasta House • Preparo e organização',
     date: '25 out 2023',
@@ -79,7 +79,7 @@ const MOCK_JOBS: Record<string, JobDetailData> = {
     ],
   },
   a3: {
-    id: 'a3',
+    slug: 'a3',
     title: 'Bartender',
     subtitle: 'Sky Lounge • Bebidas e atendimento ao bar',
     date: '26 out 2023',
@@ -106,22 +106,22 @@ const MOCK_JOBS: Record<string, JobDetailData> = {
 }
 
 interface JobDetailPageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({
   params,
 }: JobDetailPageProps): Promise<Metadata> {
-  const { id } = await params
-  const fromApi = await getServiceOffer(id)
+  const { slug } = await params
+  const fromApi = await getServiceOffer(slug)
   if (fromApi) {
-    const job = mapServiceOfferDetailToJobDetail(fromApi, id)
+    const job = mapServiceOfferDetailToJobDetail(fromApi)
     return {
       title: `${job.title} - Grove Opportunities`,
       description: job.description.slice(0, 160),
     }
   }
-  const job = MOCK_JOBS[id]
+  const job = MOCK_JOBS[slug]
   if (!job) return { title: 'Vaga não encontrada' }
   return {
     title: `${job.title} - Grove Opportunities`,
@@ -130,11 +130,11 @@ export async function generateMetadata({
 }
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
-  const { id } = await params
-  const fromApi = await getServiceOffer(id)
+  const { slug } = await params
+  const fromApi = await getServiceOffer(slug)
   const job: JobDetailData | undefined = fromApi
-    ? mapServiceOfferDetailToJobDetail(fromApi, id)
-    : MOCK_JOBS[id]
+    ? mapServiceOfferDetailToJobDetail(fromApi)
+    : MOCK_JOBS[slug]
 
   if (!job) notFound()
 

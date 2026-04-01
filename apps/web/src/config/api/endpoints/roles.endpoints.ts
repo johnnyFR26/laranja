@@ -1,5 +1,6 @@
 /**
  * Endpoints de roles (OpenAPI: /api/roles/*).
+ * Recurso identificado por slug UUID. `user/:userId` usa o slug UUID do usuário.
  */
 
 const ROLES = '/roles' as const
@@ -7,10 +8,9 @@ const ROLES = '/roles' as const
 export const rolesEndpoints = {
   list: ROLES,
   create: ROLES,
-  byId: (id: string) => `${ROLES}/${id}` as const,
-  bySlug: (slug: string) => `${ROLES}/slug/${slug}` as const,
-  user: (userId: string) => `${ROLES}/user/${userId}` as const,
-  userSet: (userId: string) => `${ROLES}/user/${userId}/set` as const,
+  bySlug: (slug: string) => `${ROLES}/${slug}` as const,
+  user: (userSlug: string) => `${ROLES}/user/${userSlug}` as const,
+  userSet: (userSlug: string) => `${ROLES}/user/${userSlug}/set` as const,
   assign: `${ROLES}/assign`,
   remove: `${ROLES}/remove`,
 } as const
