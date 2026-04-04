@@ -1,6 +1,7 @@
 import { UrgentShiftsCarousel } from '@/components/carousel/urgent-shifts-carousel'
 import { AvailableOpportunitiesSection } from '@/components/jobs'
 import type { UrgentShiftCardData } from '@/components/cards/urgent-shift-card'
+import { getOpenServiceOffers } from '@/lib/fetch-open-service-offers-server'
 
 const MOCK_URGENT_SHIFTS: UrgentShiftCardData[] = [
   {
@@ -54,11 +55,14 @@ const MOCK_URGENT_SHIFTS: UrgentShiftCardData[] = [
 ]
 
 export const metadata = {
-  title: 'Open jobs - Grove Opportunities',
-  description: 'Turnos urgentes e ofertas de serviço disponíveis',
+  title: 'Oportunidades e ofertas de serviço | Grove Opportunities',
+  description:
+    'Turnos urgentes e ofertas de serviço em hospitalidade. Encontre vagas por localização e função.',
 }
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const initialOffers = await getOpenServiceOffers()
+
   return (
     <div className="space-y-8">
       <header>
@@ -72,7 +76,7 @@ export default function JobsPage() {
 
       <UrgentShiftsCarousel shifts={MOCK_URGENT_SHIFTS} />
 
-      <AvailableOpportunitiesSection />
+      <AvailableOpportunitiesSection initialOffers={initialOffers} />
     </div>
   )
 }

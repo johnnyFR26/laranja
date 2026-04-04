@@ -1,5 +1,6 @@
 'use client'
 
+import type { ServiceOfferOpenApiDto } from '@org/types'
 import { useMemo } from 'react'
 import { AvailableOpportunityCard } from '@/components/cards/available-opportunity-card'
 import type { AvailableOpportunityCardData } from '@/components/cards/available-opportunity-card'
@@ -46,15 +47,19 @@ const MOCK_AVAILABLE_OPPORTUNITIES: AvailableOpportunityCardData[] = [
   },
 ]
 
-export function AvailableOpportunitiesSection() {
+export interface AvailableOpportunitiesSectionProps {
+  /** Dados da API obtidos no servidor para HTML inicial com links indexáveis. */
+  initialOffers?: ServiceOfferOpenApiDto[]
+}
+
+export function AvailableOpportunitiesSection({ initialOffers = [] }: AvailableOpportunitiesSectionProps) {
   const { offers, isLoading, error } = useOpenServiceOffers()
 
   const displayRows = useMemo(() => {
-    if (offers.length > 0) {
-      return offers.map(mapOpenOfferToCard)
-    }
+    if (offers.length > 0) return offers.map(mapOpenOfferToCard)
+    if (initialOffers.length > 0) return initialOffers.map(mapOpenOfferToCard)
     return MOCK_AVAILABLE_OPPORTUNITIES
-  }, [offers])
+  }, [offers, initialOffers])
 
   const showApiHint = offers.length === 0 && !isLoading && !error
 
