@@ -184,6 +184,18 @@ export class AuthService {
       throw new UnauthorizedException('Usuário não encontrado');
     }
 
+    let establishmentOut = user.establishment ?? null;
+    if (
+      establishmentOut &&
+      establishmentOut.addressId != null &&
+      establishmentOut.address === null
+    ) {
+      const addr = await this.prisma.address.findUnique({
+        where: { id: establishmentOut.addressId },
+      });
+      establishmentOut = { ...establishmentOut, address: addr };
+    }
+
     return {
       id: String(user.id),
       slug: user.slug,
@@ -195,7 +207,7 @@ export class AuthService {
       address: user.address,
       controls: user.controls as { skills?: string[]; availability?: Record<string, unknown> } | null,
       roles: user.userRoles.map((ur) => ur.role.slug),
-      establishment: user.establishment ? user.establishment : null,
+      establishment: establishmentOut,
     };
   }
 }

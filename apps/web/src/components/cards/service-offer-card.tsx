@@ -67,7 +67,7 @@ export function ServiceOfferCard({ offer }: ServiceOfferCardProps) {
       </CardContent>
       <CardFooter>
         <Link
-          href={`/ofertas/${offer.id}`}
+          href={`/jobs/${offer.slug}`}
           className="text-sm font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 hover:decoration-slate-600"
         >
           Ver oferta

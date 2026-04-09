@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addressSchema, type AddressFormValues } from '@/validators/address'
@@ -47,6 +47,9 @@ export function AddressForm({
   idPrefix = 'addr',
 }: AddressFormProps) {
   const [viacepLoading, setViacepLoading] = useState(false)
+  const initialZipDigits = (defaultValuesProp?.zipCode ?? '').replace(/\D/g, '')
+  const lastSuccessCepDigitsRef = useRef<string | null>(initialZipDigits.length === 8 ? initialZipDigits : null)
+  const lastFailedAutoCepDigitsRef = useRef<string | null>(null)
 
   const {
     register,
@@ -55,35 +58,75 @@ export function AddressForm({
     clearErrors,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<AddressFormValues>({
     resolver: zodResolver(addressSchema),
     defaultValues: { ...emptyValues, ...defaultValuesProp },
   })
 
+  const zipCodeWatch = watch('zipCode')
+
   const id = (suffix: string) => `${idPrefix}-${suffix}`
 
-  const handleBuscarCep = async () => {
-    const raw = getValues('zipCode')
-    setViacepLoading(true)
-    try {
-      const data = await fetchViaCep(raw)
-      if (!data) {
-        setError('zipCode', { type: 'manual', message: 'CEP não encontrado.' })
-        return
-      }
+  const applyViaCepResult = useCallback(
+    (data: NonNullable<Awaited<ReturnType<typeof fetchViaCep>>>, rawZip: string) => {
       clearErrors('zipCode')
       setValue('street', data.logradouro || '')
       setValue('neighborhood', data.bairro || '')
       setValue('city', data.localidade || '')
       setValue('state', (data.uf || '').toUpperCase().slice(0, 2))
       if (data.complemento) setValue('complement', data.complemento)
-      const digits = (data.cep || raw).replace(/\D/g, '')
+      const digits = (data.cep || rawZip).replace(/\D/g, '')
       if (digits.length === 8) setValue('zipCode', formatCepFromDigits(digits))
-    } finally {
-      setViacepLoading(false)
-    }
+    },
+    [clearErrors, setValue],
+  )
+
+  const lookupCep = useCallback(
+    async (rawZip: string, source: 'auto' | 'manual') => {
+      const digits = rawZip.replace(/\D/g, '')
+      if (digits.length !== 8) return
+      if (source === 'manual') {
+        lastFailedAutoCepDigitsRef.current = null
+      }
+      setViacepLoading(true)
+      try {
+        const data = await fetchViaCep(rawZip)
+        if (!data) {
+          setError('zipCode', { type: 'manual', message: 'CEP não encontrado.' })
+          if (source === 'auto') lastFailedAutoCepDigitsRef.current = digits
+          return
+        }
+        applyViaCepResult(data, rawZip)
+        lastSuccessCepDigitsRef.current = digits
+        lastFailedAutoCepDigitsRef.current = null
+      } finally {
+        setViacepLoading(false)
+      }
+    },
+    [applyViaCepResult, setError],
+  )
+
+  const handleBuscarCep = () => {
+    void lookupCep(getValues('zipCode'), 'manual')
   }
+
+  useEffect(() => {
+    if (!viacep) return
+    const digits = (zipCodeWatch ?? '').replace(/\D/g, '')
+    if (digits.length !== 8) return
+    if (lastSuccessCepDigitsRef.current === digits) return
+    if (lastFailedAutoCepDigitsRef.current === digits) return
+
+    const timeoutId = window.setTimeout(() => {
+      const current = (getValues('zipCode') ?? '').replace(/\D/g, '')
+      if (current !== digits) return
+      void lookupCep(getValues('zipCode') ?? '', 'auto')
+    }, 450)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [viacep, zipCodeWatch, getValues, lookupCep])
 
   const onFormSubmit = async (data: AddressFormValues) => {
     try {
@@ -114,6 +157,51 @@ export function AddressForm({
         </p>
       )}
       <div className="grid gap-4 sm:grid-cols-2">
+        <div className={viacep ? 'sm:col-span-2' : ''}>
+          <label htmlFor={id('zipCode')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+            CEP
+          </label>
+          {viacep ? (
+            <p className="mb-1 text-xs text-slate-500 dark:text-slate-400">
+              Digite o CEP primeiro; ao completar 8 dígitos a busca ocorre automaticamente (ou use o botão).
+            </p>
+          ) : null}
+          {viacep ? (
+            <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-stretch">
+              <input
+                id={id('zipCode')}
+                type="text"
+                inputMode="numeric"
+                autoComplete="postal-code"
+                placeholder="00000-000"
+                maxLength={9}
+                className="min-h-[42px] flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                {...register('zipCode')}
+              />
+              <button
+                type="button"
+                onClick={handleBuscarCep}
+                disabled={viacepLoading}
+                className="shrink-0 rounded-lg border border-primary bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15 disabled:opacity-60 dark:bg-primary/20"
+              >
+                {viacepLoading ? 'Buscando…' : 'Buscar CEP'}
+              </button>
+            </div>
+          ) : (
+            <input
+              id={id('zipCode')}
+              type="text"
+              placeholder="01310-100"
+              className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              {...register('zipCode')}
+            />
+          )}
+          {errors.zipCode && (
+            <p className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
+              {errors.zipCode.message}
+            </p>
+          )}
+        </div>
         <div className="sm:col-span-2">
           <label htmlFor={id('street')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Logradouro
@@ -214,43 +302,6 @@ export function AddressForm({
           {errors.state && (
             <p className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
               {errors.state.message}
-            </p>
-          )}
-        </div>
-        <div className={viacep ? 'sm:col-span-2' : ''}>
-          <label htmlFor={id('zipCode')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-            CEP
-          </label>
-          {viacep ? (
-            <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-stretch">
-              <input
-                id={id('zipCode')}
-                type="text"
-                placeholder="01310-100"
-                className="min-h-[42px] flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-                {...register('zipCode')}
-              />
-              <button
-                type="button"
-                onClick={handleBuscarCep}
-                disabled={viacepLoading}
-                className="shrink-0 rounded-lg border border-primary bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15 disabled:opacity-60 dark:bg-primary/20"
-              >
-                {viacepLoading ? 'Buscando…' : 'Buscar CEP'}
-              </button>
-            </div>
-          ) : (
-            <input
-              id={id('zipCode')}
-              type="text"
-              placeholder="01310-100"
-              className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-              {...register('zipCode')}
-            />
-          )}
-          {errors.zipCode && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
-              {errors.zipCode.message}
             </p>
           )}
         </div>

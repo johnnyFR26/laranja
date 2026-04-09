@@ -48,17 +48,17 @@ export interface AuthError {
 
 /**
  * Hook de autenticação: login, register, logout, token em sessionStorage,
- * estado authenticated e redirecionamento por tipo (owner -> /freelancers, demais -> /jobs).
+ * estado authenticated e redirecionamento (owner -> /dashboard/establishment, demais -> /jobs).
  */
 export function useAuth() {
   const { user, isAuthenticated, isLoading, setUser, setLoading, logout: storeLogout } = useAuthStore()
 
   const isOwner = Boolean(user?.establishment)
 
-  /** Caminho para onde redirecionar após login: owner -> /freelancers, caso contrário -> /jobs */
+  /** Após perfil carregado: dono de estabelecimento -> painel do estabelecimento; caso contrário -> vagas. */
   const getRedirectPath = useCallback((): string => {
     if (!user) return '/login'
-    return user.establishment ? '/freelancers' : '/jobs'
+    return user.establishment ? '/dashboard/establishment' : '/jobs'
   }, [user])
 
   /** Carrega o perfil a partir do token salvo (hidratação ao montar o app) */
@@ -91,10 +91,13 @@ export function useAuth() {
       setLoading(true)
       try {
         const { data } = await apiClient.post<AuthTokensResponseDto>(endpoints.auth.login, credentials)
-        const { access_token, refresh_token, user } = data
+        const { access_token, refresh_token } = data
         setStoredTokens(access_token, refresh_token)
-        setUser(user)
-        return Boolean(user.establishment) ? '/freelancers' : '/jobs'
+        const { data: profile } = await apiClient.get<AuthProfileResponseDto>(endpoints.auth.profile, {
+          headers: { Authorization: `Bearer ${access_token}` },
+        })
+        setUser(profile)
+        return profile.establishment ? '/dashboard/establishment' : '/jobs'
       } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
           const message =
@@ -114,11 +117,14 @@ export function useAuth() {
       setLoading(true)
       try {
         const { data } = await apiClient.post<AuthTokensResponseDto>(endpoints.auth.register, credentials)
-        const { access_token, refresh_token, user } = data ?? {}
-        if (access_token) setStoredTokens(access_token, refresh_token)
-        if (!user) throw { message: 'Resposta inválida do servidor.' } as AuthError
-        setUser(user)
-        return Boolean(user.establishment) ? '/freelancers' : '/jobs'
+        const { access_token, refresh_token } = data ?? {}
+        if (!access_token) throw { message: 'Resposta inválida do servidor.' } as AuthError
+        setStoredTokens(access_token, refresh_token ?? undefined)
+        const { data: profile } = await apiClient.get<AuthProfileResponseDto>(endpoints.auth.profile, {
+          headers: { Authorization: `Bearer ${access_token}` },
+        })
+        setUser(profile)
+        return profile.establishment ? '/dashboard/establishment' : '/jobs'
       } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
           const message =

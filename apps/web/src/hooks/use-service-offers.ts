@@ -50,6 +50,45 @@ export function useOpenServiceOffers() {
 }
 
 /**
+ * Ofertas de serviço de um estabelecimento específico.
+ * Chama GET /api/service-offers/establishment/:establishmentSlug (slug UUID).
+ * Não dispara enquanto `establishmentSlug` for nulo/vazio.
+ */
+export function useEstablishmentServiceOffers(establishmentSlug: string | null | undefined) {
+  const [offers, setOffers] = useState<ServiceOfferOpenApiDto[]>([])
+  const [isLoading, setIsLoading] = useState(Boolean(establishmentSlug))
+  const [error, setError] = useState<Error | null>(null)
+
+  const refetch = useCallback(async () => {
+    if (!establishmentSlug) {
+      setOffers([])
+      setIsLoading(false)
+      return
+    }
+    setIsLoading(true)
+    setError(null)
+    try {
+      const { data } = await apiClient.get<ServiceOfferOpenApiDto[]>(
+        serviceOffersEndpoints.byEstablishmentSlug(establishmentSlug),
+      )
+      setOffers(Array.isArray(data) ? data : [])
+    } catch (err) {
+      console.error('Failed to load establishment service offers:', err)
+      setError(err instanceof Error ? err : new Error('Falha ao carregar serviços'))
+      setOffers([])
+    } finally {
+      setIsLoading(false)
+    }
+  }, [establishmentSlug])
+
+  useEffect(() => {
+    void refetch()
+  }, [refetch])
+
+  return { offers, isLoading, error, refetch }
+}
+
+/**
  * Lista paginada (GET /api/service-offers). `filters` é comparado por JSON para evitar loops.
  */
 export function usePaginatedServiceOffers(filters: FilterServiceOfferQueryDto = {}) {

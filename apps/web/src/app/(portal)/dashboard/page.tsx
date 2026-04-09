@@ -1,7 +1,7 @@
 'use client'
 
-import { DashboardChoice } from '@/components/dashboard/dashboard-choice'
+import { DashboardRedirect } from '@/components/dashboard/dashboard-redirect'
 
 export default function DashboardPage() {
-  return <DashboardChoice />
+  return <DashboardRedirect />
 }
