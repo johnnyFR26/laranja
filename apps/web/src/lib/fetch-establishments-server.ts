@@ -13,7 +13,7 @@ export interface PaginatedEstablishmentsDto {
 }
 
 /** Estabelecimento público com ofertas (GET /establishments/:slug). */
-export interface EstablishmentPublicDetailDto extends EstablishmentDto {
+export interface EstablishmentPublicDetailDto extends Omit<EstablishmentDto, 'address'> {
   address?: {
     street?: string | null
     city?: string | null
