@@ -1,3 +1,5 @@
+import type { AddressDto } from './address.dto.js'
+
 export interface EstablishmentDto {
   id: string
   ownerId: string
@@ -7,6 +9,7 @@ export interface EstablishmentDto {
   logoUrl: string | null
   website: string | null
   addressId: string | null
+  address?: AddressDto | null
   createdAt: string
   updatedAt: string
 }

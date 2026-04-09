@@ -1,5 +1,6 @@
 export interface AddressDto {
   id: string
+  slug: string
   street: string
   number: string | null
   complement: string | null

@@ -172,7 +172,11 @@ export class AuthService {
           },
         },
         address: true,
-        establishment: true,
+        establishment: {
+          include: {
+            address: true,
+          },
+        },
       },
     });
 

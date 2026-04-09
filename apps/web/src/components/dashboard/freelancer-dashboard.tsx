@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { DashboardHeader } from '@/components/dashboard-header'
 import { FreelancerProfileCards } from '@/components/dashboard/freelancer-profile-cards'
+import { AddressSideDrawer } from '@/components/address/address-side-drawer'
 import { MyServicesCard } from '@/components/cards/my-services-card'
 import type { MyServicesRow } from '@/components/cards/my-services-card'
 
@@ -51,8 +53,10 @@ const MOCK_MY_SERVICES: MyServicesRow[] = [
 
 export function FreelancerDashboard() {
   const { user } = useAuth()
+  const [addressDrawerOpen, setAddressDrawerOpen] = useState(false)
   const userName = user?.name ?? user?.email ?? 'Usuário'
   const skills = (user?.controls as { skills?: string[] } | undefined)?.skills ?? []
+  const displayAddress = user?.establishment?.address ?? user?.address ?? null
 
   return (
     <div className="grid grid-cols-12 gap-6">
@@ -67,11 +71,14 @@ export function FreelancerDashboard() {
         <FreelancerProfileCards
           userName={userName}
           avatarUrl={user?.avatarUrl}
-          address={user?.address ?? null}
+          address={displayAddress}
           skills={skills}
           balance="R$ 0,00"
+          onConfigureAddress={() => setAddressDrawerOpen(true)}
         />
       </section>
+
+      <AddressSideDrawer open={addressDrawerOpen} onClose={() => setAddressDrawerOpen(false)} />
 
       <section className="col-span-12">
         <MyServicesCard

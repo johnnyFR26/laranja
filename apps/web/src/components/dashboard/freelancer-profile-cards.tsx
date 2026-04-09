@@ -10,6 +10,7 @@ export interface FreelancerProfileCardsProps {
   address?: AddressDto | null
   skills?: string[]
   balance?: string
+  onConfigureAddress: () => void
 }
 
 function formatAddress(addr: AddressDto): string {
@@ -30,6 +31,7 @@ export function FreelancerProfileCards({
   address,
   skills = [],
   balance,
+  onConfigureAddress,
 }: FreelancerProfileCardsProps) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -64,9 +66,10 @@ export function FreelancerProfileCards({
       </Link>
 
       {/* Endereço */}
-      <Link
-        href="/settings?tab=address"
-        className="group flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors hover:border-primary hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary"
+      <button
+        type="button"
+        onClick={onConfigureAddress}
+        className="group flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-6 text-left shadow-sm transition-colors hover:border-primary hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary"
       >
         <div className="flex items-center gap-2">
           <span className="flex size-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800">
@@ -81,7 +84,7 @@ export function FreelancerProfileCards({
           {address ? formatAddress(address) : 'Adicionar endereço'}
         </p>
         <span className="text-xs font-medium text-primary">Configurar</span>
-      </Link>
+      </button>
 
       {/* Skills */}
       <Link

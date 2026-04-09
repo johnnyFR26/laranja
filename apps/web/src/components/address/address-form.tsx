@@ -1,8 +1,21 @@
 'use client'
 
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addressSchema, type AddressFormValues } from '@/validators/address'
+import { fetchViaCep, formatCepFromDigits } from '@/lib/viacep'
+
+const emptyValues: AddressFormValues = {
+  street: '',
+  number: '',
+  complement: '',
+  neighborhood: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  country: 'BR',
+}
 
 export interface AddressFormProps {
   onSubmit: (data: AddressFormValues) => Promise<void>
@@ -10,6 +23,15 @@ export interface AddressFormProps {
   onBack?: () => void
   submitLabel?: string
   showBackButton?: boolean
+  /** Mescla com os valores iniciais (ex.: edição de endereço existente). */
+  defaultValues?: Partial<AddressFormValues>
+  /** `card`: borda e padding de página; `plain`: só espaçamento (drawer/modal). */
+  variant?: 'card' | 'plain'
+  showTitle?: boolean
+  /** Exibe botão ao lado do CEP para preencher campos via ViaCEP. */
+  viacep?: boolean
+  /** Prefixo dos `id` dos campos (evita colisão com outro formulário na página). */
+  idPrefix?: string
 }
 
 export function AddressForm({
@@ -18,25 +40,50 @@ export function AddressForm({
   onBack,
   submitLabel = 'Concluir cadastro',
   showBackButton = false,
+  defaultValues: defaultValuesProp,
+  variant = 'card',
+  showTitle = true,
+  viacep = false,
+  idPrefix = 'addr',
 }: AddressFormProps) {
+  const [viacepLoading, setViacepLoading] = useState(false)
+
   const {
     register,
     handleSubmit,
     setError,
+    clearErrors,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<AddressFormValues>({
     resolver: zodResolver(addressSchema),
-    defaultValues: {
-      street: '',
-      number: '',
-      complement: '',
-      neighborhood: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: 'BR',
-    },
+    defaultValues: { ...emptyValues, ...defaultValuesProp },
   })
+
+  const id = (suffix: string) => `${idPrefix}-${suffix}`
+
+  const handleBuscarCep = async () => {
+    const raw = getValues('zipCode')
+    setViacepLoading(true)
+    try {
+      const data = await fetchViaCep(raw)
+      if (!data) {
+        setError('zipCode', { type: 'manual', message: 'CEP não encontrado.' })
+        return
+      }
+      clearErrors('zipCode')
+      setValue('street', data.logradouro || '')
+      setValue('neighborhood', data.bairro || '')
+      setValue('city', data.localidade || '')
+      setValue('state', (data.uf || '').toUpperCase().slice(0, 2))
+      if (data.complemento) setValue('complement', data.complemento)
+      const digits = (data.cep || raw).replace(/\D/g, '')
+      if (digits.length === 8) setValue('zipCode', formatCepFromDigits(digits))
+    } finally {
+      setViacepLoading(false)
+    }
+  }
 
   const onFormSubmit = async (data: AddressFormValues) => {
     try {
@@ -50,12 +97,14 @@ export function AddressForm({
     }
   }
 
+  const formSurface =
+    variant === 'plain'
+      ? 'space-y-4'
+      : 'space-y-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900'
+
   return (
-    <form
-      onSubmit={handleSubmit(onFormSubmit)}
-      className="space-y-6 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-    >
-      <h2 className="text-xl font-bold text-secondary dark:text-slate-100">Endereço</h2>
+    <form onSubmit={handleSubmit(onFormSubmit)} className={formSurface}>
+      {showTitle ? <h2 className="text-xl font-bold text-secondary dark:text-slate-100">Endereço</h2> : null}
       {errors.root && (
         <p
           className="rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400"
@@ -66,11 +115,11 @@ export function AddressForm({
       )}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label htmlFor="addr-street" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label htmlFor={id('street')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Logradouro
           </label>
           <input
-            id="addr-street"
+            id={id('street')}
             type="text"
             placeholder="Rua das Flores"
             className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
@@ -83,11 +132,11 @@ export function AddressForm({
           )}
         </div>
         <div>
-          <label htmlFor="addr-number" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label htmlFor={id('number')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Número
           </label>
           <input
-            id="addr-number"
+            id={id('number')}
             type="text"
             placeholder="123"
             className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
@@ -100,11 +149,11 @@ export function AddressForm({
           )}
         </div>
         <div>
-          <label htmlFor="addr-complement" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label htmlFor={id('complement')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Complemento
           </label>
           <input
-            id="addr-complement"
+            id={id('complement')}
             type="text"
             placeholder="Apto 45"
             className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
@@ -117,11 +166,11 @@ export function AddressForm({
           )}
         </div>
         <div>
-          <label htmlFor="addr-neighborhood" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label htmlFor={id('neighborhood')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Bairro
           </label>
           <input
-            id="addr-neighborhood"
+            id={id('neighborhood')}
             type="text"
             placeholder="Centro"
             className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
@@ -134,11 +183,11 @@ export function AddressForm({
           )}
         </div>
         <div>
-          <label htmlFor="addr-city" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label htmlFor={id('city')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Cidade
           </label>
           <input
-            id="addr-city"
+            id={id('city')}
             type="text"
             placeholder="São Paulo"
             className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
@@ -151,11 +200,11 @@ export function AddressForm({
           )}
         </div>
         <div>
-          <label htmlFor="addr-state" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label htmlFor={id('state')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             Estado (UF)
           </label>
           <input
-            id="addr-state"
+            id={id('state')}
             type="text"
             placeholder="SP"
             maxLength={2}
@@ -168,17 +217,37 @@ export function AddressForm({
             </p>
           )}
         </div>
-        <div>
-          <label htmlFor="addr-zipCode" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+        <div className={viacep ? 'sm:col-span-2' : ''}>
+          <label htmlFor={id('zipCode')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             CEP
           </label>
-          <input
-            id="addr-zipCode"
-            type="text"
-            placeholder="01310-100"
-            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-            {...register('zipCode')}
-          />
+          {viacep ? (
+            <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-stretch">
+              <input
+                id={id('zipCode')}
+                type="text"
+                placeholder="01310-100"
+                className="min-h-[42px] flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                {...register('zipCode')}
+              />
+              <button
+                type="button"
+                onClick={handleBuscarCep}
+                disabled={viacepLoading}
+                className="shrink-0 rounded-lg border border-primary bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/15 disabled:opacity-60 dark:bg-primary/20"
+              >
+                {viacepLoading ? 'Buscando…' : 'Buscar CEP'}
+              </button>
+            </div>
+          ) : (
+            <input
+              id={id('zipCode')}
+              type="text"
+              placeholder="01310-100"
+              className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              {...register('zipCode')}
+            />
+          )}
           {errors.zipCode && (
             <p className="mt-1 text-sm text-red-600 dark:text-red-400" role="alert">
               {errors.zipCode.message}
@@ -186,11 +255,11 @@ export function AddressForm({
           )}
         </div>
         <div>
-          <label htmlFor="addr-country" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          <label htmlFor={id('country')} className="block text-sm font-medium text-slate-700 dark:text-slate-300">
             País
           </label>
           <input
-            id="addr-country"
+            id={id('country')}
             type="text"
             placeholder="BR"
             maxLength={2}
