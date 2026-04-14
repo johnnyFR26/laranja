@@ -3,6 +3,7 @@ import * as aws from "@pulumi/aws";
 import { dbSg, dbUrl } from "./database";
 import { vpc } from "./network";
 import * as pulumi from "@pulumi/pulumi";
+import { mediaBucketName, mediaCdnUrl, mediaAccessKeyId, mediaSecretAccessKey } from "./storage";
 
 
 export const repo = new awsx.ecr.Repository("api-repo", {
@@ -40,6 +41,10 @@ export const service = new awsx.ecs.FargateService("api-service", {
                     { name: "JWT_SECRET", value: jwtSecret },
                     { name: "CORS_ORIGIN", value: corsOrigin },
                     { name: "NODE_ENV", value: "production" },
+                    { name: "AWS_S3_BUCKET", value: mediaBucketName },
+                    { name: "AWS_CDN_URL", value: mediaCdnUrl },
+                    { name: "AWS_ACCESS_KEY_ID", value: mediaAccessKeyId },
+                    { name: "AWS_SECRET_ACCESS_KEY", value: mediaSecretAccessKey },
                 ]
             }
         }

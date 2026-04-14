@@ -70,6 +70,8 @@ model User {
   name       String     @db.VarChar(255)
   phone      String?    @db.VarChar(20)
   avatarUrl  String?    @db.Text
+  mainImageUrl String?  @db.Text
+  imageUrls  String[]
   status     UserStatus @default(ACTIVE)
   addressId  Int?
   controls   Json?      @db.Json
@@ -139,6 +141,8 @@ model Establishment {
   name        String   @db.VarChar(255)
   description String?  @db.Text
   logoUrl     String?  @db.Text
+  mainImageUrl String? @db.Text
+  imageUrls   String[]
   website     String?  @db.VarChar(255)
   addressId   Int?
   controls    Json?    @db.Json
@@ -180,6 +184,8 @@ model ServiceOffer {
   categoryId      Int?
   title           String             @db.VarChar(255)
   description     String             @db.Text
+  mainImageUrl    String?            @db.Text
+  imageUrls       String[]
   budget          Decimal?           @db.Decimal(12, 2)
   budgetType      BudgetType         @default(FIXED)
   status          ServiceOfferStatus @default(DRAFT)
