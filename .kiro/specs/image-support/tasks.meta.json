@@ -1,0 +1,310 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Adicionar `@default([])` em `imageUrls` nos modelos `User`, `Establishment` e `ServiceOffer` em `apps/api/prisma/schema.prisma`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927319475
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927328019
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927410717
+      }
+    ],
+    "1.2 Criar a migration `add_image_fields` e regenerar o client em `apps/api/src/generated`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927319568
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927420105
+      }
+    ],
+    "1.3 Atualizar `apps/api/.env.example` com `AWS_REGION`, `AWS_S3_BUCKET`, `AWS_CDN_URL`, `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` (valores fictícios)": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927319644
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927328804
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927411445
+      }
+    ],
+    "1.4 Injetar `AWS_REGION` no ambiente do container em `infra/src/backend.ts`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927319724
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927329632
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927411946
+      }
+    ],
+    "1.5 Resolver o bloco `allowBuilds` do `pnpm-workspace.yaml`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927319823
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927330404
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927412721
+      }
+    ],
+    "2.1 Criar `storage.constants.ts` (tokens `S3_CLIENT` e `STORAGE_CONFIG`), `storage.config.ts` (interface `StorageConfig` e leitura/validação das envs) e `storage.exception.ts` (`StorageException` estendendo `BadGatewayException`)": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927319893
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927331238
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927413814
+      }
+    ],
+    "2.2 Implementar `StorageService` com `buildKey`, `upload`, `toUrl`, `toKey`, `deleteByUrl` e `deleteManyByUrl`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927319973
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927420838
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793928013971
+      }
+    ],
+    "2.3 Criar `StorageModule` registrando `STORAGE_CONFIG`, `S3_CLIENT` e `StorageService` (exportado) e importá-lo em `AppModule`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320041
+      }
+    ],
+    "3. Checkpoint - storage": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320110
+      }
+    ],
+    "4.1 Criar `image.constants.ts` com `ALLOWED_IMAGE_MIME`, `MAX_IMAGE_FILE_SIZE` (5 MB), `MAX_GALLERY_SIZE` (user 10, establishment 20, service-offer 10), `ImageEntityType` e `ImageSlot`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320179
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927332187
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927414876
+      }
+    ],
+    "4.2 Implementar `ImageFilePipe`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320256
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927421655
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793928013762
+      }
+    ],
+    "4.4 Definir a interface `ImageTarget`, `ImageTargetRecord` e implementar `UserImageTarget`, `EstablishmentImageTarget` e `ServiceOfferImageTarget` com Prisma": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320340
+      }
+    ],
+    "4.5 Implementar `ImageTargetRegistry` (injeta os 3 targets e expõe `get(entity)`)": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320425
+      }
+    ],
+    "4.6 Implementar `ImageAuthorizationService.assertCanWrite`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320511
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927422058
+      },
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793928014109
+      }
+    ],
+    "5.1 Criar DTOs `ImageUrlDto`, `ReorderGalleryDto` e `ImageSetResponseDto` com `class-validator` e Swagger": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320591
+      }
+    ],
+    "5.2 Implementar `setSingle` e `removeSingle` (avatar, logo, main)": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320672
+      }
+    ],
+    "5.3 Implementar `addToGallery`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320728
+      }
+    ],
+    "5.4 Implementar `removeFromGallery`, `promoteToMain`, `reorderGallery` e `list`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320797
+      }
+    ],
+    "6.1 Criar `UserImagesController` em `users/:slug/images`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320861
+      }
+    ],
+    "6.2 Criar `EstablishmentImagesController` em `establishments/:slug/images` (com `logo` no lugar de `avatar`)": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927320939
+      }
+    ],
+    "6.3 Criar `ServiceOfferImagesController` em `service-offers/:slug/images` (sem rota de avatar/logo)": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321009
+      }
+    ],
+    "6.4 Criar `ImagesModule` (providers, controllers, exporta `ImageCleanupService`) e importar `StorageModule` e `ImagesModule` em `AppModule`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321090
+      }
+    ],
+    "7. Checkpoint - módulo de imagens": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321163
+      }
+    ],
+    "8.1 Implementar `ImageCleanupService` com `collect(entity, slug)` e `purge(urls)` (best effort com `Promise.allSettled` e log das chaves que falharem)": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321231
+      }
+    ],
+    "8.2 Integrar a limpeza em `UserService.remove`, `EstablishmentService.remove` e `ServiceOfferService.remove`": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321296
+      }
+    ],
+    "8.3 Remover `avatarUrl` e `logoUrl` dos DTOs de criação e atualização de User e Establishment": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321363
+      }
+    ],
+    "9.1 Decidir sobre `@aws-sdk/s3-request-presigner` (não usado no MVP) e confirmar que `multer`, `@types/multer`, `@nestjs/platform-express` e `@aws-sdk/client-s3` estão declarados": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321431
+      }
+    ],
+    "9.2 Atualizar a documentação em `.specs/codebase` (STACK, INTEGRATIONS) para AWS S3 + CloudFront, removendo a menção a Supabase": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321504
+      }
+    ],
+    "9.3 Rodar build, lint e a suíte de testes da API (`nx build api`, `nx lint api`, `nx test api`) e corrigir falhas": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321575
+      }
+    ],
+    "10. Checkpoint final": [
+      {
+        "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
+        "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
+        "timestamp": 1793927321719
+      }
+    ]
+  }
+}

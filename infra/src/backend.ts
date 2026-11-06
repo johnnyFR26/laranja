@@ -13,6 +13,7 @@ export const repo = new awsx.ecr.Repository("api-repo", {
 const cfg = new pulumi.Config()
 const jwtSecret = cfg.requireSecret("jwtSecret");
 const corsOrigin = cfg.require("corsOrigin");
+const awsRegion = aws.getRegionOutput().name;
 
 export const image = new awsx.ecr.Image("api-image", {
     repositoryUrl: repo.url,
@@ -41,6 +42,7 @@ export const service = new awsx.ecs.FargateService("api-service", {
                     { name: "JWT_SECRET", value: jwtSecret },
                     { name: "CORS_ORIGIN", value: corsOrigin },
                     { name: "NODE_ENV", value: "production" },
+                    { name: "AWS_REGION", value: awsRegion },
                     { name: "AWS_S3_BUCKET", value: mediaBucketName },
                     { name: "AWS_CDN_URL", value: mediaCdnUrl },
                     { name: "AWS_ACCESS_KEY_ID", value: mediaAccessKeyId },

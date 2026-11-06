@@ -44,6 +44,7 @@ export type UserMinAggregateOutputType = {
   name: string | null
   phone: string | null
   avatarUrl: string | null
+  mainImageUrl: string | null
   status: $Enums.UserStatus | null
   addressId: number | null
   createdAt: Date | null
@@ -59,6 +60,7 @@ export type UserMaxAggregateOutputType = {
   name: string | null
   phone: string | null
   avatarUrl: string | null
+  mainImageUrl: string | null
   status: $Enums.UserStatus | null
   addressId: number | null
   createdAt: Date | null
@@ -74,6 +76,8 @@ export type UserCountAggregateOutputType = {
   name: number
   phone: number
   avatarUrl: number
+  mainImageUrl: number
+  imageUrls: number
   status: number
   addressId: number
   controls: number
@@ -102,6 +106,7 @@ export type UserMinAggregateInputType = {
   name?: true
   phone?: true
   avatarUrl?: true
+  mainImageUrl?: true
   status?: true
   addressId?: true
   createdAt?: true
@@ -117,6 +122,7 @@ export type UserMaxAggregateInputType = {
   name?: true
   phone?: true
   avatarUrl?: true
+  mainImageUrl?: true
   status?: true
   addressId?: true
   createdAt?: true
@@ -132,6 +138,8 @@ export type UserCountAggregateInputType = {
   name?: true
   phone?: true
   avatarUrl?: true
+  mainImageUrl?: true
+  imageUrls?: true
   status?: true
   addressId?: true
   controls?: true
@@ -235,6 +243,8 @@ export type UserGroupByOutputType = {
   name: string
   phone: string | null
   avatarUrl: string | null
+  mainImageUrl: string | null
+  imageUrls: string[]
   status: $Enums.UserStatus
   addressId: number | null
   controls: runtime.JsonValue | null
@@ -274,6 +284,8 @@ export type UserWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  mainImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  imageUrls?: Prisma.StringNullableListFilter<"User">
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   addressId?: Prisma.IntNullableFilter<"User"> | number | null
   controls?: Prisma.JsonNullableFilter<"User">
@@ -296,6 +308,8 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  mainImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrls?: Prisma.SortOrder
   status?: Prisma.SortOrder
   addressId?: Prisma.SortOrderInput | Prisma.SortOrder
   controls?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -321,6 +335,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  mainImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  imageUrls?: Prisma.StringNullableListFilter<"User">
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   addressId?: Prisma.IntNullableFilter<"User"> | number | null
   controls?: Prisma.JsonNullableFilter<"User">
@@ -343,6 +359,8 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  mainImageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrls?: Prisma.SortOrder
   status?: Prisma.SortOrder
   addressId?: Prisma.SortOrderInput | Prisma.SortOrder
   controls?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -367,6 +385,8 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  mainImageUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  imageUrls?: Prisma.StringNullableListFilter<"User">
   status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
   addressId?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   controls?: Prisma.JsonNullableWithAggregatesFilter<"User">
@@ -382,6 +402,8 @@ export type UserCreateInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -403,6 +425,8 @@ export type UserUncheckedCreateInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   addressId?: number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -423,6 +447,8 @@ export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -444,6 +470,8 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -465,6 +493,8 @@ export type UserCreateManyInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   addressId?: number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -480,6 +510,8 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -495,6 +527,8 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -513,6 +547,14 @@ export type UserOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
@@ -521,6 +563,8 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  mainImageUrl?: Prisma.SortOrder
+  imageUrls?: Prisma.SortOrder
   status?: Prisma.SortOrder
   addressId?: Prisma.SortOrder
   controls?: Prisma.SortOrder
@@ -542,6 +586,7 @@ export type UserMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  mainImageUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   addressId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -557,6 +602,7 @@ export type UserMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  mainImageUrl?: Prisma.SortOrder
   status?: Prisma.SortOrder
   addressId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -614,6 +660,15 @@ export type UserUncheckedUpdateManyWithoutAddressNestedInput = {
   update?: Prisma.UserUpdateWithWhereUniqueWithoutAddressInput | Prisma.UserUpdateWithWhereUniqueWithoutAddressInput[]
   updateMany?: Prisma.UserUpdateManyWithWhereWithoutAddressInput | Prisma.UserUpdateManyWithWhereWithoutAddressInput[]
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateimageUrlsInput = {
+  set: string[]
+}
+
+export type UserUpdateimageUrlsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type EnumUserStatusFieldUpdateOperationsInput = {
@@ -705,6 +760,8 @@ export type UserCreateWithoutAddressInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -725,6 +782,8 @@ export type UserUncheckedCreateWithoutAddressInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -774,6 +833,8 @@ export type UserScalarWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  mainImageUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  imageUrls?: Prisma.StringNullableListFilter<"User">
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
   addressId?: Prisma.IntNullableFilter<"User"> | number | null
   controls?: Prisma.JsonNullableFilter<"User">
@@ -789,6 +850,8 @@ export type UserCreateWithoutUserRolesInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -809,6 +872,8 @@ export type UserUncheckedCreateWithoutUserRolesInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   addressId?: number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -844,6 +909,8 @@ export type UserUpdateWithoutUserRolesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -864,6 +931,8 @@ export type UserUncheckedUpdateWithoutUserRolesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -883,6 +952,8 @@ export type UserCreateWithoutEstablishmentInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -903,6 +974,8 @@ export type UserUncheckedCreateWithoutEstablishmentInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   addressId?: number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -938,6 +1011,8 @@ export type UserUpdateWithoutEstablishmentInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -958,6 +1033,8 @@ export type UserUncheckedUpdateWithoutEstablishmentInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -977,6 +1054,8 @@ export type UserCreateWithoutSubscriptionsInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -997,6 +1076,8 @@ export type UserUncheckedCreateWithoutSubscriptionsInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   addressId?: number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1032,6 +1113,8 @@ export type UserUpdateWithoutSubscriptionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1052,6 +1135,8 @@ export type UserUncheckedUpdateWithoutSubscriptionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1071,6 +1156,8 @@ export type UserCreateWithoutReviewsInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1091,6 +1178,8 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   addressId?: number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1115,6 +1204,8 @@ export type UserCreateWithoutReceivedReviewsInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1135,6 +1226,8 @@ export type UserUncheckedCreateWithoutReceivedReviewsInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   addressId?: number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1170,6 +1263,8 @@ export type UserUpdateWithoutReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1190,6 +1285,8 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1220,6 +1317,8 @@ export type UserUpdateWithoutReceivedReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1240,6 +1339,8 @@ export type UserUncheckedUpdateWithoutReceivedReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   addressId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -1260,6 +1361,8 @@ export type UserCreateManyAddressInput = {
   name: string
   phone?: string | null
   avatarUrl?: string | null
+  mainImageUrl?: string | null
+  imageUrls?: Prisma.UserCreateimageUrlsInput | string[]
   status?: $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -1274,6 +1377,8 @@ export type UserUpdateWithoutAddressInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1294,6 +1399,8 @@ export type UserUncheckedUpdateWithoutAddressInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1314,6 +1421,8 @@ export type UserUncheckedUpdateManyWithoutAddressInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrls?: Prisma.UserUpdateimageUrlsInput | string[]
   status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
   controls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1387,6 +1496,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   phone?: boolean
   avatarUrl?: boolean
+  mainImageUrl?: boolean
+  imageUrls?: boolean
   status?: boolean
   addressId?: boolean
   controls?: boolean
@@ -1410,6 +1521,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   phone?: boolean
   avatarUrl?: boolean
+  mainImageUrl?: boolean
+  imageUrls?: boolean
   status?: boolean
   addressId?: boolean
   controls?: boolean
@@ -1427,6 +1540,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   phone?: boolean
   avatarUrl?: boolean
+  mainImageUrl?: boolean
+  imageUrls?: boolean
   status?: boolean
   addressId?: boolean
   controls?: boolean
@@ -1444,6 +1559,8 @@ export type UserSelectScalar = {
   name?: boolean
   phone?: boolean
   avatarUrl?: boolean
+  mainImageUrl?: boolean
+  imageUrls?: boolean
   status?: boolean
   addressId?: boolean
   controls?: boolean
@@ -1452,7 +1569,7 @@ export type UserSelectScalar = {
   deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "email" | "password" | "name" | "phone" | "avatarUrl" | "status" | "addressId" | "controls" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "email" | "password" | "name" | "phone" | "avatarUrl" | "mainImageUrl" | "imageUrls" | "status" | "addressId" | "controls" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   address?: boolean | Prisma.User$addressArgs<ExtArgs>
   establishment?: boolean | Prisma.User$establishmentArgs<ExtArgs>
@@ -1487,6 +1604,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     phone: string | null
     avatarUrl: string | null
+    mainImageUrl: string | null
+    imageUrls: string[]
     status: $Enums.UserStatus
     addressId: number | null
     controls: runtime.JsonValue | null
@@ -1929,6 +2048,8 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
+  readonly mainImageUrl: Prisma.FieldRef<"User", 'String'>
+  readonly imageUrls: Prisma.FieldRef<"User", 'String[]'>
   readonly status: Prisma.FieldRef<"User", 'UserStatus'>
   readonly addressId: Prisma.FieldRef<"User", 'Int'>
   readonly controls: Prisma.FieldRef<"User", 'Json'>
