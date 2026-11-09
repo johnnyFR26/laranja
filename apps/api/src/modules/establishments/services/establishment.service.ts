@@ -9,12 +9,14 @@ import { EstablishmentRepository } from '../repositories/establishment.repositor
 import { CreateEstablishmentDto, UpdateEstablishmentDto, FilterEstablishmentDto } from '../dto';
 import { IPaginatedResult } from '../../../common/contracts/base-repository.interface';
 import { PrismaService } from '../../../database/prisma.service';
+import { ImageCleanupService } from '../../images/services/image-cleanup.service';
 
 @Injectable()
 export class EstablishmentService {
   constructor(
     private readonly establishmentRepository: EstablishmentRepository,
     private readonly prisma: PrismaService,
+    private readonly imageCleanup: ImageCleanupService,
   ) {}
 
   async create(ownerId: number, createDto: CreateEstablishmentDto): Promise<Establishment> {
@@ -86,6 +88,8 @@ export class EstablishmentService {
       throw new BadRequestException('Slug do estabelecimento é obrigatório');
     }
     await this.findOne(slug.trim());
+    const urls = await this.imageCleanup.collect('establishment', slug.trim());
     await this.establishmentRepository.delete(slug.trim());
+    await this.imageCleanup.purge(urls);
   }
 }

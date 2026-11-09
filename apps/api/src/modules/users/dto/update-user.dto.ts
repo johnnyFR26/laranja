@@ -14,11 +14,6 @@ export class UpdateUserDto {
   @IsString()
   phone?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg' })
-  @IsOptional()
-  @IsString()
-  avatarUrl?: string;
-
   @ApiPropertyOptional({ enum: UserStatus })
   @IsOptional()
   @IsEnum(UserStatus)

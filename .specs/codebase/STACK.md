@@ -24,6 +24,7 @@
 - **DB:** PostgreSQL (`@prisma/adapter-pg`, `pg`)
 - **Auth:** `@nestjs/jwt`, `@nestjs/passport`, passport-jwt / passport-local, Argon2 para senha
 - **API docs:** Swagger em `/api`, Scalar em `/reference` (não produção)
+- **Storage de imagens:** AWS S3 (bucket privado) + CloudFront (OAC) via `@aws-sdk/client-s3`; upload multipart com `multer` (memória) e `@nestjs/platform-express`. Módulos `storage` e `images` em `apps/api/src/modules`. Não usa Supabase nem presigned URLs (`@aws-sdk/s3-request-presigner` fora do MVP).
 - **Outros:** `@nestjs/throttler`, `@nestjs/terminus` (health), `@nestjs/swagger`, `@scalar/nestjs-api-reference`
 - **Build/serve:** webpack-cli (`apps/api/project.json`)
 
@@ -44,7 +45,7 @@
 ## Infraestrutura (`infra`)
 
 - **IaC:** Pulumi (`@pulumi/aws`, `@pulumi/awsx`)
-- **AWS:** ECR, ECS Fargate, ALB, VPC/subnets (ver `infra/src/backend.ts`, `database.ts`, `network`)
+- **AWS:** ECR, ECS Fargate, ALB, VPC/subnets, S3 + CloudFront para imagens (ver `infra/src/backend.ts`, `database.ts`, `network`)
 - **Secrets/config:** Pulumi config (`jwtSecret`, `corsOrigin`, etc.)
 
 ## Ferramentas de desenvolvimento

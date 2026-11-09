@@ -10,12 +10,14 @@ import { UserRepository } from '../repositories/user.repository';
 import { CreateUserDto, UpdateUserDto, FilterUserDto } from '../dto';
 import { IPaginatedResult } from '../../../common/contracts/base-repository.interface';
 import { PrismaService } from '../../../database/prisma.service';
+import { ImageCleanupService } from '../../images/services/image-cleanup.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly prisma: PrismaService,
+    private readonly imageCleanup: ImageCleanupService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
@@ -105,6 +107,8 @@ export class UserService {
 
   async remove(slug: string): Promise<void> {
     await this.findOne(slug);
+    const urls = await this.imageCleanup.collect('user', slug);
     await this.userRepository.delete(slug);
+    await this.imageCleanup.purge(urls);
   }
 }

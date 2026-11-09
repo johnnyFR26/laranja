@@ -18,11 +18,6 @@ export class UpdateEstablishmentDto {
   @IsString()
   description?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/logo.png' })
-  @IsOptional()
-  @IsString()
-  logoUrl?: string;
-
   @ApiPropertyOptional({ example: 'https://minhaempresa.com' })
   @IsOptional()
   @IsString()

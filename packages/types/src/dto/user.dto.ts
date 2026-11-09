@@ -18,14 +18,12 @@ export interface CreateUserDto {
   email: string
   name: string
   phone?: string | null
-  avatarUrl?: string | null
   addressId?: string | null
 }
 
 export interface UpdateUserDto {
   name?: string
   phone?: string | null
-  avatarUrl?: string | null
   addressId?: string | null
   status?: UserStatusDto
 }

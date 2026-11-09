@@ -15,7 +15,6 @@ export const establishmentRegistrationSchema = z.object({
     .max(2000, 'Descrição deve ter no máximo 2000 caracteres')
     .optional()
     .or(z.literal('')),
-  logoUrl: z.string().url().optional().or(z.literal('')),
   website: z.string().url('URL do site inválida').optional().or(z.literal('')),
 })
 

@@ -28,6 +28,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927420105
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186638215
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186640583
       }
     ],
     "1.3 Atualizar `apps/api/.env.example` com `AWS_REGION`, `AWS_S3_BUCKET`, `AWS_CDN_URL`, `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` (valores fictícios)": [
@@ -120,6 +130,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320041
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186562413
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186622887
       }
     ],
     "3. Checkpoint - storage": [
@@ -127,6 +147,11 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320110
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187240983
       }
     ],
     "4.1 Criar `image.constants.ts` com `ALLOWED_IMAGE_MIME`, `MAX_IMAGE_FILE_SIZE` (5 MB), `MAX_GALLERY_SIZE` (user 10, establishment 20, service-offer 10), `ImageEntityType` e `ImageSlot`": [
@@ -168,6 +193,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320340
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186563002
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186623496
       }
     ],
     "4.5 Implementar `ImageTargetRegistry` (injeta os 3 targets e expõe `get(entity)`)": [
@@ -175,6 +210,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320425
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186868477
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186918182
       }
     ],
     "4.6 Implementar `ImageAuthorizationService.assertCanWrite`": [
@@ -199,6 +244,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320591
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186563562
+      },
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186624111
       }
     ],
     "5.2 Implementar `setSingle` e `removeSingle` (avatar, logo, main)": [
@@ -206,6 +261,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320672
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186922400
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186996851
       }
     ],
     "5.3 Implementar `addToGallery`": [
@@ -213,6 +278,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320728
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186996984
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187035320
       }
     ],
     "5.4 Implementar `removeFromGallery`, `promoteToMain`, `reorderGallery` e `list`": [
@@ -220,6 +295,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320797
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187035883
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187067149
       }
     ],
     "6.1 Criar `UserImagesController` em `users/:slug/images`": [
@@ -227,6 +312,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320861
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187071266
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187149719
       }
     ],
     "6.2 Criar `EstablishmentImagesController` em `establishments/:slug/images` (com `logo` no lugar de `avatar`)": [
@@ -234,6 +329,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927320939
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187071159
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187149783
       }
     ],
     "6.3 Criar `ServiceOfferImagesController` em `service-offers/:slug/images` (sem rota de avatar/logo)": [
@@ -241,6 +346,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321009
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187071895
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187150520
       }
     ],
     "6.4 Criar `ImagesModule` (providers, controllers, exporta `ImageCleanupService`) e importar `StorageModule` e `ImagesModule` em `AppModule`": [
@@ -248,6 +363,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321090
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187153845
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187240149
       }
     ],
     "7. Checkpoint - módulo de imagens": [
@@ -255,6 +380,11 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321163
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187241506
       }
     ],
     "8.1 Implementar `ImageCleanupService` com `collect(entity, slug)` e `purge(urls)` (best effort com `Promise.allSettled` e log das chaves que falharem)": [
@@ -262,6 +392,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321231
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187072597
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187151274
       }
     ],
     "8.2 Integrar a limpeza em `UserService.remove`, `EstablishmentService.remove` e `ServiceOfferService.remove`": [
@@ -269,6 +409,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321296
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187246077
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187715099
       }
     ],
     "8.3 Remover `avatarUrl` e `logoUrl` dos DTOs de criação e atualização de User e Establishment": [
@@ -276,6 +426,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321363
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187246232
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187715189
       }
     ],
     "9.1 Decidir sobre `@aws-sdk/s3-request-presigner` (não usado no MVP) e confirmar que `multer`, `@types/multer`, `@nestjs/platform-express` e `@aws-sdk/client-s3` estão declarados": [
@@ -283,6 +443,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321431
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187247290
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187716030
       }
     ],
     "9.2 Atualizar a documentação em `.specs/codebase` (STACK, INTEGRATIONS) para AWS S3 + CloudFront, removendo a menção a Supabase": [
@@ -290,6 +460,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321504
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187247999
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187716699
       }
     ],
     "9.3 Rodar build, lint e a suíte de testes da API (`nx build api`, `nx lint api`, `nx test api`) e corrigir falhas": [
@@ -297,6 +477,16 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321575
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187719404
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187887639
       }
     ],
     "10. Checkpoint final": [
@@ -304,6 +494,53 @@
         "executionId": "e5e07cb9-0276-4176-ad47-af715e5ff7df",
         "chatSessionId": "sess_822f8a66-8807-4b0b-900a-f30b54edf43d",
         "timestamp": 1793927321719
+      },
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187888061
+      }
+    ],
+    "2. Implementar o módulo de storage (`apps/api/src/modules/storage`)": [
+      {
+        "executionId": "28b8e86e-f7de-4896-98c3-3f197fe30a4c",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186622969
+      }
+    ],
+    "1. Preparar schema, migration e ambiente": [
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186857592
+      }
+    ],
+    "4. Implementar base do módulo de imagens (`apps/api/src/modules/images`)": [
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794186918259
+      }
+    ],
+    "5. Implementar `ImagesService` e DTOs": [
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187067228
+      }
+    ],
+    "6. Implementar controllers e wiring": [
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187240226
+      }
+    ],
+    "9. Finalização": [
+      {
+        "executionId": "b5d31ad5-48d9-4cf7-8d46-932c69c2dc1b",
+        "chatSessionId": "sess_fc90ec22-4a0a-4fe3-b14a-a33d47a31a2c",
+        "timestamp": 1794187887719
       }
     ]
   }

@@ -8,12 +8,14 @@ import { ServiceOfferRepository } from '../repositories/service-offer.repository
 import { CreateServiceOfferDto, UpdateServiceOfferDto, FilterServiceOfferDto } from '../dto';
 import { IPaginatedResult } from '../../../common/contracts/base-repository.interface';
 import { PrismaService } from '../../../database/prisma.service';
+import { ImageCleanupService } from '../../images/services/image-cleanup.service';
 
 @Injectable()
 export class ServiceOfferService {
   constructor(
     private readonly serviceOfferRepository: ServiceOfferRepository,
     private readonly prisma: PrismaService,
+    private readonly imageCleanup: ImageCleanupService,
   ) {}
 
   async create(createDto: CreateServiceOfferDto): Promise<ServiceOffer> {
@@ -125,7 +127,9 @@ export class ServiceOfferService {
 
   async remove(slug: string): Promise<void> {
     await this.findOne(slug);
+    const urls = await this.imageCleanup.collect('service-offer', slug);
     await this.serviceOfferRepository.delete(slug);
+    await this.imageCleanup.purge(urls);
   }
 
   async updateStatus(slug: string, status: string): Promise<ServiceOffer> {

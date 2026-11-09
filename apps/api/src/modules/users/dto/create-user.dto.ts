@@ -39,11 +39,6 @@ export class CreateUserDto {
   @MaxLength(20)
   phone?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg', description: 'URL do avatar' })
-  @IsOptional()
-  @IsString()
-  avatarUrl?: string;
-
   @ApiPropertyOptional({ description: 'ID do endereço do usuário' })
   @IsOptional()
   @IsUUID()

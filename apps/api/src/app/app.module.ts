@@ -16,6 +16,8 @@ import { EstablishmentsModule } from '../modules/establishments/establishments.m
 import { ServiceOffersModule } from '../modules/service-offers/service-offers.module';
 import { RolesModule } from '../modules/roles/roles.module';
 import { AddressesModule } from '../modules/addresses/addresses.module';
+import { StorageModule } from '../modules/storage/storage.module';
+import { ImagesModule } from '../modules/images/images.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { AddressesModule } from '../modules/addresses/addresses.module';
     ServiceOffersModule,
     RolesModule,
     AddressesModule,
+    StorageModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -18,7 +18,6 @@ export interface CreateEstablishmentDto {
   ownerId?: string
   name: string
   description?: string | null
-  logoUrl?: string | null
   website?: string | null
   addressId?: string | null
 }
@@ -27,7 +26,6 @@ export interface UpdateEstablishmentDto {
   name?: string
   slug?: string
   description?: string | null
-  logoUrl?: string | null
   website?: string | null
   addressId?: string | null
 }

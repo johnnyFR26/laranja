@@ -3,9 +3,10 @@ import { ServiceOfferService } from './services/service-offer.service';
 import { ServiceOfferController } from './controllers/service-offer.controller';
 import { ServiceOfferRepository } from './repositories/service-offer.repository';
 import { DatabaseModule } from '../../database/database.module';
+import { ImagesModule } from '../images/images.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, ImagesModule],
   controllers: [ServiceOfferController],
   providers: [ServiceOfferService, ServiceOfferRepository],
   exports: [ServiceOfferService, ServiceOfferRepository],

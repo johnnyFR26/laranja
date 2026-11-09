@@ -76,7 +76,6 @@ export function EstablishmentRegistrationForm() {
       const { data: establishment } = await apiClient.post<EstablishmentDto>(endpoints.establishments.create, {
         name: data.name,
         description: data.description?.trim() || null,
-        logoUrl: data.logoUrl?.trim() || null,
         website: data.website?.trim() || null,
       } as CreateEstablishmentDto)
       setEstablishmentSlug(establishment.slug)
